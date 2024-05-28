@@ -37,20 +37,10 @@ public class MainWindow {
   String selectedResultTitle = null; //For storage purposes, it may not coincide with the searched term (see below)
   String text = ""; //Last searched text! this variable is central for everything
 
-  public MainWindow() {
-
-
-//    Retrofit retrofit = new Retrofit.Builder()
-//        .baseUrl("https://en.wikipedia.org/w/")
-//        .addConverterFactory(ScalarsConverterFactory.create())
-//        .build();
-//
-//    WikipediaSearchAPI searchAPI = retrofit.create(WikipediaSearchAPI.class);
-//    WikipediaPageAPI pageAPI = retrofit.create(WikipediaPageAPI.class);
-
-    APIBuilder apiBuilder = new APIBuilder();
-    WikipediaSearchAPI searchAPI = apiBuilder.createSearchAPI();
-    WikipediaPageAPI pageAPI = apiBuilder.createPageAPI();
+  public MainWindow()
+  {
+    WikipediaSearchAPI searchAPI = APIBuilder.createSearchAPI();
+    WikipediaPageAPI pageAPI = APIBuilder.createPageAPI();
 
     savedTVSeries.setModel(new DefaultComboBoxModel(DataBase.getTitles().stream().sorted().toArray()));
 
