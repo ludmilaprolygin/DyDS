@@ -21,7 +21,7 @@ public class SearchResult extends JMenuItem
     protected String formatToHTML()
     {
         String toReturn = "<html><font face=\"arial\">" + title + ": " + snippet;
-        toReturn =toReturn.replace("<span class=\"searchmatch\">", "")
+        toReturn = toReturn.replace("<span class=\"searchmatch\">", "")
                 .replace("</span>", "");
 
         return toReturn;

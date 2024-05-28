@@ -1,7 +1,9 @@
 package dyds.tvseriesinfo.fulllogic;
 
+import Model.APIs.APIBuilder;
 import Model.APIs.WikipediaPageAPI;
 import Model.APIs.WikipediaSearchAPI;
+import View.SearchView;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -20,16 +22,16 @@ import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class MainWindow {
-  private JTextField textField1;
-  private JButton goButton;
-  private JPanel contentPane;
-  private JTextPane textPane1;
+  private JTextField searchTextField;
+  private JButton searchButton;
+  private JPanel windowContentPane;
+  private JTextPane searchPageContent;
   private JButton saveLocallyButton;
-  private JTabbedPane tabbedPane1;
+  private JTabbedPane tabbedPane;
   private JPanel searchPanel;
   private JPanel storagePanel;
-  private JComboBox comboBox1;
-  private JTextPane textPane2;
+  private JComboBox savedTVSeries;
+  private JTextPane storedPageContent;
 
   DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
   String selectedResultTitle = null; //For storage purposes, it may not coincide with the searched term (see below)
@@ -38,32 +40,48 @@ public class MainWindow {
   public MainWindow() {
 
 
-    Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl("https://en.wikipedia.org/w/")
-        .addConverterFactory(ScalarsConverterFactory.create())
-        .build();
+//    Retrofit retrofit = new Retrofit.Builder()
+//        .baseUrl("https://en.wikipedia.org/w/")
+//        .addConverterFactory(ScalarsConverterFactory.create())
+//        .build();
+//
+//    WikipediaSearchAPI searchAPI = retrofit.create(WikipediaSearchAPI.class);
+//    WikipediaPageAPI pageAPI = retrofit.create(WikipediaPageAPI.class);
 
-    WikipediaSearchAPI searchAPI = retrofit.create(WikipediaSearchAPI.class);
-    WikipediaPageAPI pageAPI = retrofit.create(WikipediaPageAPI.class);
+    APIBuilder apiBuilder = new APIBuilder();
+    WikipediaSearchAPI searchAPI = apiBuilder.createSearchAPI();
+    WikipediaPageAPI pageAPI = apiBuilder.createPageAPI();
 
-    comboBox1.setModel(new DefaultComboBoxModel(DataBase.getTitles().stream().sorted().toArray()));
+    savedTVSeries.setModel(new DefaultComboBoxModel(DataBase.getTitles().stream().sorted().toArray()));
 
+    searchPanel = SearchView.createSearchTab();
 
-    textPane1.setContentType("text/html");
-    textPane2.setContentType("text/html");
+    searchPageContent.setContentType("text/html");
+    storedPageContent.setContentType("text/html");
     // this is needed to open a link in the browser
 
-    textField1.addActionListener(actionEvent -> {System.out.println("ACCION!!!");});
+    searchTextField.addActionListener(actionEvent -> {System.out.println("ACCION con enter!!!");});
     System.out.println("TYPED!!!");
-    textField1.addPropertyChangeListener(propertyChangeEvent -> {
-              System.out.println("TYPED!!!");
-    });
+    searchTextField.addPropertyChangeListener(propertyChangeEvent -> {
+              System.out.println("TYPED holaaaa!!!");
+    }); //This is not working, we need to find a way to detect when the user press enter
+    //We can use a KeyListener, but it is not recommended, we will use a button instead
+    //searchTextField.addKeyListener(new KeyAdapter() {
+    //  @Override
+    //  public void keyTyped(KeyEvent e) {
+    //    super.keyTyped(e);
+    //    if(e.getKeyChar() == KeyEvent.VK_ENTER){
+    //      searchButton.doClick();
+    //    }
+    //  }
+    //});
+    //This is a better way to do it, but we will use the button for now
 
     //ToAlberto: They told us that you were having difficulties understanding this code,
     //Don't panic! We added several helpful comments to guide you through it ;)
 
     // From here on is where the magic happends: querying wikipedia, showing results, etc.
-    goButton.addActionListener(e -> new Thread(() -> {
+    searchButton.addActionListener(e -> new Thread(() -> {
               //This may take some time, dear user be patient in the meanwhile!
               setWorkingStatus();
               // get from service
@@ -71,10 +89,10 @@ public class MainWindow {
               try {
 
                 //ToAlberto: First, lets search for the term in Wikipedia
-                callForSearchResponse = searchAPI.searchForTerm(textField1.getText() + " (Tv series) articletopic:\"television\"").execute();
+                callForSearchResponse = searchAPI.searchForTerm(searchTextField.getText() + " (Tv series) articletopic:\"television\"").execute();
 
                 //Show the result for testing reasons, if it works, dont forget to delete!
-                System.out.println("JSON " + callForSearchResponse.body());
+                System.out.println("(callForSearchResponse) JSON " + callForSearchResponse.body());
 
                 //ToAlberto: Very Important Comment 1
                 //This is the code parses the string with the search results for the query
@@ -126,8 +144,8 @@ public class MainWindow {
                         text += searchResultExtract2.getAsString().replace("\\n", "\n");
                         text = textToHtml(text);
                       }
-                      textPane1.setText(text);
-                      textPane1.setCaretPosition(0);
+                      searchPageContent.setText(text);
+                      searchPageContent.setCaretPosition(0);
                       //Back to edit time!
                       setWatingStatus();
                     } catch (Exception e12) {
@@ -135,7 +153,7 @@ public class MainWindow {
                     }
                   });
                 }
-                searchOptionsMenu.show(textField1, textField1.getX(), textField1.getY());
+                searchOptionsMenu.show(searchTextField, searchTextField.getX(), searchTextField.getY());
               } catch (IOException e1) {
                 e1.printStackTrace();
               }
@@ -148,20 +166,22 @@ public class MainWindow {
       if(text != ""){
         // save to DB  <o/
         DataBase.saveInfo(selectedResultTitle.replace("'", "`"), text);  //Dont forget the ' sql problem
-        comboBox1.setModel(new DefaultComboBoxModel(DataBase.getTitles().stream().sorted().toArray()));
+        savedTVSeries.setModel(new DefaultComboBoxModel(DataBase.getTitles().stream().sorted().toArray()));
       }
     });
 
-    comboBox1.addActionListener(actionEvent -> textPane2.setText(textToHtml(DataBase.getExtract(comboBox1.getSelectedItem().toString()))));
+    savedTVSeries.addActionListener(actionEvent -> storedPageContent.setText(textToHtml(DataBase.getExtract(savedTVSeries.getSelectedItem().toString()))));
+    // This line is the one that makes the magic happen, it sets the text of the storedPageContent to the text of the selected item in the comboBox
+    // The text is retrieved from the database using the getExtract method, which returns the text of the selected item
 
     JPopupMenu storedInfoPopup = new JPopupMenu();
 
     JMenuItem deleteItem = new JMenuItem("Delete!");
     deleteItem.addActionListener(actionEvent -> {
-        if(comboBox1.getSelectedIndex() > -1){
-          DataBase.deleteEntry(comboBox1.getSelectedItem().toString());
-          comboBox1.setModel(new DefaultComboBoxModel(DataBase.getTitles().stream().sorted().toArray()));
-          textPane2.setText("");
+        if(savedTVSeries.getSelectedIndex() > -1){
+          DataBase.deleteEntry(savedTVSeries.getSelectedItem().toString());
+          savedTVSeries.setModel(new DefaultComboBoxModel(DataBase.getTitles().stream().sorted().toArray()));
+          storedPageContent.setText("");
         }
     });
     storedInfoPopup.add(deleteItem);
@@ -169,31 +189,31 @@ public class MainWindow {
     JMenuItem saveItem = new JMenuItem("Save Changes!");
     saveItem.addActionListener(actionEvent -> {
         // save to DB  <o/
-        DataBase.saveInfo(comboBox1.getSelectedItem().toString().replace("'", "`"), textPane2.getText());  //Dont forget the ' sql problem
+        DataBase.saveInfo(savedTVSeries.getSelectedItem().toString().replace("'", "`"), storedPageContent.getText());  //Dont forget the ' sql problem
         //comboBox1.setModel(new DefaultComboBoxModel(DataBase.getTitles().stream().sorted().toArray()));
     });
     storedInfoPopup.add(saveItem);
 
-    textPane2.setComponentPopupMenu(storedInfoPopup);
+    storedPageContent.setComponentPopupMenu(storedInfoPopup);
 
 
   }
 
 
-  private void setWorkingStatus() {
+  private void setWorkingStatus() { //This method is used to disable the search panel while the search is being performed
     for(Component c: this.searchPanel.getComponents()) c.setEnabled(false);
-    textPane1.setEnabled(false);
+    searchPageContent.setEnabled(false);
   }
 
-  private void setWatingStatus() {
+  private void setWatingStatus() { //This method is used to enable the search panel after the search is done
     for(Component c: this.searchPanel.getComponents()) c.setEnabled(true);
-    textPane1.setEnabled(true);
+    searchPageContent.setEnabled(true);
   }
 
   public static void main(String[] args) {
     try {
       // Set System L&F
-      UIManager.put("nimbusSelection", new Color(247,248,250));
+      //UIManager.put("nimbusSelection", new Color(247,248,250)); este es el que hace que no se vea nada en la seleccion del menu de borrar y bla
       //UIManager.put("nimbusBase", new Color(51,98,140)); //This is redundant!
 
       for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -211,7 +231,7 @@ public class MainWindow {
     JFrame frame = new JFrame("TV Series Info Repo");
 
 
-    frame.setContentPane(new MainWindow().contentPane);
+    frame.setContentPane(new MainWindow().windowContentPane);
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.pack();
     frame.setVisible(true);
@@ -221,10 +241,10 @@ public class MainWindow {
 
 
     System.out.println(DataBase.getExtract("test"));
-    System.out.println(DataBase.getExtract("nada"));
+    System.out.println(DataBase.getExtract("nada")); //This should return null
   }
 
-  public static String textToHtml(String text) {
+  public static String textToHtml(String text) { //This method is used to format the text to be displayed in the JTextPane
 
     StringBuilder builder = new StringBuilder();
 

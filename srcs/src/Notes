@@ -1,0 +1,6 @@
+- toReturn = toReturn.replace("<abbr title=\"number\">", "")
+                  .replace("</abbr>", "");
+  Algunas salidas, en la pagina, contienen abbr.
+
+- sacar el main de NewMainWindow
+- cambiar el nombre de NewMainWindow
