@@ -1,5 +1,6 @@
 package Presenter;
 
+import View.Messages.RetrievingWikipediaError;
 import View.NewMainWindow;
 
 public class ProgramPresenter

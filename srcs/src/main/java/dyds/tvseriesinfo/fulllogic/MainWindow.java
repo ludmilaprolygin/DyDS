@@ -1,8 +1,8 @@
 package dyds.tvseriesinfo.fulllogic;
 
-import Model.APIs.*;
+import Model.PageModel;
+import Model.SearchModel;
 import View.Search.Popup.SearchesPopupMenu;
-import View.Search.SearchView;
 import View.Storage.Popup.StoredInfoPopupMenu;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -10,7 +10,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,8 +35,11 @@ public class MainWindow {
 
   public MainWindow()
   {
-    WikipediaSearchAPI searchAPI = APIBuilder.createSearchAPI();
-    WikipediaPageAPI pageAPI = APIBuilder.createPageAPI();
+    //WikipediaSearchAPI searchAPI = APIBuilder.createSearchAPI();
+    //WikipediaPageAPI pageAPI = APIBuilder.createPageAPI();
+
+    SearchModel searchModel = new SearchModel();
+    PageModel pageModel = new PageModel();
 
     savedTVSeries.setModel(new DefaultComboBoxModel(DataBase.getTitles().stream().sorted().toArray()));
 
@@ -61,10 +63,11 @@ public class MainWindow {
               setWorkingStatus();
               // get from service
               Response<String> callForSearchResponse;
-              try {
 
                 //ToAlberto: First, lets search for the term in Wikipedia
-                callForSearchResponse = searchAPI.searchForTerm(searchTextField.getText() + " (Tv series) articletopic:\"television\"").execute();
+                //callForSearchResponse = searchAPI.searchForTerm(searchTextField.getText() + " (Tv series) articletopic:\"television\"").execute();
+                searchModel.searchInWikipedia(searchTextField.getText() + " (Tv series) articletopic:\"television\"");
+                callForSearchResponse = searchModel.getSearchResponse();
 
                 //Show the result for testing reasons, if it works, dont forget to delete!
                 System.out.println("(callForSearchResponse) JSON " + callForSearchResponse.body());
@@ -90,8 +93,11 @@ public class MainWindow {
                     try {
                       //This may take some time, dear user be patient in the meanwhile!
                       setWorkingStatus();
-                      //Now fetch the info of the select page
-                      Response<String> callForPageResponse = pageAPI.getExtractByPageID(sr.pageID).execute();
+
+                      Response<String> callForPageResponse;
+
+                      pageModel.getPageFromWikipedia(sr.pageID);
+                      callForPageResponse = pageModel.getPageResponse();
 
                       System.out.println("(callForPageResponse) JSON " + callForPageResponse.body());
 
@@ -125,9 +131,6 @@ public class MainWindow {
                   });
                 }
                 searchOptionsMenu.show(searchTextField, searchTextField.getX(), searchTextField.getY());
-              } catch (IOException e1) {
-                e1.printStackTrace();
-              }
 
               //Now you can keep searching stuff!
               setWatingStatus();

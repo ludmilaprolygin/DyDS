@@ -2,5 +2,5 @@ package Presenter.Listeners;
 
 public interface SearchModelListener
 {
-    void searchFinished();
+    public void searchFinished();
 }
