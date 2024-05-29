@@ -6,14 +6,14 @@ import View.Storage.StorageView;
 
 import javax.swing.*;
 
-public class NewMainWindow extends JFrame
+public class MainWindow extends JFrame
 {
     protected JTabbedPane tabbedPane;
     protected JPanel searchPanel;
     protected JPanel storagePanel;
     protected JPanel ratedPanel;
 
-    public NewMainWindow()
+    public MainWindow()
     {
         super("TV Series Info Repo");
 
@@ -59,7 +59,7 @@ public class NewMainWindow extends JFrame
         storagePanel = storageView.getStoragePanel();
     }
 
-    protected void createRatedTab() // Aplicar Singleton
+    protected void createRatedTab()
     {
         RatedView ratedView = new RatedView();
         ratedPanel = ratedView.getRatedPanel();

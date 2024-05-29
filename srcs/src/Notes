@@ -2,11 +2,9 @@
                   .replace("</abbr>", "");
   Algunas salidas, en la pagina, contienen abbr.
 
-- sacar el main de NewMainWindow
-- cambiar el nombre de NewMainWindow !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 - manejar cuando se cuelga y/o tarda
+- si no hay nada en el textfield no se tiene que poder buscar
 - si hay cambios de lo guardado, cuando vamos a lo guardado, debería verse el reflejo de toque.
-- ejecutar busqueda con enter
 - cuando se hace hover sobre delete y save changes de las cosas de la DB cambiar los colores xq no se ve.
      UIManager.put("nimbusSelection", new Color(247,248,250)) es el responsable.
 - borrar console logs

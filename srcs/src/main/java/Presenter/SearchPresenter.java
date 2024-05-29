@@ -1,8 +1,7 @@
 package Presenter;
 
 import Model.*;
-import Presenter.Listeners.PageModelListener;
-import Presenter.Listeners.SearchModelListener;
+import Presenter.Listeners.ModelListener;
 import View.Search.SearchView;
 import View.Popup.WikiSearchesPopupMenu;
 import View.Storage.StorageView;
@@ -12,48 +11,40 @@ import com.google.gson.JsonObject;
 import dyds.tvseriesinfo.fulllogic.DataBase;
 import dyds.tvseriesinfo.fulllogic.SearchResult;
 import retrofit2.Response;
+import utils.JsonProcessing;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 import java.util.Set;
 
-public class SearchPresenter extends Presenter
+public class SearchPresenter
 {
-    protected static SearchPresenter searchPresenter;
     protected SearchModel searchModel;
     protected SearchView searchView;
     protected PageModel pageModel;
     protected StorageView storageView;
 
-    private SearchPresenter() //OK
+    public SearchPresenter(SearchView searchView, SearchModel searchModel)
     {
-        super();
-        searchModel = SearchModel.getInstance();
-        searchView = SearchView.getInstance();
+        this.searchView = searchView;
+        this.searchModel = searchModel;
+
         pageModel = PageModel.getInstance();
-        storageView = StorageView.getInstance();
 
         initializeListeners();
     }
-    public static SearchPresenter getInstance() //OK
-    {
-        if(searchPresenter == null)
-            searchPresenter = new SearchPresenter();
-        return searchPresenter;
-    }
 
-    protected void initializeListeners() //OK
+    protected void initializeListeners()
+    //public void initializeListeners()
     {
         initializeSearchModelListeners();
-        initializeTextFieldListeners();
-        initializeSearchButtonListeners();
-        initializeSaveLocallyButtonListeners();
+        //initializeSaveLocallyButtonListeners();
         initializePageModelListeners();
     }
-    protected void initializeSearchModelListeners() //OK
+    protected void initializeSearchModelListeners()
     {
-        searchModel.addListener(new SearchModelListener()
+        searchModel.addListener(new ModelListener()
         {
             @Override
             public void taskFinished()
@@ -62,38 +53,18 @@ public class SearchPresenter extends Presenter
             }
         });
     }
-    protected void initializeTextFieldListeners() //OK
+    public void onEnterKeyPress() { onClickSearchButton(); }
+    public void onClickSearchButton()
     {
         JTextField searchTextField = searchView.getSearchTextField();
-        JButton searchButton = searchView.getSearchButton();
-
-        searchTextField.addActionListener(actionEvent ->
-        {
-            System.out.println("Esto escucha al ENTER cuando hay una busqueda");
-            searchButton.doClick();
-        });
-
-        searchTextField.addPropertyChangeListener(propertyChangeEvent -> {
-            if(!searchTextField.isEnabled())
-                System.out.println("Esto se imprime cada vez que termina de ejecutar un setXstatus()");
-        });
-    }
-    protected void initializeSearchButtonListeners() //OK
-    {
-        JButton searchButton = searchView.getSearchButton();
-        JTextField searchTextField = searchView.getSearchTextField();
-
-        searchButton.addActionListener(e -> new Thread(() ->
+        new Thread(() ->
         {
             setWorkingStatus();
-
             String termToSearch = searchTextField.getText() + " (Tv series) articletopic:\"television\"";
             searchModel.searchInWikipedia(termToSearch);
-            Response<String> callForSearchResponse = searchModel.getResponse();
-            showSearchResults();
-        }).start());
+        }).start();
     }
-    protected void initializeSearchResultsListeners() //OK
+    protected void initializeSearchResultsListeners()
     {
         Iterable<SearchResult> searchOptionsMenu = searchView.getPopUp().getSearchResults();
 
@@ -142,7 +113,7 @@ public class SearchPresenter extends Presenter
     }
     protected void initializePageModelListeners()
     {
-        pageModel.addListener(new PageModelListener()
+        pageModel.addListener(new ModelListener()
         {
             @Override
             public void taskFinished()
@@ -152,10 +123,11 @@ public class SearchPresenter extends Presenter
         });
     }
 
-    public void showSearchResults() //OK
+    public void showSearchResults()
     {
+        JsonProcessing jsonProcessing = new JsonProcessing();
         Response<String> searchResponse = searchModel.getResponse();
-        JsonArray jsonResults = getQueryResults(searchResponse, "search");
+        JsonArray jsonResults = jsonProcessing.getQueryResults(searchResponse, "search");
 
         WikiSearchesPopupMenu searchOptionsMenu = searchView.createPopUp();
 
@@ -168,14 +140,15 @@ public class SearchPresenter extends Presenter
         initializeSearchResultsListeners();
         searchView.displayPopUp();
 
-        setWatingStatus();
+        setWaitingStatus();
     }
 
     public void showPageResults(SearchResult sr)
     {
+        JsonProcessing jsonProcessing = new JsonProcessing();
         Response<String> callForPageResponse = pageModel.getResponse();
-        JsonObject jobj2 = jsonObjectSetUp(callForPageResponse);
-        JsonObject query2 = jsonQuery(jobj2);
+        JsonObject jobj2 = jsonProcessing.jsonObjectSetUp(callForPageResponse);
+        JsonObject query2 = jsonProcessing.jsonQuery(jobj2);
         JsonObject pages = query2.get("pages").getAsJsonObject();
         Set<Map.Entry<String, JsonElement>> pagesSet = pages.entrySet();
         Map.Entry<String, JsonElement> first = pagesSet.iterator().next();
@@ -201,7 +174,7 @@ public class SearchPresenter extends Presenter
         searchPageContent.setText(text);
         searchPageContent.setCaretPosition(0);
         //Back to edit time!
-        setWatingStatus();
+        setWaitingStatus();
     }
 
     protected void setWorkingStatus() //This method is used to disable the search panel while the search is being performed
@@ -213,8 +186,8 @@ public class SearchPresenter extends Presenter
             c.setEnabled(false);
         searchPageContent.setEnabled(false);
     }
-
-    protected void setWatingStatus() //This method is used to enable the search panel after the search is done
+//
+    protected void setWaitingStatus() //This method is used to enable the search panel after the search is done
     {
         JPanel searchPanel = searchView.getSearchPanel();
         JTextPane searchPageContent = searchView.getPaneContent();

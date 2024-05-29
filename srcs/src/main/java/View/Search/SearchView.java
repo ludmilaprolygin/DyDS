@@ -1,7 +1,11 @@
 package View.Search;
 
+import Presenter.PagePresenter;
+import Presenter.SearchPresenter;
 import View.Popup.WikiSearchesPopupMenu;
 import View.View;
+import dyds.tvseriesinfo.fulllogic.SearchResult;
+import retrofit2.Response;
 
 import javax.swing.*;
 
@@ -14,6 +18,8 @@ public class SearchView implements View
     protected JTextPane searchPageContent;
     protected JButton saveLocallyButton;
     protected WikiSearchesPopupMenu searchOptionsMenu;
+    protected SearchPresenter searchPresenter;
+    protected PagePresenter pagePresenter;
 
     private SearchView()
     {
@@ -30,6 +36,8 @@ public class SearchView implements View
     {
         searchPanelSetUp();
         searchPageContentSetUp();
+
+        initializeListeners();
     }
     protected void searchPanelSetUp()
     {
@@ -54,4 +62,37 @@ public class SearchView implements View
     public JTextPane getPaneContent() { return searchPageContent; }
     public JButton getSaveLocallyButton() { return saveLocallyButton; }
     public WikiSearchesPopupMenu getPopUp() { return searchOptionsMenu; }
+
+    public void setSearchPresenter(SearchPresenter searchPresenter) { this.searchPresenter = searchPresenter; }
+    public void setPagePresenter(PagePresenter pagePresenter) { this.pagePresenter = pagePresenter; }
+
+    protected void initializeListeners()
+    {
+        initializeSearchButtonListener();
+        initializeTextFieldActionListener();
+    }
+    protected void initializeSearchButtonListener()
+    {
+        searchButton.addActionListener(e ->
+        {
+            searchPresenter.onClickSearchButton();
+        });
+    }
+    protected void initializeTextFieldActionListener()
+    {
+        searchTextField.addActionListener(e ->
+        {
+            searchPresenter.onEnterKeyPress();
+        });
+    }
+    protected void initializePopupItemListener()
+    {
+        for(SearchResult sr : searchOptionsMenu.getSearchResults())
+        {
+            sr.addActionListener(e ->
+            {
+                searchPresenter.showPageResults(sr);
+            });
+        }
+    }
 }
