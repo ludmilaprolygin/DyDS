@@ -1,6 +1,6 @@
 package Presenter;
 
-public class StoragePresenter
+public class StoragePresenter// extends Presenter
 {
 
 }

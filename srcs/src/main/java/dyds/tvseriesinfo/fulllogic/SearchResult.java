@@ -45,4 +45,8 @@ public class SearchResult extends JMenuItem
 
         return toReturn;
     }
+
+    public String getPageID() { return pageID; }
+    public String getSnippet() {  return snippet; }
+    public String getTitle() { return title; }
 }

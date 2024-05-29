@@ -1,6 +1,3 @@
 package Presenter.Listeners;
 
-public interface PageModelListener
-{
-    void pagingFinished();
-}
+public interface PageModelListener extends ModelListener {}

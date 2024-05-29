@@ -1,22 +1,30 @@
 package View.Search;
 
-import Presenter.SearchPresenter;
+import View.Storage.Popup.WikiSearchesPopupMenu;
+import View.View;
 
 import javax.swing.*;
 
-public class SearchView
+public class SearchView implements View
 {
-    protected final SearchPresenter searchPresenter = new SearchPresenter();
-
+    protected static SearchView searchView;
     protected JPanel searchPanel;
     protected JTextField searchTextField;
     protected JButton searchButton;
     protected JTextPane searchPageContent;
     protected JButton saveLocallyButton;
+    protected WikiSearchesPopupMenu searchOptionsMenu;
 
-    public SearchView()
+    private SearchView()
     {
         setUp();
+    }
+
+    public static SearchView getInstance()
+    {
+        if(searchView == null)
+            searchView = new SearchView();
+        return searchView;
     }
 
     protected void setUp()
@@ -34,9 +42,17 @@ public class SearchView
         searchPageContent.setEditable(false);
     }
 
+    public WikiSearchesPopupMenu createPopUp()
+    {
+        searchOptionsMenu = new WikiSearchesPopupMenu();
+        return searchOptionsMenu;
+    }
+    public void displayPopUp() {searchOptionsMenu.show(searchTextField, searchTextField.getX(), searchTextField.getY());}
+
     public JPanel getSearchPanel() { return searchPanel; }
     public JTextField getSearchTextField() { return searchTextField; }
     public JButton getSearchButton() { return searchButton; }
-    public JTextPane getSearchPageContent() { return searchPageContent; }
+    public JTextPane getPaneContent() { return searchPageContent; }
     public JButton getSaveLocallyButton() { return saveLocallyButton; }
+    public WikiSearchesPopupMenu getPopUp() { return searchOptionsMenu; }
 }

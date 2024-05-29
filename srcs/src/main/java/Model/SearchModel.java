@@ -2,37 +2,45 @@ package Model;
 
 import Model.APIs.APIBuilder;
 import Model.APIs.WikipediaSearchAPI;
+import Presenter.Listeners.ModelListener;
 import Presenter.Listeners.SearchModelListener;
-import View.Messages.RetrievingWikipediaError;
+import View.Messages.UnsuccessfulTask;
 import retrofit2.Response;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-public class SearchModel
+public class SearchModel extends Model
 {
     protected final WikipediaSearchAPI searchAPI = APIBuilder.createSearchAPI();
-    protected SearchModelListener searchModelListener;
-    protected Response<String> searchResponse;
+    protected static SearchModel searchModel;
+
+    private SearchModel()
+    {
+        super();
+    }
+    public static SearchModel getInstance()
+    {
+        if(searchModel == null)
+            searchModel = new SearchModel();
+        return searchModel;
+    }
 
     public void searchInWikipedia(String term)
     {
         try
         {
-            searchResponse = searchAPI.searchForTerm(term).execute();
+            response = searchAPI.searchForTerm(term).execute();
         }
         catch (IOException ex)
         {
             ex.printStackTrace();
-            RetrievingWikipediaError.wikipediaError();
+            UnsuccessfulTask.wikipediaError();
         }
         notifySearchFinished();
     }
 
     protected void notifySearchFinished()
     {
-
+        modelListener.taskFinished();
     }
-
-    public Response<String> getSearchResponse() { return searchResponse; }
 }

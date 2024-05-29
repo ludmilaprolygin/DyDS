@@ -7,8 +7,6 @@ import javax.swing.*;
 
 public class StorageView
 {
-    protected final StoragePresenter storagePresenter = new StoragePresenter();
-
     protected JPanel storagePanel;
     protected JComboBox<String> savedTVSeries;
     protected JTextPane storedPageContent;

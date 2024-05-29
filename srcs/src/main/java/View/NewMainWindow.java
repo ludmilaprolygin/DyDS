@@ -42,17 +42,17 @@ public class NewMainWindow extends JFrame
 
     protected void createSearchTab()
     {
-        SearchView searchView = new SearchView();
+        SearchView searchView = SearchView.getInstance();
         this.searchPanel = searchView.getSearchPanel();
     }
 
-    protected void createStorageTab()
+    protected void createStorageTab() // Aplicar Singleton
     {
         StorageView storageView = new StorageView();
         this.storagePanel = storageView.getStoragePanel();
     }
 
-    protected void createRatedTab()
+    protected void createRatedTab() // Aplicar Singleton
     {
         RatedView ratedView = new RatedView();
         this.ratedPanel = ratedView.getRatedPanel();
