@@ -1,4 +1,4 @@
-package View.Storage.Popup;
+package View.Popup;
 
 import dyds.tvseriesinfo.fulllogic.SearchResult;
 
@@ -19,6 +19,5 @@ public class WikiSearchesPopupMenu extends JPopupMenu {
     {
         super.add(searchResult);
         searchResults.add(searchResult);
-        System.out.println("Agrego un search result nuevo");
     }
 }

@@ -1,6 +1,7 @@
 package Presenter;
 
 import View.NewMainWindow;
+import dyds.tvseriesinfo.fulllogic.DataBase;
 
 public class ProgramPresenter
 {
@@ -9,6 +10,8 @@ public class ProgramPresenter
     public static void main (String[]args)
     {
         mainWindow = new NewMainWindow();
+        DataBase.loadDatabase();
+        DataBase.saveInfo("test", "sarasa");
 
         searchFunctionInitialize();
     }

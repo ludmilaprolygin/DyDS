@@ -23,4 +23,9 @@ public class UnsuccessfulTask
     {
         JOptionPane.showMessageDialog(null, "The changed weren't made", "Error", JOptionPane.ERROR_MESSAGE);
     }
+
+    public static void lfError()
+    {
+        JOptionPane.showMessageDialog(null, "Something went wrong with UI", "Error", JOptionPane.ERROR_MESSAGE);
+    }
 }

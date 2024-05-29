@@ -31,6 +31,13 @@ public class NewMainWindow extends JFrame
         setSize(400, 400);
         setLocationRelativeTo(null);
         setVisible(true);
+
+        setLF();
+    }
+
+    protected void setLF()
+    {
+        // TODO: Implement Look and Feel
     }
 
     protected void createTabs()
@@ -43,19 +50,19 @@ public class NewMainWindow extends JFrame
     protected void createSearchTab()
     {
         SearchView searchView = SearchView.getInstance();
-        this.searchPanel = searchView.getSearchPanel();
+        searchPanel = searchView.getSearchPanel();
     }
 
-    protected void createStorageTab() // Aplicar Singleton
+    protected void createStorageTab()
     {
-        StorageView storageView = new StorageView();
-        this.storagePanel = storageView.getStoragePanel();
+        StorageView storageView = StorageView.getInstance();
+        storagePanel = storageView.getStoragePanel();
     }
 
     protected void createRatedTab() // Aplicar Singleton
     {
         RatedView ratedView = new RatedView();
-        this.ratedPanel = ratedView.getRatedPanel();
+        ratedPanel = ratedView.getRatedPanel();
     }
 
     protected void addTabs()

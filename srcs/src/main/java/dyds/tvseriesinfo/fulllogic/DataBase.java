@@ -29,7 +29,7 @@ public class DataBase
 
     } catch (SQLException e)
     {
-      System.out.println(e.getMessage());
+      System.out.println(e.getMessage() + " era un error");
     }
   }
 

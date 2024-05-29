@@ -6,7 +6,7 @@ public class SuccessfulTask
 {
     public static void pageSaved()
     {
-        JOptionPane.showMessageDialog(null, "Tha page has been saved to the database", "Saved page", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "The page has been saved to the database", "Saved page", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static void changesMade()

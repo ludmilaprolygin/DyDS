@@ -1,6 +1,6 @@
 package View.Search;
 
-import View.Storage.Popup.WikiSearchesPopupMenu;
+import View.Popup.WikiSearchesPopupMenu;
 import View.View;
 
 import javax.swing.*;
@@ -19,7 +19,6 @@ public class SearchView implements View
     {
         setUp();
     }
-
     public static SearchView getInstance()
     {
         if(searchView == null)

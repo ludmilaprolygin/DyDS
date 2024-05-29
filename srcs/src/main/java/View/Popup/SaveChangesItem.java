@@ -1,4 +1,4 @@
-package View.Storage.Popup;
+package View.Popup;
 
 public class SaveChangesItem extends PopupItem
 {

@@ -2,9 +2,7 @@ package Model;
 
 import Model.APIs.APIBuilder;
 import Model.APIs.WikipediaPageAPI;
-import Presenter.Listeners.ModelListener;
 import View.Messages.UnsuccessfulTask;
-import retrofit2.Response;
 
 public class PageModel extends Model
 {
@@ -38,7 +36,6 @@ public class PageModel extends Model
 
     protected void notifyPageFinished()
     {
-
+        modelListener.taskFinished();
     }
-
 }

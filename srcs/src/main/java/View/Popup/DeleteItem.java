@@ -1,4 +1,4 @@
-package View.Storage.Popup;
+package View.Popup;
 
 public class DeleteItem extends PopupItem
 {

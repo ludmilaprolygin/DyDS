@@ -1,4 +1,4 @@
-package View.Storage.Popup;
+package View.Popup;
 
 import javax.swing.JMenuItem;
 
