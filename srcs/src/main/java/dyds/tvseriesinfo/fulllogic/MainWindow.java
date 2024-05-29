@@ -1,11 +1,9 @@
 package dyds.tvseriesinfo.fulllogic;
 
-import Model.APIs.APIBuilder;
-import Model.APIs.WikipediaPageAPI;
-import Model.APIs.WikipediaSearchAPI;
+import Model.APIs.*;
+import View.Search.Popup.SearchesPopupMenu;
 import View.Search.SearchView;
 import View.Storage.Popup.StoredInfoPopupMenu;
-import View.Storage.StorageView;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -13,7 +11,6 @@ import com.google.gson.JsonObject;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,12 +27,12 @@ public class MainWindow {
   private JTabbedPane tabbedPane;
   private JPanel searchPanel;
   private JPanel storagePanel;
-  private JComboBox savedTVSeries;
+  private JComboBox<String> savedTVSeries;
   private JTextPane storedPageContent;
 
-  DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
   String selectedResultTitle = null; //For storage purposes, it may not coincide with the searched term (see below)
   String text = ""; //Last searched text! this variable is central for everything
+
 
   public MainWindow()
   {
@@ -44,36 +41,21 @@ public class MainWindow {
 
     savedTVSeries.setModel(new DefaultComboBoxModel(DataBase.getTitles().stream().sorted().toArray()));
 
-
-//    SearchView searchView = new SearchView();
-//    searchPanel = searchView.getSearchPanel();
-//    searchPageContent = searchView.getSearchPageContent();
-//
-//    StorageView storageView = new StorageView();
-//    storedPageContent = storageView.getStoredPageContent();
-
-    //searchPanel = SearchView.createSearchTab();
-
     searchPageContent.setContentType("text/html");
     storedPageContent.setContentType("text/html");
     // this is needed to open a link in the browser
 
     searchTextField.addActionListener(actionEvent ->
-        {
-
-          System.out.println("ACCION con enter!!!");
-          searchButton.doClick();
-        });
-    System.out.println("TYPED!!!");
-    searchTextField.addPropertyChangeListener(propertyChangeEvent -> {
-      if(!searchTextField.isEnabled())
-        System.out.println("TYPED holaaaa!!!");
+    {
+      System.out.println("Esto escucha al ENTER cuando hay una busqueda");
+      searchButton.doClick();
     });
 
-    //ToAlberto: They told us that you were having difficulties understanding this code,
-    //Don't panic! We added several helpful comments to guide you through it ;)
+    searchTextField.addPropertyChangeListener(propertyChangeEvent -> {
+      if(!searchTextField.isEnabled())
+        System.out.println("Esto se imprime cada vez que termina de ejecutar un setXstatus()");
+    });
 
-    // From here on is where the magic happends: querying wikipedia, showing results, etc.
     searchButton.addActionListener(e -> new Thread(() -> {
               //This may take some time, dear user be patient in the meanwhile!
               setWorkingStatus();
@@ -87,43 +69,36 @@ public class MainWindow {
                 //Show the result for testing reasons, if it works, dont forget to delete!
                 System.out.println("(callForSearchResponse) JSON " + callForSearchResponse.body());
 
-                //ToAlberto: Very Important Comment 1
-                //This is the code parses the string with the search results for the query
-                //The string uses the JSON format to the describe the query and the results
                 //So we will use the Google library for JSONs (Gson) for its parsing and manipulation
                 //Basically, we will turn the string into a JSON object,
                 //With such object we can acceses to its fields using get(fieldname) method provided by Gson
                 Gson gson = new Gson();
-                JsonObject jobj = gson.fromJson(callForSearchResponse.body(), JsonObject.class);
-                JsonObject query = jobj.get("query").getAsJsonObject();
-                Iterator<JsonElement> resultIterator = query.get("search").getAsJsonArray().iterator();
+                JsonObject jobj = jsonObjectSetUp(callForSearchResponse, gson);
+                JsonObject query = jsonQuery(jobj);
                 JsonArray jsonResults = query.get("search").getAsJsonArray();
 
                 //toAlberto: shows each result in the JSonArry in a Popupmenu
-                JPopupMenu searchOptionsMenu = new JPopupMenu("Search Results");
-                for (JsonElement je : jsonResults) {
-                  JsonObject searchResult = je.getAsJsonObject();
-                  String searchResultTitle = searchResult.get("title").getAsString();
-                  String searchResultPageId = searchResult.get("pageid").getAsString();
-                  String searchResultSnippet = searchResult.get("snippet").getAsString();
-
-                  SearchResult sr = new SearchResult(searchResultTitle, searchResultPageId, searchResultSnippet);
+                SearchesPopupMenu searchOptionsMenu = new SearchesPopupMenu();//new JPopupMenu("Search Results");
+                for (JsonElement je : jsonResults)
+                {
+                  SearchResult sr = new SearchResult(je);
                   searchOptionsMenu.add(sr);
 
-                  //toAlberto: Adding an event to retrive the wikipage when the user clicks an item in the Popupmenu
-                  sr.addActionListener(actionEvent -> {
+                  //toAlberto: Adding an event to retrieve the wikipage when the user clicks an item in the Popupmenu
+                  sr.addActionListener(actionEvent ->
+                  {
                     try {
                       //This may take some time, dear user be patient in the meanwhile!
                       setWorkingStatus();
                       //Now fetch the info of the select page
                       Response<String> callForPageResponse = pageAPI.getExtractByPageID(sr.pageID).execute();
 
-                      System.out.println("JSON " + callForPageResponse.body());
+                      System.out.println("(callForPageResponse) JSON " + callForPageResponse.body());
 
                       //toAlberto: This is similar to the code above, but here we parse the wikipage answer.
                       //For more details on Gson look for very important coment 1, or just google it :P
-                      JsonObject jobj2 = gson.fromJson(callForPageResponse.body(), JsonObject.class);
-                      JsonObject query2 = jobj2.get("query").getAsJsonObject();
+                      JsonObject jobj2 = jsonObjectSetUp(callForPageResponse, gson);
+                      JsonObject query2 = jsonQuery(jobj2);
                       JsonObject pages = query2.get("pages").getAsJsonObject();
                       Set<Map.Entry<String, JsonElement>> pagesSet = pages.entrySet();
                       Map.Entry<String, JsonElement> first = pagesSet.iterator().next();
@@ -175,23 +150,26 @@ public class MainWindow {
     storedPageContent.setComponentPopupMenu(storedInfoPopup);
   }
 
-
   private void setWorkingStatus()
   { //This method is used to disable the search panel while the search is being performed
-    for(Component c: this.searchPanel.getComponents()) c.setEnabled(false);
+    System.out.print("setWorkingStatus(): ");
+    for(Component c: searchPanel.getComponents())
+      c.setEnabled(false);
     searchPageContent.setEnabled(false);
   }
 
   private void setWatingStatus()
   { //This method is used to enable the search panel after the search is done
-    for(Component c: this.searchPanel.getComponents()) c.setEnabled(true);
+    System.out.print("setWatingStatus(): ");
+    for(Component c: searchPanel.getComponents())
+      c.setEnabled(true);
     searchPageContent.setEnabled(true);
   }
 
   public static void main(String[] args)
   {
     try {
-      // Set System L&F
+      //Set System L&F
       //UIManager.put("nimbusSelection", new Color(247,248,250)); este es el que hace que no se vea nada en la seleccion del menu de borrar y bla
       //UIManager.put("nimbusBase", new Color(51,98,140)); //This is redundant!
 
@@ -240,4 +218,10 @@ public class MainWindow {
 
     return builder.toString();
   }
+
+  protected JsonObject jsonObjectSetUp(Response<String> response, Gson gson)
+  {
+    return gson.fromJson(response.body(), JsonObject.class);
+  }
+  protected JsonObject jsonQuery(JsonObject jsonObject) { return jsonObject.get("query").getAsJsonObject(); }
 }

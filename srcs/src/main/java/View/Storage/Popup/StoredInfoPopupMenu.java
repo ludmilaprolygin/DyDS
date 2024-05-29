@@ -4,10 +4,7 @@ import javax.swing.*;
 
 public class StoredInfoPopupMenu extends JPopupMenu
 {
-    public StoredInfoPopupMenu()
-    {
-       createItems();
-    }
+    public StoredInfoPopupMenu() { createItems(); }
 
     protected void createItems()
     {

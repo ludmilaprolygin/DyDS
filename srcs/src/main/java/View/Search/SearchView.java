@@ -16,10 +16,19 @@ public class SearchView
 
     public SearchView()
     {
-        searchPageContentConfig();
+        setUp();
     }
 
-    protected void searchPageContentConfig()
+    protected void setUp()
+    {
+        searchPanelSetUp();
+        searchPageContentSetUp();
+    }
+    protected void searchPanelSetUp()
+    {
+        searchPanel.setToolTipText("Search in Wikipedia");
+    }
+    protected void searchPageContentSetUp()
     {
         searchPageContent.setContentType("text/html");
         searchPageContent.setEditable(false);

@@ -1,4 +1,4 @@
-package Model.Listeners;
+package Presenter.Listeners;
 
 public interface SearchModelListener
 {

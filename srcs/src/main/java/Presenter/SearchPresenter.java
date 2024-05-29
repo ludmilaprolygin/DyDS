@@ -1,6 +1,6 @@
 package Presenter;
 
-import Model.Listeners.SearchModelListener;
+import Presenter.Listeners.SearchModelListener;
 import Model.*;
 import View.Search.SearchView;
 

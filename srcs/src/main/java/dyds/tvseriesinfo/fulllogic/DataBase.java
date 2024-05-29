@@ -3,13 +3,16 @@ package dyds.tvseriesinfo.fulllogic;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class DataBase {
+public class DataBase
+{
 
-  public static void loadDatabase() {
+  public static void loadDatabase()
+  {
     //If the database doesnt exists we create it
     String url = "jdbc:sqlite:./dictionary.db";
 
-    try (Connection connection = DriverManager.getConnection(url)) {
+    try (Connection connection = DriverManager.getConnection(url))
+    {
       if (connection != null) {
 
         DatabaseMetaData meta = connection.getMetaData();
@@ -24,7 +27,8 @@ public class DataBase {
         //If the DB was created before, a SQL error is reported but it is not harmfull...
       }
 
-    } catch (SQLException e) {
+    } catch (SQLException e)
+    {
       System.out.println(e.getMessage());
     }
   }
@@ -217,6 +221,4 @@ public class DataBase {
       }
     }
   }
-
-
 }

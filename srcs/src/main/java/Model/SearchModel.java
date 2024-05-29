@@ -2,7 +2,7 @@ package Model;
 
 import Model.APIs.APIBuilder;
 import Model.APIs.WikipediaSearchAPI;
-import Model.Listeners.SearchModelListener;
+import Presenter.Listeners.SearchModelListener;
 
 import java.util.ArrayList;
 

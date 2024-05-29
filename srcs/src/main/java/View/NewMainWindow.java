@@ -1,9 +1,25 @@
 package View;
 
+import Model.APIs.APIBuilder;
+import Model.APIs.WikipediaPageAPI;
+import Model.APIs.WikipediaSearchAPI;
 import View.Search.SearchView;
+import View.Storage.Popup.StoredInfoPopupMenu;
 import View.Storage.StorageView;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import dyds.tvseriesinfo.fulllogic.DataBase;
+import dyds.tvseriesinfo.fulllogic.MainWindow;
+import dyds.tvseriesinfo.fulllogic.SearchResult;
+import retrofit2.Response;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Set;
 
 public class NewMainWindow extends JFrame
 {
@@ -40,15 +56,13 @@ public class NewMainWindow extends JFrame
     protected void createSearchTab()
     {
         SearchView searchView = new SearchView();
-        searchPanel = searchView.getSearchPanel();
-        searchPanel.setToolTipText("Search in Wikipedia");
+        this.searchPanel = searchView.getSearchPanel();
     }
 
     protected void createStorageTab()
     {
         StorageView storageView = new StorageView();
-        storagePanel = storageView.getStoragePanel();
-        storagePanel.setToolTipText("Stored info");
+        this.storagePanel = storageView.getStoragePanel();
     }
 
     protected void addTabs()
