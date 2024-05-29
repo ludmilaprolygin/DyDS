@@ -1,31 +1,17 @@
 package View;
 
-import Model.APIs.APIBuilder;
-import Model.APIs.WikipediaPageAPI;
-import Model.APIs.WikipediaSearchAPI;
+import View.Rated.RatedView;
 import View.Search.SearchView;
-import View.Storage.Popup.StoredInfoPopupMenu;
 import View.Storage.StorageView;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import dyds.tvseriesinfo.fulllogic.DataBase;
-import dyds.tvseriesinfo.fulllogic.MainWindow;
-import dyds.tvseriesinfo.fulllogic.SearchResult;
-import retrofit2.Response;
 
 import javax.swing.*;
-import java.awt.*;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
 
 public class NewMainWindow extends JFrame
 {
     protected JTabbedPane tabbedPane;
     protected JPanel searchPanel;
     protected JPanel storagePanel;
+    protected JPanel ratedPanel;
 
     public NewMainWindow()
     {
@@ -35,10 +21,10 @@ public class NewMainWindow extends JFrame
 
         createTabs();
         addTabs();
-        setFrameConfig();
+        frameSetUp();
     }
 
-    protected void setFrameConfig()
+    protected void frameSetUp()
     {
         add(tabbedPane);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,6 +37,7 @@ public class NewMainWindow extends JFrame
     {
         createSearchTab();
         createStorageTab();
+        createRatedTab();
     }
 
     protected void createSearchTab()
@@ -65,12 +52,20 @@ public class NewMainWindow extends JFrame
         this.storagePanel = storageView.getStoragePanel();
     }
 
+    protected void createRatedTab()
+    {
+        RatedView ratedView = new RatedView();
+        this.ratedPanel = ratedView.getRatedPanel();
+    }
+
     protected void addTabs()
     {
         tabbedPane.add(searchPanel.getToolTipText(), searchPanel);
         tabbedPane.add(storagePanel.getToolTipText(), storagePanel);
+        tabbedPane.add(ratedPanel.getToolTipText(), ratedPanel);
     }
 
     public JPanel getSearchPanel() { return searchPanel; }
     public JPanel getStoragePanel() { return storagePanel; }
+    public JPanel getRatedPanel() { return ratedPanel; }
 }

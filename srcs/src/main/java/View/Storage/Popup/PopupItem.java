@@ -9,6 +9,5 @@ public abstract class PopupItem extends JMenuItem
         super(text);
         setBehaviour();
     }
-
     public abstract void setBehaviour();
 }
