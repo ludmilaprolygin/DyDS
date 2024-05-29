@@ -1,4 +1,4 @@
-package View;
+package View.Search;
 
 import Presenter.SearchPresenter;
 
@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class SearchView
 {
-    protected static final SearchPresenter searchPresenter = new SearchPresenter();
+    protected final SearchPresenter searchPresenter = new SearchPresenter();
 
     protected JPanel searchPanel;
     protected JTextField searchTextField;
@@ -14,10 +14,15 @@ public class SearchView
     protected JTextPane searchPageContent;
     protected JButton saveLocallyButton;
 
-    public static JPanel createSearchTab()
+    public SearchView()
     {
-        SearchView searchView = new SearchView();
-        return searchView.getSearchPanel();
+        searchPageContentConfig();
+    }
+
+    protected void searchPageContentConfig()
+    {
+        searchPageContent.setContentType("text/html");
+        searchPageContent.setEditable(false);
     }
 
     public JPanel getSearchPanel() { return searchPanel; }

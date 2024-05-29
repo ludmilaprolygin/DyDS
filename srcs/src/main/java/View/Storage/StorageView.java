@@ -1,4 +1,4 @@
-package View;
+package View.Storage;
 
 import Presenter.StoragePresenter;
 
@@ -6,16 +6,21 @@ import javax.swing.*;
 
 public class StorageView
 {
-    protected static final StoragePresenter storagePresenter = new StoragePresenter();
+    protected final StoragePresenter storagePresenter = new StoragePresenter();
 
     protected JPanel storagePanel;
     protected JComboBox<String> savedTVSeries;
     protected JTextPane storedPageContent;
 
-    public static JPanel createStorageTab()
+    public StorageView()
     {
-        StorageView storageView = new StorageView();
-        return storageView.getStoragePanel();
+        storedPageContentConfig();
+    }
+
+    protected void storedPageContentConfig()
+    {
+        storedPageContent.setContentType("text/html");
+        storedPageContent.setEditable(true);
     }
 
     public JPanel getStoragePanel() { return storagePanel; }

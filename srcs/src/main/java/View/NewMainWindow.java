@@ -1,7 +1,9 @@
 package View;
 
+import View.Search.SearchView;
+import View.Storage.StorageView;
+
 import javax.swing.*;
-import java.awt.*;
 
 public class NewMainWindow extends JFrame
 {
@@ -12,26 +14,49 @@ public class NewMainWindow extends JFrame
     public NewMainWindow()
     {
         super("TV Series Info Repo");
-        tabbedPane = new JTabbedPane();
-        searchPanel = SearchView.createSearchTab();
-        storagePanel = StorageView.createStorageTab();
 
+        tabbedPane = new JTabbedPane();
+
+        createTabs();
         addTabs();
+        setFrameConfig();
+    }
+
+    protected void setFrameConfig()
+    {
+        add(tabbedPane);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 400);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    protected void createTabs()
+    {
+        createSearchTab();
+        createStorageTab();
+    }
+
+    protected void createSearchTab()
+    {
+        SearchView searchView = new SearchView();
+        searchPanel = searchView.getSearchPanel();
+        searchPanel.setToolTipText("Search in Wikipedia");
+    }
+
+    protected void createStorageTab()
+    {
+        StorageView storageView = new StorageView();
+        storagePanel = storageView.getStoragePanel();
+        storagePanel.setToolTipText("Stored info");
     }
 
     protected void addTabs()
     {
-        Component searchTab = tabbedPane.add("Search in Wikipedia", searchPanel);
-        Component storageTab = tabbedPane.add("Stored info", storagePanel);
+        tabbedPane.add(searchPanel.getToolTipText(), searchPanel);
+        tabbedPane.add(storagePanel.getToolTipText(), storagePanel);
     }
 
-    public static void main (String[]args)
-    {
-        NewMainWindow mainWindow = new NewMainWindow();
-        mainWindow.add(mainWindow.tabbedPane);
-        mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainWindow.setSize(400, 400);
-        mainWindow.setLocationRelativeTo(null);
-        mainWindow.setVisible(true);
-    }
+    public JPanel getSearchPanel() { return searchPanel; }
+    public JPanel getStoragePanel() { return storagePanel; }
 }

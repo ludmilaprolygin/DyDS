@@ -3,7 +3,9 @@ package dyds.tvseriesinfo.fulllogic;
 import Model.APIs.APIBuilder;
 import Model.APIs.WikipediaPageAPI;
 import Model.APIs.WikipediaSearchAPI;
-import View.SearchView;
+import View.Search.SearchView;
+import View.Storage.Popup.StoredInfoPopupMenu;
+import View.Storage.StorageView;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -18,8 +20,6 @@ import java.util.Set;
 import javax.swing.*;
 
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class MainWindow {
   private JTextField searchTextField;
@@ -44,28 +44,31 @@ public class MainWindow {
 
     savedTVSeries.setModel(new DefaultComboBoxModel(DataBase.getTitles().stream().sorted().toArray()));
 
-    searchPanel = SearchView.createSearchTab();
+
+//    SearchView searchView = new SearchView();
+//    searchPanel = searchView.getSearchPanel();
+//    searchPageContent = searchView.getSearchPageContent();
+//
+//    StorageView storageView = new StorageView();
+//    storedPageContent = storageView.getStoredPageContent();
+
+    //searchPanel = SearchView.createSearchTab();
 
     searchPageContent.setContentType("text/html");
     storedPageContent.setContentType("text/html");
     // this is needed to open a link in the browser
 
-    searchTextField.addActionListener(actionEvent -> {System.out.println("ACCION con enter!!!");});
+    searchTextField.addActionListener(actionEvent ->
+        {
+
+          System.out.println("ACCION con enter!!!");
+          searchButton.doClick();
+        });
     System.out.println("TYPED!!!");
     searchTextField.addPropertyChangeListener(propertyChangeEvent -> {
-              System.out.println("TYPED holaaaa!!!");
-    }); //This is not working, we need to find a way to detect when the user press enter
-    //We can use a KeyListener, but it is not recommended, we will use a button instead
-    //searchTextField.addKeyListener(new KeyAdapter() {
-    //  @Override
-    //  public void keyTyped(KeyEvent e) {
-    //    super.keyTyped(e);
-    //    if(e.getKeyChar() == KeyEvent.VK_ENTER){
-    //      searchButton.doClick();
-    //    }
-    //  }
-    //});
-    //This is a better way to do it, but we will use the button for now
+      if(!searchTextField.isEnabled())
+        System.out.println("TYPED holaaaa!!!");
+    });
 
     //ToAlberto: They told us that you were having difficulties understanding this code,
     //Don't panic! We added several helpful comments to guide you through it ;)
@@ -126,12 +129,15 @@ public class MainWindow {
                       Map.Entry<String, JsonElement> first = pagesSet.iterator().next();
                       JsonObject page = first.getValue().getAsJsonObject();
                       JsonElement searchResultExtract2 = page.get("extract");
+                      String fullurl = page.get("fullurl").getAsString();
+
                       if (searchResultExtract2 == null) {
                         text = "No Results";
                       } else {
                         text = "<h1>" + sr.title + "</h1>";
                         selectedResultTitle = sr.title;
                         text += searchResultExtract2.getAsString().replace("\\n", "\n");
+                        text += "<p><a href='" + fullurl + "'>" + fullurl + "</a></p>";
                         text = textToHtml(text);
                       }
                       searchPageContent.setText(text);
@@ -164,43 +170,26 @@ public class MainWindow {
     // This line is the one that makes the magic happen, it sets the text of the storedPageContent to the text of the selected item in the comboBox
     // The text is retrieved from the database using the getExtract method, which returns the text of the selected item
 
-    JPopupMenu storedInfoPopup = new JPopupMenu();
-
-    JMenuItem deleteItem = new JMenuItem("Delete!");
-    deleteItem.addActionListener(actionEvent -> {
-        if(savedTVSeries.getSelectedIndex() > -1){
-          DataBase.deleteEntry(savedTVSeries.getSelectedItem().toString());
-          savedTVSeries.setModel(new DefaultComboBoxModel(DataBase.getTitles().stream().sorted().toArray()));
-          storedPageContent.setText("");
-        }
-    });
-    storedInfoPopup.add(deleteItem);
-
-    JMenuItem saveItem = new JMenuItem("Save Changes!");
-    saveItem.addActionListener(actionEvent -> {
-        // save to DB  <o/
-        DataBase.saveInfo(savedTVSeries.getSelectedItem().toString().replace("'", "`"), storedPageContent.getText());  //Dont forget the ' sql problem
-        //comboBox1.setModel(new DefaultComboBoxModel(DataBase.getTitles().stream().sorted().toArray()));
-    });
-    storedInfoPopup.add(saveItem);
+    JPopupMenu storedInfoPopup = new StoredInfoPopupMenu();
 
     storedPageContent.setComponentPopupMenu(storedInfoPopup);
-
-
   }
 
 
-  private void setWorkingStatus() { //This method is used to disable the search panel while the search is being performed
+  private void setWorkingStatus()
+  { //This method is used to disable the search panel while the search is being performed
     for(Component c: this.searchPanel.getComponents()) c.setEnabled(false);
     searchPageContent.setEnabled(false);
   }
 
-  private void setWatingStatus() { //This method is used to enable the search panel after the search is done
+  private void setWatingStatus()
+  { //This method is used to enable the search panel after the search is done
     for(Component c: this.searchPanel.getComponents()) c.setEnabled(true);
     searchPageContent.setEnabled(true);
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args)
+  {
     try {
       // Set System L&F
       //UIManager.put("nimbusSelection", new Color(247,248,250)); este es el que hace que no se vea nada en la seleccion del menu de borrar y bla
@@ -213,7 +202,8 @@ public class MainWindow {
         }
       }
     }
-    catch (Exception e) {
+    catch (Exception e)
+    {
       System.out.println("Something went wrong with UI!");
     }
 
@@ -234,7 +224,8 @@ public class MainWindow {
     System.out.println(DataBase.getExtract("nada")); //This should return null
   }
 
-  public static String textToHtml(String text) { //This method is used to format the text to be displayed in the JTextPane
+  public static String textToHtml(String text)
+  { //This method is used to format the text to be displayed in the JTextPane
 
     StringBuilder builder = new StringBuilder();
 
@@ -249,5 +240,4 @@ public class MainWindow {
 
     return builder.toString();
   }
-
 }
