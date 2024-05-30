@@ -9,9 +9,9 @@ import javax.swing.*;
 public class MainWindow extends JFrame
 {
     protected JTabbedPane tabbedPane;
-    protected JPanel searchPanel;
-    protected JPanel storagePanel;
-    protected JPanel ratedPanel;
+    protected SearchView searchView;
+    protected StorageView storageView;
+    protected RatedView ratedView;
 
     public MainWindow()
     {
@@ -19,7 +19,7 @@ public class MainWindow extends JFrame
 
         tabbedPane = new JTabbedPane();
 
-        createTabs();
+        createViews();
         addTabs();
         frameSetUp();
     }
@@ -40,39 +40,36 @@ public class MainWindow extends JFrame
         // TODO: Implement Look and Feel
     }
 
-    protected void createTabs()
+    protected void createViews()
     {
-        createSearchTab();
-        createStorageTab();
-        createRatedTab();
-    }
-
-    protected void createSearchTab()
-    {
-        SearchView searchView = SearchView.getInstance();
-        searchPanel = searchView.getSearchPanel();
-    }
-
-    protected void createStorageTab()
-    {
-        StorageView storageView = StorageView.getInstance();
-        storagePanel = storageView.getStoragePanel();
-    }
-
-    protected void createRatedTab()
-    {
-        RatedView ratedView = new RatedView();
-        ratedPanel = ratedView.getRatedPanel();
+        searchView = new SearchView();
+        storageView = StorageView.getInstance(); //new StorageView();
+        ratedView = new RatedView();
     }
 
     protected void addTabs()
     {
+        addSearchTab();
+        addStorageTab();
+        addRatedTab();
+    }
+    protected void addSearchTab()
+    {
+        JPanel searchPanel = searchView.getSearchPanel();
         tabbedPane.add(searchPanel.getToolTipText(), searchPanel);
+    }
+    protected void addStorageTab()
+    {
+        JPanel storagePanel = storageView.getStoragePanel();
         tabbedPane.add(storagePanel.getToolTipText(), storagePanel);
+    }
+    protected void addRatedTab()
+    {
+        JPanel ratedPanel = ratedView.getRatedPanel();
         tabbedPane.add(ratedPanel.getToolTipText(), ratedPanel);
     }
 
-    public JPanel getSearchPanel() { return searchPanel; }
-    public JPanel getStoragePanel() { return storagePanel; }
-    public JPanel getRatedPanel() { return ratedPanel; }
+    public SearchView getSearchView() { return searchView; }
+    public StorageView getStorageView() { return storageView; }
+    public RatedView getRatedView() { return ratedView; }
 }

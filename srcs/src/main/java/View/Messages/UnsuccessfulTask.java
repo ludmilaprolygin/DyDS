@@ -4,9 +4,13 @@ import javax.swing.*;
 
 public class UnsuccessfulTask
 {
+    public static void wikipediaError(String message)
+    {
+        JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
     public static void wikipediaError()
     {
-        JOptionPane.showMessageDialog(null, "Error retrieving Wikipedia page", "Error", JOptionPane.ERROR_MESSAGE);
+        wikipediaError("Error retrieving Wikipedia page");
     }
 
     public static void deleteError()

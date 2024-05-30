@@ -2,36 +2,31 @@ package utils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import retrofit2.Response;
+import java.util.Map;
+import java.util.Set;
 
 public class JsonProcessing
 {
-    protected Gson gson;
-    protected JsonObject query;
+    protected static final Gson gson = new Gson();
+    protected static JsonObject query;
 
-    public JsonProcessing()
+    public static JsonArray getQueryResultsAsJsonArray(Response<String> response, String identifier)
     {
-        gson = new Gson();
-    }
-
-    public JsonArray getQueryResults(Response<String> response, String identifier)
-    {
-        JsonObject jsonObject = jsonObjectSetUp(response);
-        query = jsonQuery(jsonObject);
-        return queryResults(identifier);
-    }
-    public JsonObject jsonObjectSetUp(Response<String> response)
-    {
-        return gson.fromJson(response.body(), JsonObject.class);
-    }
-    public JsonObject jsonQuery(JsonObject jsonObject)
-    {
+        JsonObject jsonObject = gson.fromJson(response.body(), JsonObject.class);
         query = jsonObject.get("query").getAsJsonObject();
-        return query;
-    }
-    public JsonArray queryResults(String identifier)
-    {
         return query.get(identifier).getAsJsonArray();
+    }
+    public static JsonObject getQueryResultAsJsonObject(Response<String> response, String identifier)
+    {
+        JsonObject jsonObject = gson.fromJson(response.body(), JsonObject.class);
+        query = jsonObject.get("query").getAsJsonObject();
+
+        JsonObject pages = query.get(identifier).getAsJsonObject();
+        Set<Map.Entry<String, JsonElement>> pagesSet = pages.entrySet();
+        Map.Entry<String, JsonElement> first = pagesSet.iterator().next();
+        return first.getValue().getAsJsonObject();
     }
 }

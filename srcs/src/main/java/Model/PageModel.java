@@ -7,17 +7,10 @@ import View.Messages.UnsuccessfulTask;
 public class PageModel extends Model
 {
     protected final WikipediaPageAPI pageAPI = APIBuilder.createPageAPI();
-    protected static PageModel pageModel;
 
-    private PageModel()
+    public PageModel()
     {
         super();
-    }
-    public static PageModel getInstance()
-    {
-        if(pageModel == null)
-            pageModel = new PageModel();
-        return pageModel;
     }
 
     public void getPageFromWikipedia(String pageID)
