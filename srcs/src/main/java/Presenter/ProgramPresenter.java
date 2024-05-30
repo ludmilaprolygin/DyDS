@@ -1,11 +1,7 @@
 package Presenter;
 
-import Model.PageModel;
-import Model.SearchModel;
-import View.MainWindow;
-import View.Rated.RatedView;
-import View.Search.SearchView;
-import View.Storage.StorageView;
+import Model.*;
+import View.*;
 import dyds.tvseriesinfo.fulllogic.DataBase;
 
 public class ProgramPresenter
@@ -27,10 +23,13 @@ public class ProgramPresenter
 
         SearchPresenter searchPresenter =
                 new SearchPresenter(searchView, searchModel);
-        PagePresenter pagePresenter =
-                new PagePresenter(searchView, pageModel);
+        ShowPagePresenter showPagePresenter =
+                new ShowPagePresenter(searchView, pageModel);
+        SavePagePresenter savePagePresenter =
+                new SavePagePresenter(storageView, pageModel);
 
         searchView.setSearchPresenter(searchPresenter);
-        searchView.setPagePresenter(pagePresenter);
+        searchView.setPagePresenter(showPagePresenter);
+        searchView.setSavePresenter(savePagePresenter);
     }
 }

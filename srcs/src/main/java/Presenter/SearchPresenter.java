@@ -2,13 +2,13 @@ package Presenter;
 
 import Model.*;
 import Presenter.Listeners.ModelListener;
-import View.Search.SearchView;
+import View.SearchView;
 import View.Popup.WikiSearchesPopupMenu;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import dyds.tvseriesinfo.fulllogic.SearchResult;
 import retrofit2.Response;
-import utils.JsonProcessing;
+import utils.JsonParsing;
 
 import javax.swing.*;
 
@@ -51,7 +51,7 @@ public class SearchPresenter
     protected void showSearchResults()
     {
         Response<String> searchResponse = searchModel.getResponse();
-        JsonArray jsonResults = JsonProcessing.getQueryResultsAsJsonArray(searchResponse, "search");
+        JsonArray jsonResults = JsonParsing.getQueryResultsAsJsonArray(searchResponse, "search");
 
         WikiSearchesPopupMenu searchOptionsMenu = searchView.createPopUp();
 

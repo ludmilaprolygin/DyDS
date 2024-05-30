@@ -1,9 +1,5 @@
 package View;
 
-import View.Rated.RatedView;
-import View.Search.SearchView;
-import View.Storage.StorageView;
-
 import javax.swing.*;
 
 public class MainWindow extends JFrame
@@ -30,9 +26,9 @@ public class MainWindow extends JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 400);
         setLocationRelativeTo(null);
-        setVisible(true);
-
         setLF();
+
+        setVisible(true);
     }
 
     protected void setLF()
@@ -43,7 +39,7 @@ public class MainWindow extends JFrame
     protected void createViews()
     {
         searchView = new SearchView();
-        storageView = StorageView.getInstance(); //new StorageView();
+        storageView = new StorageView();
         ratedView = new RatedView();
     }
 

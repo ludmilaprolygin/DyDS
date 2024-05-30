@@ -1,28 +1,21 @@
-package View.Storage;
+package View;
 
 import View.Popup.StoredInfoPopupMenu;
-import View.View;
 
 import javax.swing.*;
 
 public class StorageView implements View
 {
-    protected static StorageView storageView;
     protected JPanel storagePanel;
     protected JComboBox<String> savedTVSeries;
     protected JTextPane storedPageContent;
     protected JPopupMenu storedInfoPopup;
 
-    public static StorageView getInstance()
-    {
-        if(storageView == null)
-            storageView = new StorageView();
-        return storageView;
-    }
-    private StorageView()
+    public StorageView()
     {
         setUp();
     }
+
     protected void setUp()
     {
         storedInfoPopup = new StoredInfoPopupMenu();
@@ -39,17 +32,14 @@ public class StorageView implements View
 
     public JPanel getStoragePanel() { return storagePanel; }
     public JComboBox<String> getSavedTVSeries() { return savedTVSeries; }
-    public JTextPane getStoredPageContent() { return storedPageContent; }
+    public JTextPane getPaneContent() { return storedPageContent; }
 
 
     /////////////////////////////////////////////////////////////////////////
 
     @Override
-    public void displayPopUp() {
+    public void displayPopUp()
+    {
 
-    }
-    @Override
-    public JTextPane getPaneContent() {
-        return null;
     }
 }

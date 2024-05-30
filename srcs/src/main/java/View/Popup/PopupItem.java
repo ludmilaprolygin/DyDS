@@ -7,7 +7,7 @@ public abstract class PopupItem extends JMenuItem
     public PopupItem(String text)
     {
         super(text);
-        setBehaviour();
+        initializeListeners();
     }
-    public abstract void setBehaviour();
+    public abstract void initializeListeners();
 }

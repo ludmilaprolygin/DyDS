@@ -1,3 +1,6 @@
+- onSelectedSearchResult; no se me ocurre como hacer sin parametrizar
+
+
 - toReturn = toReturn.replace("<abbr title=\"number\">", "")
                   .replace("</abbr>", "");
   Algunas salidas, en la pagina, contienen abbr.

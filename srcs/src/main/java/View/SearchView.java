@@ -1,9 +1,9 @@
-package View.Search;
+package View;
 
-import Presenter.PagePresenter;
+import Presenter.ShowPagePresenter;
+import Presenter.SavePagePresenter;
 import Presenter.SearchPresenter;
 import View.Popup.WikiSearchesPopupMenu;
-import View.View;
 import dyds.tvseriesinfo.fulllogic.SearchResult;
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +17,8 @@ public class SearchView implements View
     protected JButton saveLocallyButton;
     protected WikiSearchesPopupMenu searchOptionsMenu;
     protected SearchPresenter searchPresenter;
-    protected PagePresenter pagePresenter;
+    protected ShowPagePresenter showPagePresenter;
+    protected SavePagePresenter savePagePresenter;
 
     public SearchView()
     {
@@ -28,6 +29,8 @@ public class SearchView implements View
     {
         searchPanelSetUp();
         searchPageContentSetUp();
+
+        disableSaveLocallyButton();
 
         initializeListeners();
     }
@@ -40,32 +43,12 @@ public class SearchView implements View
         searchPageContent.setContentType("text/html");
         searchPageContent.setEditable(false);
     }
-
-    public WikiSearchesPopupMenu createPopUp()
-    {
-        searchOptionsMenu = new WikiSearchesPopupMenu();
-        return searchOptionsMenu;
-    }
-    public void displayPopUp()
-    {
-        searchOptionsMenu.show(searchTextField, searchTextField.getX(), searchTextField.getY());
-        initializePopupItemListener();
-    }
-
-    public JPanel getSearchPanel() { return searchPanel; }
-    public JTextField getSearchTextField() { return searchTextField; }
-    public JButton getSearchButton() { return searchButton; }
-    public JTextPane getPaneContent() { return searchPageContent; }
-    public JButton getSaveLocallyButton() { return saveLocallyButton; }
-    public WikiSearchesPopupMenu getPopup() { return searchOptionsMenu; }
-
-    public void setSearchPresenter(SearchPresenter searchPresenter) { this.searchPresenter = searchPresenter; }
-    public void setPagePresenter(PagePresenter pagePresenter) { this.pagePresenter = pagePresenter; }
-
+    protected void disableSaveLocallyButton() { saveLocallyButton.setEnabled(false); }
     protected void initializeListeners()
     {
         initializeSearchButtonListener();
         initializeTextFieldActionListener();
+        initializeSaveLocallyButtonListener();
     }
     protected void initializeSearchButtonListener()
     {
@@ -81,20 +64,43 @@ public class SearchView implements View
             searchPresenter.onEnterKeyPress();
         });
     }
-
-    protected void initializePopupItemListener()
+    protected void initializeSaveLocallyButtonListener()
     {
-        for(SearchResult sr : searchOptionsMenu.getSearchResults())
+        saveLocallyButton.addActionListener(e ->
         {
-            sr.addActionListener(e ->
+            savePagePresenter.onClickSaveLocallyButton();
+        });
+    }
+
+    protected void initializePopupItemListener() // searchResult parametrizado
+    {
+        for(SearchResult searchResult : searchOptionsMenu.getSearchResults())
+        {
+            searchResult.addActionListener(e ->
             {
-                //pagePresenter.onSelectedSearchResult();
-                searchPageContent.setText(
-                        "Aca iria lo que chupa de Wiki, pero pasaron cosas con los parametros: "
-                        + sr.getTitle());
+                showPagePresenter.onSelectedSearchResult(searchResult);
             });
         }
     }
+
+    public WikiSearchesPopupMenu createPopUp()
+    {
+        searchOptionsMenu = new WikiSearchesPopupMenu();
+        return searchOptionsMenu;
+    }
+    public void displayPopUp()
+    {
+        searchOptionsMenu.show(searchTextField, searchTextField.getX(), searchTextField.getY());
+        initializePopupItemListener();
+    }
+
+    public JPanel getSearchPanel() { return searchPanel; }
+    public JTextField getSearchTextField() { return searchTextField; }
+    public JTextPane getPaneContent() { return searchPageContent; }
+
+    public void setSearchPresenter(SearchPresenter searchPresenter) { this.searchPresenter = searchPresenter; }
+    public void setPagePresenter(ShowPagePresenter showPagePresenter) { this.showPagePresenter = showPagePresenter; }
+    public void setSavePresenter(SavePagePresenter savePagePresenter) { this.savePagePresenter = savePagePresenter; }
 
     public void disableAll()
     {

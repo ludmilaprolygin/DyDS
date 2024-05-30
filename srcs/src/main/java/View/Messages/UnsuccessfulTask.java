@@ -25,7 +25,7 @@ public class UnsuccessfulTask
 
     public static void changesError()
     {
-        JOptionPane.showMessageDialog(null, "The changed weren't made", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, "The changes weren't made", "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     public static void lfError()

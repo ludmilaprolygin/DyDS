@@ -7,7 +7,7 @@ public class SaveChangesItem extends PopupItem
         super("Save Changes!");
     }
 
-    public void setBehaviour()
+    public void initializeListeners()
     {
         addActionListener(actionEvent ->
         {

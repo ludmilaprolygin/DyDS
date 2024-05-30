@@ -1,26 +1,20 @@
 package View.Popup;
 
-public class DeleteItem extends PopupItem
-{
-    public DeleteItem()
-    {
+public class DeleteItem extends PopupItem {
+    public DeleteItem() {
         super("Delete!");
     }
 
-    public void setBehaviour()
-    {
+    public void initializeListeners() {
         addActionListener(actionEvent ->
         {
             System.out.println("Ya elimine");
+
+//            if(savedTVSeries.getSelectedIndex() > -1){
+//                DataBase.deleteEntry(savedTVSeries.getSelectedItem().toString());
+//                savedTVSeries.setModel(new DefaultComboBoxModel(DataBase.getTitles().stream().sorted().toArray()));
+//                storedPageContent.setText("");
+//            }
         });
     }
 }
-
-//    JMenuItem deleteItem = new JMenuItem("Delete!");
-//    deleteItem.addActionListener(actionEvent -> {
-//        if(savedTVSeries.getSelectedIndex() > -1){
-//          DataBase.deleteEntry(savedTVSeries.getSelectedItem().toString());
-//          savedTVSeries.setModel(new DefaultComboBoxModel(DataBase.getTitles().stream().sorted().toArray()));
-//          storedPageContent.setText("");
-//        }
-//    });

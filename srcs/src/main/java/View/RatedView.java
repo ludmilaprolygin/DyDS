@@ -1,4 +1,4 @@
-package View.Rated;
+package View;
 
 import javax.swing.*;
 

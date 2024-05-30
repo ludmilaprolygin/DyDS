@@ -11,10 +11,7 @@ public class SearchResult extends JMenuItem
     protected String pageID;
     protected String snippet;
 
-    public SearchResult(JsonElement je)
-    {
-       manageJsonElement(je);
-    }
+    public SearchResult(JsonElement je) { manageJsonElement(je); }
     
     protected void manageJsonElement(JsonElement je)
     {
