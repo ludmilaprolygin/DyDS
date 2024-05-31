@@ -2,9 +2,9 @@ package View.Popup;
 
 import javax.swing.*;
 
-public class StoredInfoPopupMenu extends JPopupMenu
+public class OptionsPopup extends JPopupMenu
 {
-    public StoredInfoPopupMenu() { createItems(); }
+    public OptionsPopup() { createItems(); }
 
     protected void createItems()
     {

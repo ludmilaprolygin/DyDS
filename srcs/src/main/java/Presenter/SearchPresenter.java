@@ -53,6 +53,12 @@ public class SearchPresenter
         Response<String> searchResponse = searchModel.getResponse();
         JsonArray jsonResults = JsonParsing.getQueryResultsAsJsonArray(searchResponse, "search");
 
+        createSearchResultsPopup(jsonResults);
+
+        searchView.enableAll();
+    }
+    protected void createSearchResultsPopup(JsonArray jsonResults)
+    {
         WikiSearchesPopupMenu searchOptionsMenu = searchView.createPopUp();
 
         for (JsonElement je : jsonResults)
@@ -62,7 +68,5 @@ public class SearchPresenter
         }
 
         searchView.displayPopUp();
-
-        searchView.enableAll();
     }
 }

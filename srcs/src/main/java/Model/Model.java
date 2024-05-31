@@ -1,13 +1,17 @@
 package Model;
 
 import Presenter.Listeners.ModelListener;
-import retrofit2.Response;
+import java.util.ArrayList;
 
 public abstract class Model
 {
-    protected Response<String> response;
-    protected ModelListener modelListener;
+    protected ArrayList<ModelListener> modelListeners;
+    public Model() { modelListeners = new ArrayList<>(); }
+    public void addListener(ModelListener listener) { modelListeners.add(listener); }
 
-    public Response<String> getResponse() { return response; }
-    public void addListener(ModelListener listener) { modelListener = listener; }
+    protected void notifyListeners()
+    {
+        for(ModelListener modelListener : modelListeners)
+            modelListener.taskFinished();
+    }
 }

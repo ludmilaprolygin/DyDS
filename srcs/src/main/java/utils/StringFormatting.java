@@ -12,7 +12,7 @@ public class StringFormatting
         builder.append("</font>");
         return builder.toString();
     }
-
     public static String HTMLtitle(String title) { return "<h1>" + title + "</h1>"; }
     public static String HTMLurl(String url) { return "<p><a href='" + url + "'>" + url + "</a></p>"; }
+    public static String prepareForSQL(String text) { return text.replace("'", "`"); }
 }

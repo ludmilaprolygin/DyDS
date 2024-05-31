@@ -33,7 +33,20 @@ public class MainWindow extends JFrame
 
     protected void setLF()
     {
-        // TODO: Implement Look and Feel
+        try
+        {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
+            {
+                if ("Nimbus".equals(info.getName()))
+                {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Something went wrong with UI!");
+        }
     }
 
     protected void createViews()

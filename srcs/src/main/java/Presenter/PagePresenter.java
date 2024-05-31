@@ -2,15 +2,27 @@ package Presenter;
 
 import Model.PageModel;
 import View.Messages.UnsuccessfulTask;
+import View.View;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import retrofit2.Response;
 import utils.JsonParsing;
 import utils.StringFormatting;
 
+import javax.swing.*;
+
 public abstract class PagePresenter
 {
     protected PageModel pageModel;
+    protected View view;
+
+    public PagePresenter(View view, PageModel pageModel)
+    {
+        this.view = view;
+        this.pageModel = pageModel;
+        initializePageModelListener();
+    }
+    protected abstract void initializePageModelListener();
 
     protected String getExtractFromLastSearchResponse()
     {
@@ -36,15 +48,20 @@ public abstract class PagePresenter
     protected String getTitleFromLastSearchResponse()
     {
         JsonObject jsonObject = getJsonObjectFromLastSearchResponse();
-        String title = JsonParsing.getAttributeAsString(jsonObject, "title");
-
-        return title;
+        return JsonParsing.getAttributeAsString(jsonObject, "title");
     }
     protected JsonObject getJsonObjectFromLastSearchResponse()
     {
         Response<String> callForPageResponse = pageModel.getResponse();
-        JsonObject jsonObject = JsonParsing.getQueryResultAsJsonObject(callForPageResponse, "pages");
+        return JsonParsing.getQueryResultAsJsonObject(callForPageResponse, "pages");
+    }
 
-        return jsonObject;
+    protected void showPageContent()
+    {
+        String textToDisplay = getExtractFromLastSearchResponse();
+        JTextPane pageContent = view.getPaneContent();
+
+        pageContent.setText(textToDisplay);
+        pageContent.setCaretPosition(0);
     }
 }

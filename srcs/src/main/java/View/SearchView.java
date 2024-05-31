@@ -1,6 +1,6 @@
 package View;
 
-import Presenter.ShowPagePresenter;
+import Presenter.ShowSearchedPagePresenter;
 import Presenter.SavePagePresenter;
 import Presenter.SearchPresenter;
 import View.Popup.WikiSearchesPopupMenu;
@@ -17,7 +17,7 @@ public class SearchView implements View
     protected JButton saveLocallyButton;
     protected WikiSearchesPopupMenu searchOptionsMenu;
     protected SearchPresenter searchPresenter;
-    protected ShowPagePresenter showPagePresenter;
+    protected ShowSearchedPagePresenter showSearchedPagePresenter;
     protected SavePagePresenter savePagePresenter;
 
     public SearchView()
@@ -53,23 +53,17 @@ public class SearchView implements View
     protected void initializeSearchButtonListener()
     {
         searchButton.addActionListener(e ->
-        {
-            searchPresenter.onClickSearchButton();
-        });
+                searchPresenter.onClickSearchButton());
     }
     protected void initializeTextFieldActionListener()
     {
         searchTextField.addActionListener(e ->
-        {
-            searchPresenter.onEnterKeyPress();
-        });
+            searchPresenter.onEnterKeyPress());
     }
     protected void initializeSaveLocallyButtonListener()
     {
         saveLocallyButton.addActionListener(e ->
-        {
-            savePagePresenter.onClickSaveLocallyButton();
-        });
+            savePagePresenter.onClickSaveLocallyButton());
     }
 
     protected void initializePopupItemListener() // searchResult parametrizado
@@ -77,9 +71,7 @@ public class SearchView implements View
         for(SearchResult searchResult : searchOptionsMenu.getSearchResults())
         {
             searchResult.addActionListener(e ->
-            {
-                showPagePresenter.onSelectedSearchResult(searchResult);
-            });
+                showSearchedPagePresenter.onSelectedSearchResult(searchResult));
         }
     }
 
@@ -99,7 +91,7 @@ public class SearchView implements View
     public JTextPane getPaneContent() { return searchPageContent; }
 
     public void setSearchPresenter(SearchPresenter searchPresenter) { this.searchPresenter = searchPresenter; }
-    public void setPagePresenter(ShowPagePresenter showPagePresenter) { this.showPagePresenter = showPagePresenter; }
+    public void setShowPagePresenter(ShowSearchedPagePresenter showSearchedPagePresenter) { this.showSearchedPagePresenter = showSearchedPagePresenter; }
     public void setSavePresenter(SavePagePresenter savePagePresenter) { this.savePagePresenter = savePagePresenter; }
 
     public void disableAll()

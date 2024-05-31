@@ -12,24 +12,28 @@ public class ProgramPresenter
     {
         mainWindow = new MainWindow();
         DataBase.loadDatabase();
-        DataBase.saveInfo("test", "sarasa");
 
         SearchView searchView = mainWindow.getSearchView();
         StorageView storageView = mainWindow.getStorageView();
-        RatedView ratedView = mainWindow.getRatedView();
+        //RatedView ratedView = mainWindow.getRatedView();
 
         SearchModel searchModel = new SearchModel();
         PageModel pageModel = new PageModel();
+        DataBaseModel dataBaseModel = new DataBaseModel();
 
         SearchPresenter searchPresenter =
                 new SearchPresenter(searchView, searchModel);
-        ShowPagePresenter showPagePresenter =
-                new ShowPagePresenter(searchView, pageModel);
+        ShowSearchedPagePresenter showSearchedPagePresenter =
+                new ShowSearchedPagePresenter(searchView, pageModel);
         SavePagePresenter savePagePresenter =
-                new SavePagePresenter(storageView, pageModel);
+                new SavePagePresenter(storageView, pageModel, dataBaseModel);
+        ShowSavedPagePresenter showSavedPagePresenter =
+                new ShowSavedPagePresenter(storageView, dataBaseModel);
 
         searchView.setSearchPresenter(searchPresenter);
-        searchView.setPagePresenter(showPagePresenter);
+        searchView.setShowPagePresenter(showSearchedPagePresenter);
         searchView.setSavePresenter(savePagePresenter);
+
+        storageView.setShowSavedPagePresenter(showSavedPagePresenter);
     }
 }

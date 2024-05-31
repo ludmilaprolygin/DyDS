@@ -3,10 +3,9 @@ package Model;
 import Model.APIs.APIBuilder;
 import Model.APIs.WikipediaSearchAPI;
 import View.Messages.UnsuccessfulTask;
-
 import java.io.IOException;
 
-public class SearchModel extends Model
+public class SearchModel extends APIModel
 {
     protected final WikipediaSearchAPI searchAPI = APIBuilder.createSearchAPI();
 
@@ -23,14 +22,8 @@ public class SearchModel extends Model
         }
         catch (IOException ex)
         {
-            ex.printStackTrace();
             UnsuccessfulTask.wikipediaError();
         }
-        notifySearchFinished();
-    }
-
-    protected void notifySearchFinished()
-    {
-        modelListener.taskFinished();
+        notifyListeners();
     }
 }

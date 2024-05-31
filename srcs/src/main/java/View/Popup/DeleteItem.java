@@ -9,12 +9,12 @@ public class DeleteItem extends PopupItem {
         addActionListener(actionEvent ->
         {
             System.out.println("Ya elimine");
+        });
+    }
+}
 
 //            if(savedTVSeries.getSelectedIndex() > -1){
 //                DataBase.deleteEntry(savedTVSeries.getSelectedItem().toString());
 //                savedTVSeries.setModel(new DefaultComboBoxModel(DataBase.getTitles().stream().sorted().toArray()));
 //                storedPageContent.setText("");
 //            }
-        });
-    }
-}

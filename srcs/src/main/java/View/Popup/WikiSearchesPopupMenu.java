@@ -11,7 +11,7 @@ public class WikiSearchesPopupMenu extends JPopupMenu {
     public WikiSearchesPopupMenu()
     {
         super();
-        searchResults = new ArrayList<SearchResult>();
+        searchResults = new ArrayList<>();
     }
 
     public Iterable<SearchResult> getSearchResults() { return searchResults; }

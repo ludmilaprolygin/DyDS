@@ -4,6 +4,7 @@ import javax.swing.*;
 
 public interface View
 {
-    public void displayPopUp();
-    public JTextPane getPaneContent();
+    JTextPane getPaneContent();
+    void disableAll();
+    void enableAll();
 }

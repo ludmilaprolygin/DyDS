@@ -1,51 +1,76 @@
 package Presenter;
 
+import Model.DataBaseModel;
 import Model.PageModel;
+import Presenter.Listeners.ModelListener;
 import View.Messages.SuccessfulTask;
 import View.StorageView;
-import dyds.tvseriesinfo.fulllogic.DataBase;
 import utils.StringFormatting;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class SavePagePresenter extends PagePresenter
 {
-    protected StorageView storageView;
+    protected DataBaseModel dataBaseModel;
 
-    public SavePagePresenter(StorageView storageView, PageModel pageModel)
+    public SavePagePresenter(StorageView storageView, PageModel pageModel, DataBaseModel dataBaseModel)
     {
-        this.storageView = storageView;
-        this.pageModel = pageModel;
+        super(storageView, pageModel);
+        this.dataBaseModel = dataBaseModel;
 
-        initializeSavedTVSeriesListeners();
+        updateSavedTVSeriesTitles();
+        initializeModelListeners();
+    }
+    protected void initializeModelListeners()
+    {
+        initializePageModelListener();
+        initializeSaveInfoDataBaseModelListener();
+    }
+    protected void initializePageModelListener()
+    {
+        pageModel.addListener(new ModelListener()
+        {
+            @Override
+            public void taskFinished() { }
+        });
+    }
+    protected void initializeSaveInfoDataBaseModelListener()
+    {
+        dataBaseModel.addListener(new ModelListener()
+        {
+            @Override
+            public void taskFinished() { showSavedTVSeries(); }
+        });
     }
 
     public void onClickSaveLocallyButton()
     {
         String text = getExtractFromLastSearchResponse();
         String selectedResultTitle = getTitleFromLastSearchResponse();
-        JComboBox<String> savedTVSeries = storageView.getSavedTVSeries();
+        selectedResultTitle = StringFormatting.prepareForSQL(selectedResultTitle);
 
-        if(text != "")
-        {
-            DataBase.saveInfo(selectedResultTitle.replace("'", "`"), text);  //Dont forget the ' sql problem
-            savedTVSeries.setModel(new DefaultComboBoxModel(DataBase.getTitles().stream().sorted().toArray()));
-        }
-
+        dataBaseModel.saveInfo(selectedResultTitle, text);
+    }
+    protected void showSavedTVSeries()
+    {
+        updateSavedTVSeriesTitles();
         SuccessfulTask.pageSaved();
     }
-
-    protected void initializeSavedTVSeriesListeners()
+    protected void updateSavedTVSeriesTitles()
     {
+        StorageView storageView = (StorageView) view;
         JComboBox<String> savedTVSeries = storageView.getSavedTVSeries();
-        JTextPane storedPageContent = storageView.getPaneContent();
-
-        savedTVSeries.addActionListener(actionEvent ->
-                storedPageContent.setText(
-                        StringFormatting.textToHtml(
-                                DataBase.getExtract(savedTVSeries.getSelectedItem().toString())
-                        )));
-        // This line is the one that makes the magic happen, it sets the text of the storedPageContent to the text of the selected item in the comboBox
-        // The text is retrieved from the database using the getExtract method, which returns the text of the selected item
+        DefaultComboBoxModel<String> comboBoxModel = comboBoxModelSetUp();
+        savedTVSeries.setModel(comboBoxModel);
+    }
+    private DefaultComboBoxModel<String> comboBoxModelSetUp()
+    {
+        ArrayList<String> titles = dataBaseModel.getTitles();
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        Object[] sortedTitles = titles.stream().sorted().toArray();
+        for(Object title : sortedTitles)
+            model.addElement((String) title);
+        return model;
     }
 }
