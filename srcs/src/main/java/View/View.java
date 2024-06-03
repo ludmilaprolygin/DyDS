@@ -1,6 +1,7 @@
 package View;
 
-import Presenter.HyperlinkPresenter;
+import Presenter.Listeners.PaneHyperlinkListener;
+
 import javax.swing.*;
 
 public abstract class View
@@ -12,7 +13,6 @@ public abstract class View
     protected void initializeHyperlinkListener()
     {
         JTextPane panel = getPaneContent();
-        panel.addHyperlinkListener(e ->
-                HyperlinkPresenter.onHyperlinkClick());
+        panel.addHyperlinkListener(new PaneHyperlinkListener());
     }
 }

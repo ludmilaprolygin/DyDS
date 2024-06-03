@@ -11,7 +11,7 @@ public class DataBaseModel extends Model
     public void saveInfo(String title, String info)
     {
         DataBase.saveInfo(title, info);
-        notifyListeners();
+        notifySaveInfoListener();
     }
 
     public String getExtract(String title)
@@ -30,9 +30,13 @@ public class DataBaseModel extends Model
     public void deleteEntry(String title)
     {
         DataBase.deleteEntry(title);
-        //notifyListeners();
+        notifyDeleteListener();
     }
 
     protected void notifyGetExtractListener()
         { modelListenersMap.get("getExtractListener").taskFinished(); }
+    protected void notifyDeleteListener()
+        { modelListenersMap.get("deleteListener").taskFinished(); }
+    protected void notifySaveInfoListener()
+        { modelListenersMap.get("SaveOnDataBaseListener").taskFinished();}
 }

@@ -21,16 +21,16 @@ public class ModifySavedEntriesPresenter
 
     protected void initializeDataBaseModelListeners()
     {
-        dataBaseModel.addListener("DeleteListener", new ModelListener()
+        dataBaseModel.addListener("deleteListener", new ModelListener()
         {
             @Override
             public void taskFinished()
             {
-
+                setDeletedStatus();
             }
         });
 
-        dataBaseModel.addListener("SaveChangesListener", new ModelListener()
+        dataBaseModel.addListener("saveChangesListener", new ModelListener()
         {
             @Override
             public void taskFinished()
@@ -47,10 +47,6 @@ public class ModifySavedEntriesPresenter
         if(storageView.selectedEntryExists())
         {
             dataBaseModel.deleteEntry(titleToDelete);
-            System.out.println("Ya borre");
-            SuccessfulTask.pageDeleted();
-            comboBoxModelSetUp();
-            storageView.getPaneContent().setText("");
         }
         else
         {
@@ -79,5 +75,13 @@ public class ModifySavedEntriesPresenter
         ArrayList<String> titles = dataBaseModel.getTitles();
         Object[] savedTVSeries = titles.stream().sorted().toArray();
         storageView.setSavedTVSeriesModel(savedTVSeries);
+    }
+
+    protected void setDeletedStatus()
+    {
+        System.out.println("Ya borre");
+        SuccessfulTask.pageDeleted();
+        comboBoxModelSetUp();
+        storageView.getPaneContent().setText("");
     }
 }

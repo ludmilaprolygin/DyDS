@@ -1,7 +1,7 @@
 package View;
 
 import Presenter.ShowSearchedPagePresenter;
-import Presenter.SavePagePresenter;
+import Presenter.SaveOnDataBasePresenter;
 import Presenter.SearchPresenter;
 import dyds.tvseriesinfo.fulllogic.SearchResult;
 import javax.swing.*;
@@ -14,10 +14,11 @@ public class SearchView extends View
     protected JButton searchButton;
     protected JTextPane searchPageContent;
     protected JButton saveLocallyButton;
+    private JButton rateButton;
     protected WikiSearchesPopupMenu searchOptionsMenu;
     protected SearchPresenter searchPresenter;
     protected ShowSearchedPagePresenter showSearchedPagePresenter;
-    protected SavePagePresenter savePagePresenter;
+    protected SaveOnDataBasePresenter saveOnDataBasePresenter;
 
     public SearchView()
     {
@@ -63,7 +64,7 @@ public class SearchView extends View
     protected void initializeSaveLocallyButtonListener()
     {
         saveLocallyButton.addActionListener(e ->
-            savePagePresenter.onClickSaveLocallyButton());
+            saveOnDataBasePresenter.onClickSaveLocallyButton());
     }
 
     protected void initializePopupItemListener() // searchResult parametrizado
@@ -92,7 +93,7 @@ public class SearchView extends View
 
     public void setSearchPresenter(SearchPresenter searchPresenter) { this.searchPresenter = searchPresenter; }
     public void setShowPagePresenter(ShowSearchedPagePresenter showSearchedPagePresenter) { this.showSearchedPagePresenter = showSearchedPagePresenter; }
-    public void setSavePresenter(SavePagePresenter savePagePresenter) { this.savePagePresenter = savePagePresenter; }
+    public void setSavePresenter(SaveOnDataBasePresenter saveOnDataBasePresenter) { this.saveOnDataBasePresenter = saveOnDataBasePresenter; }
 
     public void disableAll()
     {

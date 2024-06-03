@@ -10,8 +10,8 @@ public class ProgramPresenter
 
     public static void main (String[]args)
     {
-        mainWindow = new MainWindow();
         DataBase.loadDatabase();
+        mainWindow = new MainWindow();
 
         SearchView searchView = mainWindow.getSearchView();
         StorageView storageView = mainWindow.getStorageView();
@@ -27,8 +27,8 @@ public class ProgramPresenter
                 new SearchPresenter(searchView, searchModel);
         ShowSearchedPagePresenter showSearchedPagePresenter =
                 new ShowSearchedPagePresenter(searchView, pageModel);
-        SavePagePresenter savePagePresenter =
-                new SavePagePresenter(storageView, pageModel, dataBaseModel);
+        SaveOnDataBasePresenter saveOnDataBasePresenter =
+                new SaveOnDataBasePresenter(storageView, pageModel, dataBaseModel);
         ShowSavedPagePresenter showSavedPagePresenter =
                 new ShowSavedPagePresenter(storageView, dataBaseModel);
         ModifySavedEntriesPresenter modifySavedEntriesPresenter =
@@ -36,7 +36,7 @@ public class ProgramPresenter
 
         searchView.setSearchPresenter(searchPresenter);
         searchView.setShowPagePresenter(showSearchedPagePresenter);
-        searchView.setSavePresenter(savePagePresenter);
+        searchView.setSavePresenter(saveOnDataBasePresenter);
 
         storageView.setShowSavedPagePresenter(showSavedPagePresenter);
         storageView.setModifyDataBasePresenter(modifySavedEntriesPresenter);

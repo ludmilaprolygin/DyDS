@@ -32,4 +32,9 @@ public class UnsuccessfulTask
     {
         JOptionPane.showMessageDialog(null, "Something went wrong with UI", "Error", JOptionPane.ERROR_MESSAGE);
     }
+
+    public static void dataBaseError()
+    {
+        JOptionPane.showMessageDialog(null, "Something went wrong with the database", "Error", JOptionPane.ERROR_MESSAGE);
+    }
 }

@@ -16,14 +16,14 @@ import utils.StringFormatting;
 import javax.swing.*;
 import java.util.ArrayList;
 
-public class SavePagePresenter
+public class SaveOnDataBasePresenter
 {
     protected DataBaseModel dataBaseModel;
     protected PageModel pageModel;
     protected View view;
     protected JsonObject jsonObject;
 
-    public SavePagePresenter(StorageView storageView, PageModel pageModel, DataBaseModel dataBaseModel)
+    public SaveOnDataBasePresenter(StorageView storageView, PageModel pageModel, DataBaseModel dataBaseModel)
     {
         this.dataBaseModel = dataBaseModel;
         this.view = storageView;
