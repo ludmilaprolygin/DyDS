@@ -1,17 +1,19 @@
 package View;
 
+import Presenter.ModifySavedEntriesPresenter;
 import Presenter.ShowSavedPagePresenter;
-import View.Popup.OptionsPopup;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class StorageView implements View
+public class StorageView extends View
 {
     protected JPanel storagePanel;
     protected JComboBox<String> savedTVSeries;
     protected JTextPane storedPageContent;
     protected JPopupMenu optionsPopup;
     protected ShowSavedPagePresenter showSavedPagePresenter;
+    protected ModifySavedEntriesPresenter modifySavedEntriesPresenter;
 
     public StorageView()
     {
@@ -20,11 +22,31 @@ public class StorageView implements View
 
     protected void setUp()
     {
-        optionsPopup = new OptionsPopup();
+        optionsPopupSetUp();
+
         storedPageContentSetUp();
         storagePanelSetUp();
 
         initializeListeners();
+    }
+    protected void optionsPopupSetUp()
+    {
+        optionsPopup = new JPopupMenu();
+
+        deleteItemSetUp();
+        saveChangesItemSetUp();
+    }
+    protected void deleteItemSetUp()
+    {
+        JMenuItem deleteItem = new JMenuItem("Delete!");
+        deleteItem.addActionListener(actionEvent -> { modifySavedEntriesPresenter.deleteSelected(); });
+        optionsPopup.add(deleteItem);
+    }
+    protected void saveChangesItemSetUp()
+    {
+        JMenuItem saveChangesItem = new JMenuItem("Save changes!");
+        saveChangesItem.addActionListener(actionEvent -> { modifySavedEntriesPresenter.saveChangesOnSelected(); });
+        optionsPopup.add(saveChangesItem);
     }
     protected void storedPageContentSetUp()
     {
@@ -36,6 +58,7 @@ public class StorageView implements View
     protected void initializeListeners()
     {
         initializeSavedTVSeriesListener();
+        initializeHyperlinkListener();
     }
     protected void initializeSavedTVSeriesListener()
     {
@@ -48,9 +71,9 @@ public class StorageView implements View
     public JTextPane getPaneContent() { return storedPageContent; }
 
     public void setShowSavedPagePresenter(ShowSavedPagePresenter showSavedPagePresenter)
-    {
-        this.showSavedPagePresenter = showSavedPagePresenter;
-    }
+        { this.showSavedPagePresenter = showSavedPagePresenter; }
+    public void setModifyDataBasePresenter(ModifySavedEntriesPresenter modifySavedEntriesPresenter)
+        { this.modifySavedEntriesPresenter = modifySavedEntriesPresenter; }
 
     public void disableAll()
     {
@@ -64,4 +87,15 @@ public class StorageView implements View
             c.setEnabled(true);
         storedPageContent.setEnabled(true);
     }
+
+    public void setSavedTVSeriesModel(Object[] savedTVSeriesTitles)
+    {
+        DefaultComboBoxModel comboBoxModel =
+                new DefaultComboBoxModel(savedTVSeriesTitles);
+        savedTVSeries.setModel(comboBoxModel);
+    }
+
+    public String getSelectedTitle() { return savedTVSeries.getSelectedItem().toString(); }
+    public String getSelectedContent() { return storedPageContent.getText(); }
+    public boolean selectedEntryExists() { return (savedTVSeries.getSelectedIndex() > -1); }
 }

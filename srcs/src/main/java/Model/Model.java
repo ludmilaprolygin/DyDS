@@ -1,16 +1,19 @@
 package Model;
 
 import Presenter.Listeners.ModelListener;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Model
 {
-    protected ArrayList<ModelListener> modelListeners;
-    public Model() { modelListeners = new ArrayList<>(); }
-    public void addListener(ModelListener listener) { modelListeners.add(listener); }
+    protected Map<String, ModelListener> modelListenersMap;
+    public Model() { modelListenersMap = new HashMap<String, ModelListener>(); }
+    public void addListener(String modelName, ModelListener listener)
+        { modelListenersMap.put(modelName, listener); }
 
     protected void notifyListeners()
     {
+        Iterable<ModelListener> modelListeners = this.modelListenersMap.values();
         for(ModelListener modelListener : modelListeners)
             modelListener.taskFinished();
     }

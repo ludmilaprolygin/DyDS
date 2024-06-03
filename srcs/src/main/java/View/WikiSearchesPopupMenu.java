@@ -1,4 +1,4 @@
-package View.Popup;
+package View;
 
 import dyds.tvseriesinfo.fulllogic.SearchResult;
 

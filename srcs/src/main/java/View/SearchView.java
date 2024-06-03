@@ -3,12 +3,11 @@ package View;
 import Presenter.ShowSearchedPagePresenter;
 import Presenter.SavePagePresenter;
 import Presenter.SearchPresenter;
-import View.Popup.WikiSearchesPopupMenu;
 import dyds.tvseriesinfo.fulllogic.SearchResult;
 import javax.swing.*;
 import java.awt.*;
 
-public class SearchView implements View
+public class SearchView extends View
 {
     protected JPanel searchPanel;
     protected JTextField searchTextField;
@@ -49,6 +48,7 @@ public class SearchView implements View
         initializeSearchButtonListener();
         initializeTextFieldActionListener();
         initializeSaveLocallyButtonListener();
+        initializeHyperlinkListener();
     }
     protected void initializeSearchButtonListener()
     {
@@ -106,4 +106,6 @@ public class SearchView implements View
             c.setEnabled(true);
         searchPageContent.setEnabled(true);
     }
+
+    public String getSearchedTitle() { return searchTextField.getText();}
 }

@@ -3,7 +3,7 @@ package Presenter;
 import Model.*;
 import Presenter.Listeners.ModelListener;
 import View.SearchView;
-import View.Popup.WikiSearchesPopupMenu;
+import View.WikiSearchesPopupMenu;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import dyds.tvseriesinfo.fulllogic.SearchResult;
@@ -26,7 +26,8 @@ public class SearchPresenter
     }
     protected void initializeSearchModelListeners()
     {
-        searchModel.addListener(new ModelListener()
+        String modelListenerName = getModelListenerName();
+        searchModel.addListener(modelListenerName, new ModelListener()
         {
             @Override
             public void taskFinished()
@@ -39,11 +40,11 @@ public class SearchPresenter
     public void onEnterKeyPress() { onClickSearchButton(); }
     public void onClickSearchButton()
     {
-        JTextField searchTextField = searchView.getSearchTextField();
         new Thread(() ->
         {
+            String termToSearch = searchView.getSearchedTitle();
             searchView.disableAll();
-            String termToSearch = searchTextField.getText() + " (Tv series) articletopic:\"television\"";
+            termToSearch += " (Tv series) articletopic:\"television\"";
             searchModel.searchInWikipedia(termToSearch);
         }).start();
     }
@@ -68,5 +69,14 @@ public class SearchPresenter
         }
 
         searchView.displayPopUp();
+    }
+
+    protected String getModelListenerName()
+    {
+        String modelListenerName = getClass().getName()
+                .replace("Presenter", "")
+                .replace(".", "");
+        modelListenerName += "Listener";
+        return modelListenerName;
     }
 }

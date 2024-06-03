@@ -22,14 +22,14 @@ public class DataBase
         Statement statement = connection.createStatement();
         statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
-        //statement.executeUpdate("create table catalog (id INTEGER PRIMARY KEY AUTOINCREMENT, title string, extract string, source integer)");
-        statement.executeUpdate("create table catalog (id INTEGER, title string PRIMARY KEY, extract string, source integer)");
-        //If the DB was created before, a SQL error is reported but it is not harmfull...
+        statement.executeUpdate("create table if not exists catalog (id auto_increment key, title string primary key, extract string, source integer)");
+        //statement.executeUpdate("create table if not exists catalog (id INTEGER, title string PRIMARY KEY, extract string, source integer)");
       }
 
-    } catch (SQLException e)
+    }
+    catch (SQLException e)
     {
-      System.out.println(e.getMessage() + " era un error");
+      System.out.println(e.getMessage() + " errorrrrrrr");
     }
   }
 
@@ -152,7 +152,7 @@ public class DataBase
 
   public static String getExtract(String title)
   {
-
+    System.out.println("getExtract title: " + title);
     Connection connection = null;
     try
     {

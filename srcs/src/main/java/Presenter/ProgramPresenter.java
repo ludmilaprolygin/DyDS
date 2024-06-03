@@ -20,6 +20,8 @@ public class ProgramPresenter
         SearchModel searchModel = new SearchModel();
         PageModel pageModel = new PageModel();
         DataBaseModel dataBaseModel = new DataBaseModel();
+//        DataBaseExtractModel dataBaseExtractModel = new DataBaseExtractModel();
+//        DataBaseModifierModel dataBaseModifierModel = new DataBaseModifierModel();
 
         SearchPresenter searchPresenter =
                 new SearchPresenter(searchView, searchModel);
@@ -29,11 +31,14 @@ public class ProgramPresenter
                 new SavePagePresenter(storageView, pageModel, dataBaseModel);
         ShowSavedPagePresenter showSavedPagePresenter =
                 new ShowSavedPagePresenter(storageView, dataBaseModel);
+        ModifySavedEntriesPresenter modifySavedEntriesPresenter =
+                new ModifySavedEntriesPresenter(storageView, dataBaseModel);
 
         searchView.setSearchPresenter(searchPresenter);
         searchView.setShowPagePresenter(showSearchedPagePresenter);
         searchView.setSavePresenter(savePagePresenter);
 
         storageView.setShowSavedPagePresenter(showSavedPagePresenter);
+        storageView.setModifyDataBasePresenter(modifySavedEntriesPresenter);
     }
 }

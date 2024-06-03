@@ -1,6 +1,5 @@
 - onSelectedSearchResult; no se me ocurre como hacer sin parametrizar
 
-
 - toReturn = toReturn.replace("<abbr title=\"number\">", "")
                   .replace("</abbr>", "");
   Algunas salidas, en la pagina, contienen abbr.
@@ -8,11 +7,12 @@
 - manejar cuando se cuelga y/o tarda
 - si no hay nada en el textfield no se tiene que poder buscar
 - si hay cambios de lo guardado, cuando vamos a lo guardado, debería verse el reflejo de toque.
-- cuando se hace hover sobre delete y save changes de las cosas de la DB cambiar los colores xq no se ve.
-     UIManager.put("nimbusSelection", new Color(247,248,250)) es el responsable.
 - borrar console logs
 - agregar feedback (se guardo exitosamente y bla)
 - si no hay nada en la DB, no se tiene que poder modificar el panel. Agregar msj?
+
+- StackOverflow cuando se clickea una serie y se quiere traerla y mostrarla.
+- Cancele OptionsPopup pq testearlo iba a ser infernal
 
 •	SOLID.
 - Responsabilidad única > abierto cerrado > inversión de dependencias.
