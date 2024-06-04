@@ -22,6 +22,7 @@ public class PageModel extends APIModel
             ex.printStackTrace();
             UnsuccessfulTask.wikipediaError();
         }
+        System.out.println(modelListenersMap.size());
         notifyListeners();
     }
 }

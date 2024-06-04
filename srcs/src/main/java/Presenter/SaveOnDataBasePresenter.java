@@ -130,6 +130,7 @@ public class SaveOnDataBasePresenter
     protected void showPageContent()
     {
         String textToDisplay = getExtract();
+        System.out.println("ESTO GUARDOOOOOO (saveondatabasepresenter) " + textToDisplay);
         JTextPane pageContent = view.getPaneContent();
 
         pageContent.setText(textToDisplay);

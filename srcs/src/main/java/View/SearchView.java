@@ -46,10 +46,11 @@ public class SearchView extends View
     protected void disableSaveLocallyButton() { saveLocallyButton.setEnabled(false); }
     protected void initializeListeners()
     {
+        super.initializeListeners();
         initializeSearchButtonListener();
         initializeTextFieldActionListener();
         initializeSaveLocallyButtonListener();
-        initializeHyperlinkListener();
+//        initializeHyperlinkListener();
     }
     protected void initializeSearchButtonListener()
     {

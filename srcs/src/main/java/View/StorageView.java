@@ -2,9 +2,15 @@ package View;
 
 import Presenter.ModifySavedEntriesPresenter;
 import Presenter.ShowSavedPagePresenter;
+import utils.StringFormatting;
 
 import javax.swing.*;
+import javax.swing.text.Element;
+import javax.swing.text.html.HTMLDocument;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.net.URI;
 
 public class StorageView extends View
 {
@@ -58,7 +64,7 @@ public class StorageView extends View
     protected void initializeListeners()
     {
         initializeSavedTVSeriesListener();
-        initializeHyperlinkListener();
+        initializeURLdeterminationListener();
     }
     protected void initializeSavedTVSeriesListener()
     {
@@ -98,4 +104,34 @@ public class StorageView extends View
     public String getSelectedTitle() { return savedTVSeries.getSelectedItem().toString(); }
     public String getSelectedContent() { return storedPageContent.getText(); }
     public boolean selectedEntryExists() { return (savedTVSeries.getSelectedIndex() > -1); }
+
+    //////////////////
+
+    protected void initializeURLdeterminationListener()
+    {
+        storedPageContent.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 1) {
+                    int pos = storedPageContent.viewToModel2D(e.getPoint());
+                    if (pos != -1) {
+                        HTMLDocument doc = (HTMLDocument) storedPageContent.getDocument();
+                        Element elem = doc.getCharacterElement(pos);
+                        int start = elem.getStartOffset();
+                        int end = elem.getEndOffset();
+                        try {
+                            String clickedText = doc.getText(start, end - start);
+                            if(StringFormatting.isURL(clickedText))
+                                Desktop.getDesktop().browse(new URI(clickedText));
+                            else
+                                storedPageContent.setEditable(true);
+                            System.out.println("Clicked text: " + clickedText);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+    }
 }

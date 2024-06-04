@@ -15,4 +15,6 @@ public abstract class View
         JTextPane panel = getPaneContent();
         panel.addHyperlinkListener(new PaneHyperlinkListener());
     }
+
+    protected void initializeListeners() { initializeHyperlinkListener(); }
 }

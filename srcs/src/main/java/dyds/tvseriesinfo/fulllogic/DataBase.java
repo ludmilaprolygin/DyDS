@@ -6,7 +6,7 @@ import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 
-public abstract class DataBase
+public class DataBase
 {
   protected static final String url = "jdbc:sqlite:./dictionary.db";
 
@@ -51,23 +51,9 @@ public abstract class DataBase
     }
     catch(SQLException e)
     {
-      // if the error message is "out of memory",
-      // it probably means no database file is found
-      System.err.println(e.getMessage());
+      UnsuccessfulTask.dataBaseError();
     }
-    finally
-    {
-      try
-      {
-        if(connection != null)
-          connection.close();
-      }
-      catch(SQLException e)
-      {
-        // connection close failed.
-        System.err.println(e);
-      }
-    }
+    finally { closeConnection(connection); }
   }
 
   public static ArrayList<String> getTitles()

@@ -69,6 +69,7 @@ public class ShowSearchedPagePresenter
             textToDisplay = StringFormatting.textBodyToHtml(textToDisplay);
         }
 
+        System.out.println("ESTO GUARDOOOOOO (showserchedpagepresenter) " + textToDisplay);
         return textToDisplay;
     }
     protected String getTitleFromLastSearchResponse()

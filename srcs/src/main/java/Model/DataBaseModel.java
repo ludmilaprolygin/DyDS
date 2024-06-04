@@ -11,12 +11,14 @@ public class DataBaseModel extends Model
     public void saveInfo(String title, String info)
     {
         DataBase.saveInfo(title, info);
+        System.out.println("Saved info extract " + info);
         notifySaveInfoListener();
     }
 
     public String getExtract(String title)
     {
         String extract = DataBase.getExtract(title);
+        System.out.println(extract);
         notifyGetExtractListener();
         return extract;
     }
