@@ -7,7 +7,7 @@ import View.SearchView;
 import View.View;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import dyds.tvseriesinfo.fulllogic.SearchResult;
+import View.SearchResult;
 import retrofit2.Response;
 import utils.JsonParsing;
 import utils.StringFormatting;
@@ -64,12 +64,12 @@ public class ShowSearchedPagePresenter
         {
             String title = JsonParsing.getAttributeAsString(jsonObject, "title");
             textToDisplay = StringFormatting.HTMLtitle(title);
+           // textToDisplay += "<img src=" + pageModel.getImageResponse() + "</br>";
             textToDisplay += selectedResultExtract.getAsString().replace("\\n", "\n");
             textToDisplay += StringFormatting.HTMLurl(url);
             textToDisplay = StringFormatting.textBodyToHtml(textToDisplay);
         }
 
-        System.out.println("ESTO GUARDOOOOOO (showserchedpagepresenter) " + textToDisplay);
         return textToDisplay;
     }
     protected String getTitleFromLastSearchResponse()

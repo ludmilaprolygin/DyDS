@@ -37,4 +37,9 @@ public class UnsuccessfulTask
     {
         JOptionPane.showMessageDialog(null, "Something went wrong with the database", "Error", JOptionPane.ERROR_MESSAGE);
     }
+
+    public static void scoringError()
+    {
+        JOptionPane.showMessageDialog(null, "Thank God I told you that the number must be between 1 and 10", "Error", JOptionPane.ERROR_MESSAGE);
+    }
 }

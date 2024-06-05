@@ -1,44 +1,63 @@
 package Model;
 
-import dyds.tvseriesinfo.fulllogic.DataBase;
+import Model.DataBase.RatedTVSeriesDataBase;
+import Model.DataBase.SavedTVSeriesDataBase;
+
 import java.util.ArrayList;
 
 public class DataBaseModel extends Model
 {
-
     public DataBaseModel() { super(); }
 
-    public void saveInfo(String title, String info)
+    public void saveSeries(String title, String info)
     {
-        DataBase.saveInfo(title, info);
-        System.out.println("Saved info extract " + info);
+        SavedTVSeriesDataBase.saveInfo(title, info);
         notifySaveInfoListener();
+    }
+
+    public void rateSeries(String title, int score)
+    {
+        RatedTVSeriesDataBase.saveInfo(title, score);
+        notifyRateSeriesListener();
     }
 
     public String getExtract(String title)
     {
-        String extract = DataBase.getExtract(title);
-        System.out.println(extract);
+        String extract = SavedTVSeriesDataBase.getExtract(title);
         notifyGetExtractListener();
         return extract;
     }
 
     public ArrayList<String> getTitles() {
-        ArrayList<String> titles = DataBase.getTitles();
+        ArrayList<String> titles = SavedTVSeriesDataBase.getTitles();
         //notifyListeners();
         return titles;
     }
 
-    public void deleteEntry(String title)
+    public int getScore(String title)
     {
-        DataBase.deleteEntry(title);
+        int score = RatedTVSeriesDataBase.getScore(title);
+        return score;
+    }
+
+    public void deleteSavedEntry(String title)
+    {
+        SavedTVSeriesDataBase.deleteEntry(title);
         notifyDeleteListener();
+    }
+
+    public ArrayList<String> getAllRated()
+    {
+        ArrayList<String> rated = RatedTVSeriesDataBase.getAllEntries();
+        return rated;
     }
 
     protected void notifyGetExtractListener()
         { modelListenersMap.get("getExtractListener").taskFinished(); }
     protected void notifyDeleteListener()
-        { modelListenersMap.get("deleteListener").taskFinished(); }
+        { modelListenersMap.get("deleteSavedListener").taskFinished(); }
     protected void notifySaveInfoListener()
-        { modelListenersMap.get("SaveOnDataBaseListener").taskFinished();}
+        { modelListenersMap.get("SavedDataBaseListener").taskFinished();}
+    protected void notifyRateSeriesListener()
+        { modelListenersMap.get("RatedDataBaseListener").taskFinished(); }
 }

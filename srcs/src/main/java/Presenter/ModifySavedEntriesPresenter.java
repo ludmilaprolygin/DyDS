@@ -21,7 +21,7 @@ public class ModifySavedEntriesPresenter
 
     protected void initializeDataBaseModelListeners()
     {
-        dataBaseModel.addListener("deleteListener", new ModelListener()
+        dataBaseModel.addListener("deleteSavedListener", new ModelListener()
         {
             @Override
             public void taskFinished()
@@ -46,7 +46,7 @@ public class ModifySavedEntriesPresenter
 
         if(storageView.selectedEntryExists())
         {
-            dataBaseModel.deleteEntry(titleToDelete);
+            dataBaseModel.deleteSavedEntry(titleToDelete);
         }
         else
         {
@@ -60,7 +60,7 @@ public class ModifySavedEntriesPresenter
 
         if(storageView.selectedEntryExists())
         {
-            dataBaseModel.saveInfo(titleToChange, newInfo);
+            dataBaseModel.saveSeries(titleToChange, newInfo);
             System.out.println("Ya cambie");
             // Agregar manejo de cambios en pantalla
         }

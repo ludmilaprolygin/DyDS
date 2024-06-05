@@ -119,14 +119,14 @@ public class StorageView extends View
                         Element elem = doc.getCharacterElement(pos);
                         int start = elem.getStartOffset();
                         int end = elem.getEndOffset();
-                        try {
+                        try
+                        {
                             String clickedText = doc.getText(start, end - start);
                             if(StringFormatting.isURL(clickedText))
                                 Desktop.getDesktop().browse(new URI(clickedText));
-                            else
-                                storedPageContent.setEditable(true);
                             System.out.println("Clicked text: " + clickedText);
-                        } catch (Exception ex) {
+                        }
+                        catch (Exception ex) {
                             ex.printStackTrace();
                         }
                     }

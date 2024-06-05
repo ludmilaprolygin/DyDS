@@ -1,7 +1,5 @@
 package View;
 
-import dyds.tvseriesinfo.fulllogic.SearchResult;
-
 import javax.swing.*;
 import java.util.ArrayList;
 

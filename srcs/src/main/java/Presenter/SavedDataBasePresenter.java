@@ -16,14 +16,14 @@ import utils.StringFormatting;
 import javax.swing.*;
 import java.util.ArrayList;
 
-public class SaveOnDataBasePresenter
+public class SavedDataBasePresenter
 {
     protected DataBaseModel dataBaseModel;
     protected PageModel pageModel;
     protected View view;
     protected JsonObject jsonObject;
 
-    public SaveOnDataBasePresenter(StorageView storageView, PageModel pageModel, DataBaseModel dataBaseModel)
+    public SavedDataBasePresenter(StorageView storageView, PageModel pageModel, DataBaseModel dataBaseModel)
     {
         this.dataBaseModel = dataBaseModel;
         this.view = storageView;
@@ -69,7 +69,9 @@ public class SaveOnDataBasePresenter
         String selectedResultTitle = getTitleFromLastSearchResponse();
         selectedResultTitle = StringFormatting.prepareForSQL(selectedResultTitle);
 
-        dataBaseModel.saveInfo(selectedResultTitle, text);
+        System.out.println("Saved title " + selectedResultTitle);
+        System.out.println("Saved info extract " + text);
+        dataBaseModel.saveSeries(selectedResultTitle, text);
     }
 
     protected void showSavedTVSeries()
@@ -130,7 +132,6 @@ public class SaveOnDataBasePresenter
     protected void showPageContent()
     {
         String textToDisplay = getExtract();
-        System.out.println("ESTO GUARDOOOOOO (saveondatabasepresenter) " + textToDisplay);
         JTextPane pageContent = view.getPaneContent();
 
         pageContent.setText(textToDisplay);

@@ -1,5 +1,8 @@
 package utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class StringFormatting
 {
     public static String textBodyToHtml(String text)
@@ -23,4 +26,9 @@ public class StringFormatting
     public static String HTMLurl(String url) { return "<p><a href=" + url + ">" + url + "</a></p>"; }
     public static String prepareForSQL(String text) { return text.replace("'", "`"); }
     public static boolean isURL(String text) { return text.startsWith("https://en.wikipedia.org/wiki/"); }
+    public static String dateFormat(Date date)
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+        return sdf.format(date);
+    }
 }

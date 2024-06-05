@@ -1,11 +1,17 @@
 package View;
 
+import Presenter.RatedDataBasePresenter;
 import Presenter.ShowSearchedPagePresenter;
-import Presenter.SaveOnDataBasePresenter;
+import Presenter.SavedDataBasePresenter;
 import Presenter.SearchPresenter;
-import dyds.tvseriesinfo.fulllogic.SearchResult;
+import utils.ImageManager;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class SearchView extends View
 {
@@ -18,7 +24,8 @@ public class SearchView extends View
     protected WikiSearchesPopupMenu searchOptionsMenu;
     protected SearchPresenter searchPresenter;
     protected ShowSearchedPagePresenter showSearchedPagePresenter;
-    protected SaveOnDataBasePresenter saveOnDataBasePresenter;
+    protected SavedDataBasePresenter savedDataBasePresenter;
+    protected RatedDataBasePresenter ratedDataBasePresenter;
 
     public SearchView()
     {
@@ -31,6 +38,7 @@ public class SearchView extends View
         searchPageContentSetUp();
 
         disableSaveLocallyButton();
+        rateTVShowButtonSetUp();
 
         initializeListeners();
     }
@@ -44,13 +52,20 @@ public class SearchView extends View
         searchPageContent.setEditable(false);
     }
     protected void disableSaveLocallyButton() { saveLocallyButton.setEnabled(false); }
+    protected void rateTVShowButtonSetUp()
+    {
+        disableRateTVShowButton();
+        rateButton.setIcon(new ImageIcon(ImageManager.getUnratedImageURL()));
+    }
+
+    protected void disableRateTVShowButton() { rateButton.setEnabled(false); }
     protected void initializeListeners()
     {
         super.initializeListeners();
         initializeSearchButtonListener();
         initializeTextFieldActionListener();
         initializeSaveLocallyButtonListener();
-//        initializeHyperlinkListener();
+        initializeRateButtonListener();
     }
     protected void initializeSearchButtonListener()
     {
@@ -65,7 +80,12 @@ public class SearchView extends View
     protected void initializeSaveLocallyButtonListener()
     {
         saveLocallyButton.addActionListener(e ->
-            saveOnDataBasePresenter.onClickSaveLocallyButton());
+            savedDataBasePresenter.onClickSaveLocallyButton());
+    }
+    protected void initializeRateButtonListener()
+    {
+        rateButton.addActionListener(e ->
+            ratedDataBasePresenter.onClickRateButton());
     }
 
     protected void initializePopupItemListener() // searchResult parametrizado
@@ -91,10 +111,12 @@ public class SearchView extends View
     public JPanel getSearchPanel() { return searchPanel; }
     public JTextField getSearchTextField() { return searchTextField; }
     public JTextPane getPaneContent() { return searchPageContent; }
+    public JButton getRateButton() { return rateButton; }
 
     public void setSearchPresenter(SearchPresenter searchPresenter) { this.searchPresenter = searchPresenter; }
     public void setShowPagePresenter(ShowSearchedPagePresenter showSearchedPagePresenter) { this.showSearchedPagePresenter = showSearchedPagePresenter; }
-    public void setSavePresenter(SaveOnDataBasePresenter saveOnDataBasePresenter) { this.saveOnDataBasePresenter = saveOnDataBasePresenter; }
+    public void setSavePresenter(SavedDataBasePresenter savedDataBasePresenter) { this.savedDataBasePresenter = savedDataBasePresenter; }
+    public void setRatePresenter(RatedDataBasePresenter ratedDataBasePresenter) { this.ratedDataBasePresenter = ratedDataBasePresenter; }
 
     public void disableAll()
     {

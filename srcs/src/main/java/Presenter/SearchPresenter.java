@@ -6,11 +6,10 @@ import View.SearchView;
 import View.WikiSearchesPopupMenu;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import dyds.tvseriesinfo.fulllogic.SearchResult;
+import com.google.gson.JsonObject;
+import View.SearchResult;
 import retrofit2.Response;
 import utils.JsonParsing;
-
-import javax.swing.*;
 
 public class SearchPresenter
 {
@@ -64,11 +63,36 @@ public class SearchPresenter
 
         for (JsonElement je : jsonResults)
         {
-            SearchResult sr = new SearchResult(je);
-            searchOptionsMenu.add(sr);
+            SearchResult searchResult = createSearchResult(je);
+
+            searchOptionsMenu.add(searchResult);
         }
 
         searchView.displayPopUp();
+    }
+    protected SearchResult createSearchResult(JsonElement je)
+    {
+        JsonObject jsonSearchResult = je.getAsJsonObject();
+
+        String searchResultTitle = JsonParsing.getAttributeAsString(jsonSearchResult, "title");
+        String searchResultPageId = JsonParsing.getAttributeAsString(jsonSearchResult, "pageid");
+        String searchResultSnippet = JsonParsing.getAttributeAsString(jsonSearchResult, "snippet");
+
+        SearchResult searchResult = new SearchResult(searchResultTitle, searchResultPageId, searchResultSnippet);
+
+        String HTMLText = formatToHTML(searchResultTitle, searchResultSnippet);
+        searchResult.setText(HTMLText);
+
+        return searchResult;
+    }
+
+    protected String formatToHTML(String title, String snippet)
+    {
+        String toReturn = "<html><font face=\"arial\">" + title + ": " + snippet;
+        toReturn = toReturn.replace("<span class=\"searchmatch\">", "")
+                .replace("</span>", "");
+
+        return toReturn;
     }
 
     protected String getModelListenerName()

@@ -3,7 +3,7 @@ package Presenter;
 import Model.DataBaseModel;
 import Presenter.Listeners.ModelListener;
 import View.StorageView;
-import dyds.tvseriesinfo.fulllogic.DataBase;
+import Model.DataBase.SavedTVSeriesDataBase;
 import utils.StringFormatting;
 import javax.swing.*;
 
@@ -38,7 +38,7 @@ public class ShowSavedPagePresenter
     {
         JTextPane storedPageContent = storageView.getPaneContent();
         String title = storageView.getSelectedTitle();
-        String extract = DataBase.getExtract(title); //dataBaseExtractModel.getExtract(title);
+        String extract = SavedTVSeriesDataBase.getExtract(title); //dataBaseExtractModel.getExtract(title);
         storedPageContent.setText(
                 StringFormatting.textBodyToHtml(extract));
     }

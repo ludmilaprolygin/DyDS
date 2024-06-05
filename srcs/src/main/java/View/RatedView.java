@@ -1,31 +1,64 @@
 package View;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
-public class RatedView
+public class RatedView extends View
 {
-    protected JComboBox<String> ratedTVSeries;
-    protected JTextPane ratedPageContent;
-    protected JPanel ratedPanel;
+    private JPanel ratedPanel;
+    private JList<RatedResult> ratedTVseriesList;
+
 
     public RatedView()
     {
         setUp();
     }
-
     protected void setUp()
     {
-        ratedPageContentSetUp();
-        ratedPanelSetUp();
+        searchPanelSetUp();
+        loadRatedTVSeries();
     }
-    protected void ratedPageContentSetUp()
-    {
-        ratedPageContent.setContentType("text/html");
-        ratedPageContent.setEditable(true);
-    }
-    protected void ratedPanelSetUp() { ratedPanel.setToolTipText("Rated TV series"); }
 
-    public JPanel getRatedPanel() { return ratedPanel; }
-    public JComboBox<String> getRatedTVSeries() { return ratedTVSeries; }
-    public JTextPane getRatedPageContent() { return ratedPageContent; }
+    public JPanel getRatedPanel() {
+        return ratedPanel;
+    }
+
+    protected void searchPanelSetUp()
+    {
+        ratedPanel.setToolTipText("Rated TV series");
+    }
+    protected void loadRatedTVSeries()
+    {
+        DefaultListModel<RatedResult> listModel = new DefaultListModel<>();
+        Date today = new Date();
+        listModel.addElement(new RatedResult("Breaking Bad", 10, today));
+
+
+        ratedTVseriesList.setModel(listModel);
+    }
+    public JList<RatedResult> getRatedTVseriesList()
+    {
+        return ratedTVseriesList;
+    }
+
+    public JTextPane getPaneContent()
+    {
+        return null;
+    }
+
+    public void disableAll()
+    {
+        for(Component c: ratedPanel.getComponents())
+            c.setEnabled(false);
+    }
+
+    public void enableAll()
+    {
+        for(Component c: ratedPanel.getComponents())
+            c.setEnabled(true);
+    }
 }
