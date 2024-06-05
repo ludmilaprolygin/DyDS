@@ -21,11 +21,20 @@ public class ShowSavedPagePresenter
 
     protected void initializeDataBaseModelListeners()
     {
-        String modelListenerName = getModelListenerName();
-        dataBaseModel.addListener("getExtractListener", new ModelListener()
+        dataBaseModel.addListener(new ModelListener()
         {
             @Override
-            public void taskFinished() { showSavedTVSeriesPage(); }
+            public void didGetExtract() { showSavedTVSeriesPage(); }
+            @Override
+            public void didSearchPageOnWiki() { }
+            @Override
+            public void didSearchTermOnWiki() { }
+            @Override
+            public void didDeletedSaved() { }
+            @Override
+            public void didSaveTVSeries() { }
+            @Override
+            public void didRateTVSeries() { }
         });
     }
 
@@ -41,14 +50,5 @@ public class ShowSavedPagePresenter
         String extract = SavedTVSeriesDataBase.getExtract(title); //dataBaseExtractModel.getExtract(title);
         storedPageContent.setText(
                 StringFormatting.textBodyToHtml(extract));
-    }
-
-    protected String getModelListenerName()
-    {
-        String modelListenerName = getClass().getName()
-                .replace("Presenter", "")
-                .replace(".", "");
-        modelListenerName += "Listener";
-        return modelListenerName;
     }
 }

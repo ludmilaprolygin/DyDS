@@ -19,6 +19,7 @@ public abstract class AbstractDataBase
 
                 statement.executeUpdate("create table if not exists catalog (id auto_increment, title string primary key, extract string, source integer)");
                 statement.executeUpdate("create table if not exists rated (" +
+                        "pageid integer, " +
                         "title string primary key, " +
                         "score int unsigned check (score between 1 and 10), " +
                         "date date)");
@@ -46,25 +47,6 @@ public abstract class AbstractDataBase
         catch(SQLException e) { UnsuccessfulTask.dataBaseError(); }
         finally { closeConnection(connection); }
         return titles;
-    }
-
-    public static ArrayList<String> getAllEntries(String tableName)
-    {
-        ArrayList<String> allEntries = new ArrayList<>();
-        Connection connection = null;
-        try
-        {
-            connection = DriverManager.getConnection(url);
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);  // set timeout to 30 sec.
-
-            ResultSet resultSet = statement.executeQuery("select * from " + tableName);
-            while(resultSet.next()) allEntries
-                    .add(resultSet.getString("title") + " " + resultSet.getInt("score") + " " + resultSet.getDate("date"));
-        }
-        catch(SQLException e) { UnsuccessfulTask.dataBaseError(); }
-        finally { closeConnection(connection); }
-        return allEntries;
     }
 
     public static void deleteEntry(String title, String tableName)

@@ -2,5 +2,15 @@ package Presenter.Listeners;
 
 public interface ModelListener
 {
-    void taskFinished();
+    void didSearchTermOnWiki();
+
+    void didSearchPageOnWiki();
+
+    void didGetExtract();
+
+    void didDeletedSaved();
+
+    void didSaveTVSeries();
+
+    void didRateTVSeries();
 }

@@ -10,7 +10,7 @@ public class SavedTVSeriesDataBase extends AbstractDataBase
     protected static final String tableName = "catalog";
     public static ArrayList<String> getTitles()
     {
-        return AbstractDataBase.getTitles(tableName);
+        return getTitles(tableName);
     }
 
     public static void saveInfo(String title, String extract)

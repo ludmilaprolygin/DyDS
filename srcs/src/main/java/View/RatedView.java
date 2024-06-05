@@ -35,7 +35,7 @@ public class RatedView extends View
     {
         DefaultListModel<RatedResult> listModel = new DefaultListModel<>();
         Date today = new Date();
-        listModel.addElement(new RatedResult("Breaking Bad", 10, today));
+        listModel.addElement(new RatedResult(333, "Breaking Bad", 10, today));
 
 
         ratedTVseriesList.setModel(listModel);

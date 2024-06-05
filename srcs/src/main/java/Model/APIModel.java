@@ -1,5 +1,6 @@
 package Model;
 
+import Presenter.Listeners.ModelListener;
 import retrofit2.Response;
 
 public abstract class APIModel extends Model

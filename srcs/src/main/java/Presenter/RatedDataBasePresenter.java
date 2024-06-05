@@ -8,12 +8,18 @@ import View.View;
 import View.RatedView;
 import View.SearchView;
 import View.RatedResult;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import retrofit2.Response;
 import utils.ImageManager;
+import utils.JsonParsing;
+import utils.RatedSeries;
+import utils.StringFormatting;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class RatedDataBasePresenter
 {
@@ -22,6 +28,7 @@ public class RatedDataBasePresenter
     protected View view;
     protected SearchView searchView;
     protected JsonObject jsonObject;
+    protected HashMap<Integer, RatedResult> ratedResults;
 
     public RatedDataBasePresenter(RatedView ratedView, SearchView searchView, PageModel pageModel, DataBaseModel dataBaseModel)
     {
@@ -31,31 +38,29 @@ public class RatedDataBasePresenter
         this.pageModel = pageModel;
         jsonObject = null;
 
+        ratedResults = new HashMap<Integer, RatedResult>();
+
         ratedTVseriesListSetUp();
         initializeModelListeners();
     }
 
     private void ratedTVseriesListSetUp()
     {
-        ArrayList<String> allRated = dataBaseModel.getAllRated();
-        for (String title : allRated)
-        {
-            System.out.println(title);
-            //searchView.addRatedTVSeries(title);
-        }
-    }
-
-    protected void ratedListUpdate(ArrayList<String> allRated)
-    {
+        ArrayList<RatedSeries> allRated = dataBaseModel.getAllRated();
         DefaultListModel<RatedResult> listModel = new DefaultListModel<>();
-        Date today = new Date();
+        //Date today = new Date();
 
-//        for (String entry : allRated)
-//        {
-//            System.out.println(entry);
-//            //searchView.addRatedTVSeries(title);
-//            RatedResult ratedResult = new RatedResult(title, dataBaseModel.getScore(title), today);
-//        }
+        for (RatedSeries rated : allRated)
+        {
+            //System.out.println(title);
+            int pageID = rated.getPageID();
+            String title = rated.getTitle();
+            int score = rated.getScore();
+            Date date = rated.getDate();
+
+            RatedResult ratedResult = new RatedResult(pageID, title, score, date);
+            listModel.addElement(ratedResult);
+        }
 
         RatedView ratedView = (RatedView) view;
         ratedView.getRatedTVseriesList().setModel(listModel);
@@ -63,33 +68,49 @@ public class RatedDataBasePresenter
 
     protected void initializeModelListeners()
     {
-        //initializePageModelListener();
+        initializePageModelListener();
         initializeRateDataBaseModelListener();
     }
 
     private void initializeRateDataBaseModelListener()
     {
-        String modelListenerName = getModelListenerName();
-        dataBaseModel.addListener(modelListenerName, new ModelListener()
-        {
+        dataBaseModel.addListener(new ModelListener() {
             @Override
-            public void taskFinished()
+            public void didRateTVSeries()
             {
                 updateRateButton();
-//              updateSearchResult();
+                updateRatedTVSeriesList();
             }
+            @Override
+            public void didSearchTermOnWiki() { }
+            @Override
+            public void didSearchPageOnWiki() { }
+            @Override
+            public void didGetExtract() { }
+            @Override
+            public void didDeletedSaved() { }
+            @Override
+            public void didSaveTVSeries() { }
         });
     }
-
-//    protected void initializePageModelListener()
-//    {
-//        String modelListenerName = getModelListenerName();
-//        pageModel.addListener(modelListenerName, new ModelListener()
-//        {
-//            @Override
-//            public void taskFinished() {  }
-//        });
-//    }
+    protected void initializePageModelListener()
+    {
+        pageModel.addListener(new ModelListener()
+        {
+            @Override
+            public void didSearchPageOnWiki() { generateJsonObjectFromLastSearchResponse(); } // Aca deberia manejar algo
+            @Override
+            public void didSearchTermOnWiki() { }
+            @Override
+            public void didGetExtract() { }
+            @Override
+            public void didDeletedSaved() { }
+            @Override
+            public void didSaveTVSeries() { }
+            @Override
+            public void didRateTVSeries() { }
+        });
+    }
 
     public void onClickRateButton()
     {
@@ -97,17 +118,19 @@ public class RatedDataBasePresenter
     }
     protected void saveOnDataBase()
     {
-        String termToRate = searchView.getSearchedTitle();
-        int score = getScore();
+        generateJsonObjectFromLastSearchResponse();
+        String termToRate = JsonParsing.getAttributeAsString(jsonObject, "title");
 
-        if (score >=1 && score <= 10) { dataBaseModel.rateSeries(termToRate, score); }
+        int score = getScore();
+        int pageID = Integer.parseInt(JsonParsing.getAttributeAsString(jsonObject, "pageid"));
+
+        if (score >=1 && score <= 10) { dataBaseModel.rateSeries(pageID, termToRate, score); }
     }
     protected int getScore()
     {
         String input = JOptionPane.showInputDialog(null, "Enter a number (1 to 10):", "Rating", JOptionPane.PLAIN_MESSAGE);
         int score = manageInput(input);
 
-        if(score < 1 || score > 10) { score = 0; }
         return score;
     }
     protected int manageInput(String input)
@@ -118,6 +141,11 @@ public class RatedDataBasePresenter
             try
             {
                 ratingNumber = Integer.parseInt(input);
+                if(ratingNumber < 1 || ratingNumber > 10)
+                {
+                    ratingNumber = 0;
+                    UnsuccessfulTask.scoringError();
+                }
             }
             catch (NumberFormatException e)
             {
@@ -128,18 +156,41 @@ public class RatedDataBasePresenter
     }
     protected void updateRateButton()
     {
-
-        String termToRate = searchView.getSearchedTitle();
+        String termToRate = JsonParsing.getAttributeAsString(jsonObject, "title");//searchView.getSearchedTitle();
         int score = dataBaseModel.getScore(termToRate);
         searchView.getRateButton().setIcon(new ImageIcon(ImageManager.getImageURL(score)));
     }
-
-    protected String getModelListenerName()
+    protected void updateRatedTVSeriesList()
     {
-        String modelListenerName = getClass().getName()
-                .replace("Presenter", "")
-                .replace(".", "");
-        modelListenerName += "Listener";
-        return modelListenerName;
+
+    }
+
+    protected void generateJsonObjectFromLastSearchResponse()
+    {
+        Response<String> callForPageResponse = pageModel.getResponse();
+        jsonObject = JsonParsing.getQueryResultAsJsonObject(callForPageResponse, "pages");
+    }
+
+    protected String getExtractFromLastSearchResponse()
+    {
+        if(jsonObject == null)
+            generateJsonObjectFromLastSearchResponse();
+
+        JsonElement selectedResultExtract = jsonObject.get("extract");
+
+        String url = jsonObject.get("fullurl").getAsString();
+        String textToDisplay = "";
+
+        if (selectedResultExtract == null) { UnsuccessfulTask.wikipediaError("No results were found"); }
+        else
+        {
+            String title = JsonParsing.getAttributeAsString(jsonObject, "title");
+            textToDisplay = StringFormatting.HTMLtitle(title);
+            textToDisplay += selectedResultExtract.getAsString().replace("\\n", "\n");
+            textToDisplay += StringFormatting.HTMLurl(url);
+            textToDisplay = StringFormatting.textBodyToHtml(textToDisplay);
+        }
+
+        return textToDisplay;
     }
 }

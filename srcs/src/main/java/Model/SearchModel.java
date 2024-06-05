@@ -2,6 +2,7 @@ package Model;
 
 import Model.APIs.APIBuilder;
 import Model.APIs.WikipediaSearchAPI;
+import Presenter.Listeners.ModelListener;
 import View.Messages.UnsuccessfulTask;
 import java.io.IOException;
 
@@ -25,5 +26,11 @@ public class SearchModel extends APIModel
             UnsuccessfulTask.wikipediaError();
         }
         notifyListeners();
+    }
+
+    protected void notifyListeners()
+    {
+        for(ModelListener modelListener : modelListeners)
+            modelListener.didSearchTermOnWiki();
     }
 }

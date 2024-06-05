@@ -29,11 +29,20 @@ public class ShowSearchedPagePresenter
     }
     protected void initializePageModelListener()
     {
-        String modelListenerName = getModelListenerName();
-        pageModel.addListener(modelListenerName, new ModelListener()
+        pageModel.addListener(new ModelListener()
         {
             @Override
-            public void taskFinished() { showPageContent(); }
+            public void didSearchPageOnWiki() { showPageContent(); }
+            @Override
+            public void didSearchTermOnWiki() { }
+            @Override
+            public void didGetExtract() { }
+            @Override
+            public void didDeletedSaved() { }
+            @Override
+            public void didSaveTVSeries() { }
+            @Override
+            public void didRateTVSeries() { }
         });
     }
 
@@ -93,14 +102,5 @@ public class ShowSearchedPagePresenter
         pageContent.setCaretPosition(0);
 
         view.enableAll();
-    }
-
-    protected String getModelListenerName()
-    {
-        String modelListenerName = getClass().getName()
-                .replace("Presenter", "")
-                .replace(".", "");
-        modelListenerName += "Listener";
-        return modelListenerName;
     }
 }

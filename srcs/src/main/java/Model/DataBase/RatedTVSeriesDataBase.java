@@ -1,6 +1,7 @@
 package Model.DataBase;
 
 import View.Messages.UnsuccessfulTask;
+import utils.RatedSeries;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,11 +9,44 @@ import java.util.ArrayList;
 public class RatedTVSeriesDataBase extends AbstractDataBase
 {
     protected static final String tableName = "rated";
-    public static ArrayList<String> getTitles()
+    public ArrayList<String> getTitles()
     {
         return getTitles(tableName);
     }
-    public static ArrayList<String> getAllEntries() { return getAllEntries(tableName); }
+    public static ArrayList<RatedSeries> getAllEntries()
+    {
+        ArrayList<RatedSeries> allEntries = new ArrayList<RatedSeries>();
+        Connection connection = null;
+        try
+        {
+            connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);  // set timeout to 30 sec.
+
+            ResultSet resultSet = statement.executeQuery("select * from " + tableName);
+
+            allEntries = manageEntries(resultSet);
+        }
+        catch(SQLException e) { UnsuccessfulTask.dataBaseError(); }
+        finally { closeConnection(connection); }
+        return allEntries;
+    }
+
+    protected static ArrayList<RatedSeries> manageEntries(ResultSet resultSet) throws SQLException {
+        ArrayList<RatedSeries> allEntries = new ArrayList<RatedSeries>();
+        while(resultSet.next())
+        {
+            int pageID = resultSet.getInt("pageID");
+            String title = resultSet.getString("title");
+            int score = resultSet.getInt("score");
+            Date date = resultSet.getDate("date");
+
+            RatedSeries ratedSeries = new RatedSeries(pageID, title, score, date);
+            allEntries.add(ratedSeries);
+        }
+        return allEntries;
+    }
+
     public void deleteEntry(String title)
     {
         deleteEntry(title, tableName);
@@ -36,7 +70,7 @@ public class RatedTVSeriesDataBase extends AbstractDataBase
         return score;
     }
 
-    public static void saveInfo(String title, int score)
+    public static void saveInfo(int pageid, String title, int score)
     {
         Connection connection = null;
         try
@@ -49,11 +83,12 @@ public class RatedTVSeriesDataBase extends AbstractDataBase
             java.util.Date utilDate = new java.util.Date();
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
-            String sql = "REPLACE INTO " + tableName + " (title, score, date) VALUES (?, ?, ?)";
+            String sql = "REPLACE INTO " + tableName + " (pageid, title, score, date) VALUES (?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, title);
-            preparedStatement.setInt(2, score);
-            preparedStatement.setDate(3, sqlDate);
+            preparedStatement.setInt(1, pageid);
+            preparedStatement.setString(2, title);
+            preparedStatement.setInt(3, score);
+            preparedStatement.setDate(4, sqlDate);
             preparedStatement.executeUpdate();
         }
         catch(SQLException e)

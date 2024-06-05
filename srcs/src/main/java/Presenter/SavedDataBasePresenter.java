@@ -40,21 +40,39 @@ public class SavedDataBasePresenter
     }
     protected void initializePageModelListener()
     {
-        String modelListenerName = getModelListenerName();
-        pageModel.addListener(modelListenerName, new ModelListener()
+        pageModel.addListener(new ModelListener()
         {
             @Override
-            public void taskFinished() { showPageContent(); }
+            public void didSearchTermOnWiki() { showPageContent(); }
+            @Override
+            public void didSearchPageOnWiki() { }
+            @Override
+            public void didGetExtract() { }
+            @Override
+            public void didDeletedSaved() { }
+            @Override
+            public void didSaveTVSeries() { }
+            @Override
+            public void didRateTVSeries() { }
         });
     }
 
     protected void initializeSaveInfoDataBaseModelListener()
     {
-        String modelListenerName = getModelListenerName();
-        dataBaseModel.addListener(modelListenerName, new ModelListener()
+        dataBaseModel.addListener(new ModelListener()
         {
             @Override
-            public void taskFinished() { showSavedTVSeries(); }
+            public void didSaveTVSeries() { showSavedTVSeries(); }
+            @Override
+            public void didSearchTermOnWiki() { }
+            @Override
+            public void didSearchPageOnWiki() { }
+            @Override
+            public void didGetExtract() { }
+            @Override
+            public void didDeletedSaved() { }
+            @Override
+            public void didRateTVSeries() { }
         });
     }
 
@@ -67,7 +85,7 @@ public class SavedDataBasePresenter
     {
         String text = getExtractFromLastSearchResponse();
         String selectedResultTitle = getTitleFromLastSearchResponse();
-        selectedResultTitle = StringFormatting.prepareForSQL(selectedResultTitle);
+        selectedResultTitle = StringFormatting.replaceApostrophe(selectedResultTitle);
 
         System.out.println("Saved title " + selectedResultTitle);
         System.out.println("Saved info extract " + text);
@@ -136,14 +154,5 @@ public class SavedDataBasePresenter
 
         pageContent.setText(textToDisplay);
         pageContent.setCaretPosition(0);
-    }
-
-    protected String getModelListenerName()
-    {
-        String modelListenerName = getClass().getName()
-                .replace("Presenter", "")
-                .replace(".", "");
-        modelListenerName += "Listener";
-        return modelListenerName;
     }
 }

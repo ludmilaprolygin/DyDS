@@ -27,4 +27,10 @@ public class PageModel extends APIModel
         }
         notifyListeners();
     }
+
+    protected void notifyListeners()
+    {
+        for(ModelListener modelListener : modelListeners)
+            modelListener.didSearchPageOnWiki();
+    }
 }

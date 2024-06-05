@@ -2,6 +2,7 @@ package View;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import utils.ImageManager;
 
 import javax.swing.*;
 
@@ -10,6 +11,8 @@ public class SearchResult extends JMenuItem
     protected String title;
     protected String pageID;
     protected String snippet;
+    protected ImageIcon scoredImage;
+    protected boolean isRated;
 
     public SearchResult (String title, String pageID, String snippet)
     {
@@ -19,6 +22,11 @@ public class SearchResult extends JMenuItem
     }
 
     public String getPageID() { return pageID; }
-    public String getSnippet() {  return snippet; }
     public String getTitle() { return title; }
+    public void setImageIcon()
+    {
+        scoredImage = ImageManager.getRatedImage();
+    }
+    public boolean isRated() { return isRated; }
+    public void setRated(boolean isRated) { this.isRated = isRated; }
 }

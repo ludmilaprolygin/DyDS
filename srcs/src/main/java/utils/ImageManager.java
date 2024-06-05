@@ -1,5 +1,7 @@
 package utils;
 
+import javax.swing.*;
+
 public class ImageManager
 {
     public static String getUnratedImageURL()
@@ -10,5 +12,5 @@ public class ImageManager
     {
         return "srcs/src/main/resources/" + ratingValue + ".png";
     }
-    public static String getRatedImageURL() { return "srcs/src/main/resources/star.png"; }
+    public static ImageIcon getRatedImage() { return new ImageIcon("srcs/src/main/resources/star.png"); }
 }

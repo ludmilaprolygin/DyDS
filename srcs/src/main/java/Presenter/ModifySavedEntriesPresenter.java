@@ -21,22 +21,20 @@ public class ModifySavedEntriesPresenter
 
     protected void initializeDataBaseModelListeners()
     {
-        dataBaseModel.addListener("deleteSavedListener", new ModelListener()
+        dataBaseModel.addListener(new ModelListener()
         {
             @Override
-            public void taskFinished()
-            {
-                setDeletedStatus();
-            }
-        });
-
-        dataBaseModel.addListener("saveChangesListener", new ModelListener()
-        {
+            public void didDeletedSaved() { setDeletedStatus(); }
             @Override
-            public void taskFinished()
-            {
-
-            }
+            public void didSaveTVSeries() { } // En este deberia agregar algo
+            @Override
+            public void didSearchTermOnWiki() { }
+            @Override
+            public void didSearchPageOnWiki() { }
+            @Override
+            public void didGetExtract() { }
+            @Override
+            public void didRateTVSeries() { }
         });
     }
 

@@ -1,10 +1,11 @@
-package Presenter;
+package launcher;
 
 import Model.*;
+import Presenter.*;
 import View.*;
 import Model.DataBase.AbstractDataBase;
 
-public class ProgramPresenter
+public class Main
 {
     protected static MainWindow mainWindow;
 

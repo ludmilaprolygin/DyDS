@@ -25,14 +25,19 @@ public class SearchPresenter
     }
     protected void initializeSearchModelListeners()
     {
-        String modelListenerName = getModelListenerName();
-        searchModel.addListener(modelListenerName, new ModelListener()
-        {
+        searchModel.addListener(new ModelListener() {
             @Override
-            public void taskFinished()
-            {
-                showSearchResults();
-            }
+            public void didSearchTermOnWiki() { showSearchResults(); }
+            @Override
+            public void didSearchPageOnWiki() { }
+            @Override
+            public void didGetExtract() { }
+            @Override
+            public void didDeletedSaved() { }
+            @Override
+            public void didSaveTVSeries() { }
+            @Override
+            public void didRateTVSeries() { }
         });
     }
 
@@ -68,6 +73,8 @@ public class SearchPresenter
             searchOptionsMenu.add(searchResult);
         }
 
+
+
         searchView.displayPopUp();
     }
     protected SearchResult createSearchResult(JsonElement je)
@@ -93,14 +100,5 @@ public class SearchPresenter
                 .replace("</span>", "");
 
         return toReturn;
-    }
-
-    protected String getModelListenerName()
-    {
-        String modelListenerName = getClass().getName()
-                .replace("Presenter", "")
-                .replace(".", "");
-        modelListenerName += "Listener";
-        return modelListenerName;
     }
 }
