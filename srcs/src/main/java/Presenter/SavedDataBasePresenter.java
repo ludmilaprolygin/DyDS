@@ -102,7 +102,7 @@ public class SavedDataBasePresenter
     protected void comboBoxModelSetUp()
     {
         StorageView storageView = (StorageView) view;
-        ArrayList<String> titles = dataBaseModel.getTitles();
+        ArrayList<String> titles = dataBaseModel.getSavedTitles();
         Object[] savedTVSeries = titles.stream().sorted().toArray();
         storageView.setSavedTVSeriesModel(savedTVSeries);
     }

@@ -23,9 +23,13 @@ public class SearchResult extends JMenuItem
 
     public String getPageID() { return pageID; }
     public String getTitle() { return title; }
-    public void setImageIcon()
+    public void setIsRatedIcon()
     {
-        scoredImage = ImageManager.getRatedImage();
+        String url = ImageManager.getRatedImageURL();
+        //scoredImage = ImageManager.getRatedImage();
+        scoredImage = new ImageIcon("srcs/src/main/resources/star.png");
+        //this.setImageIcon(scoredImage);
+        this.setIcon(scoredImage);
     }
     public boolean isRated() { return isRated; }
     public void setRated(boolean isRated) { this.isRated = isRated; }

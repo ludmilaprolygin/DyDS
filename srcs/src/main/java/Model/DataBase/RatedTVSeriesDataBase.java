@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class RatedTVSeriesDataBase extends AbstractDataBase
 {
     protected static final String tableName = "rated";
-    public ArrayList<String> getTitles()
+    public static ArrayList<String> getTitles()
     {
         return getTitles(tableName);
     }

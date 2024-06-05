@@ -11,9 +11,12 @@ import View.SearchResult;
 import retrofit2.Response;
 import utils.JsonParsing;
 
+import java.util.ArrayList;
+
 public class SearchPresenter
 {
     protected SearchModel searchModel;
+    protected DataBaseModel dataBaseModel;
     protected SearchView searchView;
 
     public SearchPresenter(SearchView searchView, SearchModel searchModel)
@@ -53,6 +56,9 @@ public class SearchPresenter
         }).start();
     }
 
+    public void setRatedDataBaseModel(DataBaseModel dataBaseModel)
+    { this.dataBaseModel = dataBaseModel; }
+
     protected void showSearchResults()
     {
         Response<String> searchResponse = searchModel.getResponse();
@@ -65,15 +71,25 @@ public class SearchPresenter
     protected void createSearchResultsPopup(JsonArray jsonResults)
     {
         WikiSearchesPopupMenu searchOptionsMenu = searchView.createPopUp();
+        ArrayList<SearchResult> allSearchResults = new ArrayList<SearchResult>();
 
         for (JsonElement je : jsonResults)
         {
             SearchResult searchResult = createSearchResult(je);
 
             searchOptionsMenu.add(searchResult);
+            allSearchResults.add(searchResult);
         }
 
+        ArrayList<String> ratedTitles = dataBaseModel.getRatedTitles();
+        String title;
 
+        for(SearchResult searchResult : allSearchResults)
+        {
+            title = searchResult.getTitle();
+            if(ratedTitles.contains(title))
+                searchResult.setIsRatedIcon();
+        }
 
         searchView.displayPopUp();
     }

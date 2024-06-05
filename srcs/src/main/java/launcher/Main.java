@@ -42,5 +42,7 @@ public class Main
 
         storageView.setShowSavedPagePresenter(showSavedPagePresenter);
         storageView.setModifyDataBasePresenter(modifySavedEntriesPresenter);
+
+        searchPresenter.setRatedDataBaseModel(dataBaseModel);
     }
 }

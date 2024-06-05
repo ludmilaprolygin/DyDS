@@ -70,7 +70,7 @@ public class ModifySavedEntriesPresenter
 
     protected void comboBoxModelSetUp()
     {
-        ArrayList<String> titles = dataBaseModel.getTitles();
+        ArrayList<String> titles = dataBaseModel.getSavedTitles();
         Object[] savedTVSeries = titles.stream().sorted().toArray();
         storageView.setSavedTVSeriesModel(savedTVSeries);
     }

@@ -30,8 +30,16 @@ public class DataBaseModel extends Model
         return extract;
     }
 
-    public ArrayList<String> getTitles() {
+    public ArrayList<String> getSavedTitles()
+    {
         ArrayList<String> titles = SavedTVSeriesDataBase.getTitles();
+        //notifyListeners();
+        return titles;
+    }
+
+    public ArrayList<String> getRatedTitles()
+    {
+        ArrayList<String> titles = RatedTVSeriesDataBase.getTitles();
         //notifyListeners();
         return titles;
     }
