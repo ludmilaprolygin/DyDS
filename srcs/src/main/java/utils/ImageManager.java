@@ -10,7 +10,10 @@ public class ImageManager
     }
     public static String getImageURL(int ratingValue)
     {
-        return "srcs/src/main/resources/" + ratingValue + ".png";
+        if(ratingValue == 0)
+            return getUnratedImageURL();
+        else
+            return "srcs/src/main/resources/" + ratingValue + ".png";
     }
     public static ImageIcon getRatedImage() { return new ImageIcon("srcs/src/main/resources/star.png"); }
     public static String getRatedImageURL() { return "srcs/src/main/resources/star.png"; }

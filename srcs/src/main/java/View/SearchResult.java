@@ -25,10 +25,7 @@ public class SearchResult extends JMenuItem
     public String getTitle() { return title; }
     public void setIsRatedIcon()
     {
-        String url = ImageManager.getRatedImageURL();
-        //scoredImage = ImageManager.getRatedImage();
-        scoredImage = new ImageIcon("srcs/src/main/resources/star.png");
-        //this.setImageIcon(scoredImage);
+        scoredImage = ImageManager.getRatedImage();
         this.setIcon(scoredImage);
     }
     public boolean isRated() { return isRated; }

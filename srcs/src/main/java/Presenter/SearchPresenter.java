@@ -30,7 +30,10 @@ public class SearchPresenter
     {
         searchModel.addListener(new ModelListener() {
             @Override
-            public void didSearchTermOnWiki() { showSearchResults(); }
+            public void didSearchTermOnWiki()
+            {
+                showSearchResults();
+            }
             @Override
             public void didSearchPageOnWiki() { }
             @Override
@@ -88,7 +91,10 @@ public class SearchPresenter
         {
             title = searchResult.getTitle();
             if(ratedTitles.contains(title))
+            {
                 searchResult.setIsRatedIcon();
+                searchResult.setRated(true);
+            }
         }
 
         searchView.displayPopUp();

@@ -1,5 +1,6 @@
 package Presenter;
 
+import Model.DataBaseModel;
 import Model.PageModel;
 import Presenter.Listeners.ModelListener;
 import View.Messages.UnsuccessfulTask;
@@ -17,6 +18,7 @@ import javax.swing.*;
 public class ShowSearchedPagePresenter
 {
     protected PageModel pageModel;
+    protected DataBaseModel dataBaseModel;
     protected View view;
     protected JsonObject jsonObject;
     public ShowSearchedPagePresenter(SearchView searchView, PageModel pageModel)
@@ -32,7 +34,11 @@ public class ShowSearchedPagePresenter
         pageModel.addListener(new ModelListener()
         {
             @Override
-            public void didSearchPageOnWiki() { showPageContent(); }
+            public void didSearchPageOnWiki()
+            {
+                showPageContent();
+                updateRateButton();
+            }
             @Override
             public void didSearchTermOnWiki() { }
             @Override
@@ -46,8 +52,9 @@ public class ShowSearchedPagePresenter
         });
     }
 
-    public void onSelectedSearchResult(SearchResult selectedSearchResult)
+    public void onSelectedSearchResult()
     {
+        SearchResult selectedSearchResult = ((SearchView) view).getSelectedSearchResult();
         view.disableAll();
 
         String pageID = selectedSearchResult.getPageID();
@@ -87,6 +94,18 @@ public class ShowSearchedPagePresenter
         return JsonParsing.getAttributeAsString(jsonObject, "title");
     }
 
+    protected void updateRateButton()
+    {
+        SearchResult searchResult = ((SearchView) view).getSelectedSearchResult();
+        int ratingValue = dataBaseModel.getScore(searchResult.getTitle());
+        System.out.println(ratingValue);
+
+        if(searchResult.isRated())
+            ((SearchView) view).updateRateButton(ratingValue);
+        else
+            ((SearchView) view).updateRateButton(0);
+    }
+
     protected void generateJsonObjectFromLastSearchResponse()
     {
         Response<String> callForPageResponse = pageModel.getResponse();
@@ -103,4 +122,6 @@ public class ShowSearchedPagePresenter
 
         view.enableAll();
     }
+
+    public void setDataBaseModel(DataBaseModel dataBaseModel) { this.dataBaseModel = dataBaseModel; }
 }

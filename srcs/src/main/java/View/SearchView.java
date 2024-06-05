@@ -20,7 +20,8 @@ public class SearchView extends View
     protected JButton searchButton;
     protected JTextPane searchPageContent;
     protected JButton saveLocallyButton;
-    private JButton rateButton;
+    protected JButton rateButton;
+    protected SearchResult selectedSearchResult;
     protected WikiSearchesPopupMenu searchOptionsMenu;
     protected SearchPresenter searchPresenter;
     protected ShowSearchedPagePresenter showSearchedPagePresenter;
@@ -57,6 +58,10 @@ public class SearchView extends View
         disableRateTVShowButton();
         rateButton.setIcon(new ImageIcon(ImageManager.getUnratedImageURL()));
     }
+    public void updateRateButton(int ratingValue)
+    {
+        rateButton.setIcon(new ImageIcon(ImageManager.getImageURL(ratingValue)));
+    }
 
     protected void disableRateTVShowButton() { rateButton.setEnabled(false); }
     protected void initializeListeners()
@@ -88,14 +93,16 @@ public class SearchView extends View
             ratedDataBasePresenter.onClickRateButton());
     }
 
-    protected void initializePopupItemListener() // searchResult parametrizado
+    protected void initializePopupItemListener()
     {
         for(SearchResult searchResult : searchOptionsMenu.getSearchResults())
         {
-            searchResult.addActionListener(e ->
-                showSearchedPagePresenter.onSelectedSearchResult(searchResult));
+            searchResult.addActionListener(e -> {
+                selectedSearchResult = searchResult;
+                showSearchedPagePresenter.onSelectedSearchResult();});
         }
     }
+    public SearchResult getSelectedSearchResult() { return selectedSearchResult; }
 
     public WikiSearchesPopupMenu createPopUp()
     {

@@ -3,6 +3,7 @@ package Presenter;
 import Model.DataBaseModel;
 import Presenter.Listeners.ModelListener;
 import View.Messages.SuccessfulTask;
+import View.Messages.UnsuccessfulTask;
 import View.StorageView;
 
 import java.util.ArrayList;
@@ -59,12 +60,11 @@ public class ModifySavedEntriesPresenter
         if(storageView.selectedEntryExists())
         {
             dataBaseModel.saveSeries(titleToChange, newInfo);
-            System.out.println("Ya cambie");
-            // Agregar manejo de cambios en pantalla
+            SuccessfulTask.changesMade();
         }
         else
         {
-            // Error catching clause
+            UnsuccessfulTask.saveError();
         }
     }
 
@@ -77,7 +77,6 @@ public class ModifySavedEntriesPresenter
 
     protected void setDeletedStatus()
     {
-        System.out.println("Ya borre");
         SuccessfulTask.pageDeleted();
         comboBoxModelSetUp();
         storageView.getPaneContent().setText("");
