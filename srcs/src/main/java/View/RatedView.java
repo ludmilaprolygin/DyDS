@@ -1,16 +1,20 @@
 package View;
 
+import utils.ViewFormatting;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
+import java.util.Comparator;
 import java.util.List;
 
 public class RatedView extends View
 {
     private JPanel ratedPanel;
-    private JList<RatedResult> ratedTVseriesList;
+    private JTable ratedTVSeries;
+    protected DefaultTableModel tableModel;
 
 
     public RatedView()
@@ -33,16 +37,42 @@ public class RatedView extends View
     }
     protected void loadRatedTVSeries()
     {
-        DefaultListModel<RatedResult> listModel = new DefaultListModel<>();
-        Date today = new Date();
-        listModel.addElement(new RatedResult(333, "Breaking Bad", 10, today));
+        String[] columnNames = {"Series title", "Score", "Last updated"};
+        tableModel = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public Class<?> getColumnClass(int columnIndex)
+            {
+                switch (columnIndex) {
+                    case 0:
+                        return String.class;
+                    case 1:
+                        return Integer.class;
+                    case 2:
+                        return String.class;
+                    default:
+                        return Object.class;
+                }
+            }
+            @Override
+            public boolean isCellEditable(int row, int column) { return false; }
+        };
 
+        ratedTVSeries.setModel(tableModel);
+        ViewFormatting.setCellsAlignment(ratedTVSeries, SwingConstants.CENTER);
 
-        ratedTVseriesList.setModel(listModel);
+        sortRatedTVSeries();
     }
-    public JList<RatedResult> getRatedTVseriesList()
+    public DefaultTableModel getTableModel() { return tableModel; }
+
+    public void sortRatedTVSeries()
     {
-        return ratedTVseriesList;
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(ratedTVSeries.getModel());
+        ratedTVSeries.setRowSorter(sorter);
+
+        int columnIndexToSort = 1;
+
+        sorter.setSortKeys(List.of(new RowSorter.SortKey(columnIndexToSort, SortOrder.ASCENDING)));
+        sorter.sort();
     }
 
     public JTextPane getPaneContent()

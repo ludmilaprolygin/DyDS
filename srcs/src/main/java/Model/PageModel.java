@@ -3,11 +3,7 @@ package Model;
 import Model.APIs.APIBuilder;
 import Model.APIs.WikipediaPageAPI;
 import Presenter.Listeners.ModelListener;
-import View.Messages.UnsuccessfulTask;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import retrofit2.Response;
-import utils.JsonParsing;
+import utils.Messages.UnsuccessfulTask;
 
 public class PageModel extends APIModel
 {

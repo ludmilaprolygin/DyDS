@@ -1,4 +1,4 @@
-package View.Messages;
+package utils.Messages;
 
 import javax.swing.*;
 

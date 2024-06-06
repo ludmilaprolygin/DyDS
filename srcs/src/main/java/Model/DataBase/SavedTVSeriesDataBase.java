@@ -1,6 +1,6 @@
 package Model.DataBase;
 
-import View.Messages.UnsuccessfulTask;
+import utils.Messages.UnsuccessfulTask;
 
 import java.sql.*;
 import java.util.ArrayList;

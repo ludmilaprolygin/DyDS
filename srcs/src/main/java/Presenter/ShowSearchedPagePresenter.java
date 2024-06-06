@@ -3,7 +3,7 @@ package Presenter;
 import Model.DataBaseModel;
 import Model.PageModel;
 import Presenter.Listeners.ModelListener;
-import View.Messages.UnsuccessfulTask;
+import utils.Messages.UnsuccessfulTask;
 import View.SearchView;
 import View.View;
 import com.google.gson.JsonElement;

@@ -1,6 +1,6 @@
 package Model.DataBase;
 
-import View.Messages.UnsuccessfulTask;
+import utils.Messages.UnsuccessfulTask;
 import utils.RatedSeries;
 
 import java.sql.*;
@@ -36,15 +36,51 @@ public class RatedTVSeriesDataBase extends AbstractDataBase
         ArrayList<RatedSeries> allEntries = new ArrayList<RatedSeries>();
         while(resultSet.next())
         {
-            int pageID = resultSet.getInt("pageID");
-            String title = resultSet.getString("title");
-            int score = resultSet.getInt("score");
-            Date date = resultSet.getDate("date");
+//            int pageID = resultSet.getInt("pageID");
+//            String title = resultSet.getString("title");
+//            int score = resultSet.getInt("score");
+//            Date date = resultSet.getDate("date");
+//
+//            RatedSeries ratedSeries = new RatedSeries(pageID, title, score, date);
+//            allEntries.add(ratedSeries);
 
-            RatedSeries ratedSeries = new RatedSeries(pageID, title, score, date);
+            RatedSeries ratedSeries = createRatedSeries(resultSet);
             allEntries.add(ratedSeries);
         }
         return allEntries;
+    }
+
+    protected static RatedSeries createRatedSeries(ResultSet resultSet) throws SQLException
+    {
+        RatedSeries ratedSeries;
+
+        int pageID = resultSet.getInt("pageID");
+        String title = resultSet.getString("title");
+        int score = resultSet.getInt("score");
+        Date date = resultSet.getDate("date");
+
+        ratedSeries = new RatedSeries(pageID, title, score, date);
+
+        return ratedSeries;
+    }
+
+    public static RatedSeries getEntry(String title)
+    {
+        RatedSeries entry = null;
+        Connection connection = null;
+        try
+        {
+            connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);  // set timeout to 30 sec.
+
+            ResultSet resultSet = statement.executeQuery("select * from " + tableName);
+            while(resultSet.next())
+                entry = createRatedSeries(resultSet);
+        }
+        catch(SQLException e) { UnsuccessfulTask.dataBaseError(); }
+        finally { closeConnection(connection); }
+        return entry;
     }
 
     public void deleteEntry(String title)

@@ -1,9 +1,11 @@
 package Presenter;
 
+import Model.DataBase.RatedTVSeriesDataBase;
 import Model.DataBaseModel;
 import Model.PageModel;
 import Presenter.Listeners.ModelListener;
-import View.Messages.UnsuccessfulTask;
+import utils.*;
+import utils.Messages.UnsuccessfulTask;
 import View.View;
 import View.RatedView;
 import View.SearchView;
@@ -11,15 +13,11 @@ import View.RatedResult;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import retrofit2.Response;
-import utils.ImageManager;
-import utils.JsonParsing;
-import utils.RatedSeries;
-import utils.StringFormatting;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 public class RatedDataBasePresenter
 {
@@ -28,7 +26,6 @@ public class RatedDataBasePresenter
     protected View view;
     protected SearchView searchView;
     protected JsonObject jsonObject;
-    protected HashMap<Integer, RatedResult> ratedResults;
 
     public RatedDataBasePresenter(RatedView ratedView, SearchView searchView, PageModel pageModel, DataBaseModel dataBaseModel)
     {
@@ -38,32 +35,27 @@ public class RatedDataBasePresenter
         this.pageModel = pageModel;
         jsonObject = null;
 
-        ratedResults = new HashMap<Integer, RatedResult>();
-
         ratedTVseriesListSetUp();
         initializeModelListeners();
     }
 
     private void ratedTVseriesListSetUp()
     {
+        RatedView ratedView = (RatedView) view;
+
         ArrayList<RatedSeries> allRated = dataBaseModel.getAllRated();
-        DefaultListModel<RatedResult> listModel = new DefaultListModel<>();
-        //Date today = new Date();
+        DefaultTableModel tableModel = ratedView.getTableModel();
 
         for (RatedSeries rated : allRated)
         {
-            //System.out.println(title);
-            int pageID = rated.getPageID();
+            //int pageID = rated.getPageID();
             String title = rated.getTitle();
             int score = rated.getScore();
             Date date = rated.getDate();
 
-            RatedResult ratedResult = new RatedResult(pageID, title, score, date);
-            listModel.addElement(ratedResult);
+            //RatedResult ratedResult = new RatedResult(pageID, title, score, date);
+            tableModel.addRow(new Object[]{title, score, DateFormatting.dateFormat(date)});
         }
-
-        RatedView ratedView = (RatedView) view;
-        ratedView.getRatedTVseriesList().setModel(listModel);
     }
 
     protected void initializeModelListeners()
@@ -79,7 +71,8 @@ public class RatedDataBasePresenter
             public void didRateTVSeries()
             {
                 updateRateButton();
-                updateRatedTVSeriesList();
+                updateRatedTVSeriesTable();
+                //ratedTVseriesListSetUp();
             }
             @Override
             public void didSearchTermOnWiki() { }
@@ -133,6 +126,28 @@ public class RatedDataBasePresenter
 
         return score;
     }
+
+    protected void updateRatedTVSeriesTable()
+    {
+        RatedView ratedView = (RatedView) view;
+
+        generateJsonObjectFromLastSearchResponse();
+        String termToRate = JsonParsing.getAttributeAsString(jsonObject, "title");
+
+        RatedSeries rated = RatedTVSeriesDataBase.getEntry(termToRate);
+        // System.out.println(rs.getTitle());
+        DefaultTableModel tableModel = ratedView.getTableModel();
+
+        int pageID = rated.getPageID();
+        String title = rated.getTitle();
+        int score = rated.getScore();
+        Date date = rated.getDate();
+
+        RatedResult ratedResult = new RatedResult(pageID, title, score, date);
+
+        tableModel.addRow(new Object[]{title, score, DateFormatting.dateFormat(date)});
+    }
+
     protected int manageInput(String input)
     {
         int ratingNumber = 0;
@@ -156,13 +171,9 @@ public class RatedDataBasePresenter
     }
     protected void updateRateButton()
     {
-        String termToRate = JsonParsing.getAttributeAsString(jsonObject, "title");//searchView.getSearchedTitle();
+        String termToRate = JsonParsing.getAttributeAsString(jsonObject, "title"); //searchView.getSearchedTitle();
         int score = dataBaseModel.getScore(termToRate);
         searchView.getRateButton().setIcon(new ImageIcon(ImageManager.getImageURL(score)));
-    }
-    protected void updateRatedTVSeriesList()
-    {
-
     }
 
     protected void generateJsonObjectFromLastSearchResponse()

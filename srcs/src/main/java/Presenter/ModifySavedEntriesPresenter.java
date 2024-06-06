@@ -2,8 +2,8 @@ package Presenter;
 
 import Model.DataBaseModel;
 import Presenter.Listeners.ModelListener;
-import View.Messages.SuccessfulTask;
-import View.Messages.UnsuccessfulTask;
+import utils.Messages.SuccessfulTask;
+import utils.Messages.UnsuccessfulTask;
 import View.StorageView;
 
 import java.util.ArrayList;
