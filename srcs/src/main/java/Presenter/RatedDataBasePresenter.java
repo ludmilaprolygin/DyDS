@@ -10,12 +10,15 @@ import View.View;
 import View.RatedView;
 import View.SearchView;
 import View.RatedResult;
+import View.MainWindow;
+import View.SearchResult;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import retrofit2.Response;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -26,6 +29,7 @@ public class RatedDataBasePresenter
     protected View view;
     protected SearchView searchView;
     protected JsonObject jsonObject;
+    protected ShowSearchedPagePresenter presenter;
 
     public RatedDataBasePresenter(RatedView ratedView, SearchView searchView, PageModel pageModel, DataBaseModel dataBaseModel)
     {
@@ -48,12 +52,13 @@ public class RatedDataBasePresenter
 
         for (RatedSeries rated : allRated)
         {
-            //int pageID = rated.getPageID();
+            int pageID = rated.getPageID();
             String title = rated.getTitle();
             int score = rated.getScore();
             Date date = rated.getDate();
 
-            //RatedResult ratedResult = new RatedResult(pageID, title, score, date);
+            RatedResult ratedResult = new RatedResult(pageID, title, score, date);
+
             tableModel.addRow(new Object[]{title, score, DateFormatting.dateFormat(date)});
         }
     }
@@ -125,6 +130,22 @@ public class RatedDataBasePresenter
         int score = manageInput(input);
 
         return score;
+    }
+
+    public void onClickRatedEntry()
+    {
+        RatedView ratedView = (RatedView) view;
+        String selectedTitle = ratedView.getSelectedTitle();
+        System.out.println("selectedTitle: " + selectedTitle);
+        RatedSeries ratedSeries = dataBaseModel.getRatedSeries(selectedTitle);
+        System.out.println("pageID:" + ratedSeries.getPageID());
+        SearchResult sr = new SearchResult(ratedSeries.getTitle(), ""+ratedSeries.getPageID(), "");
+        searchView.updateSearchResult(sr);
+        System.out.println("pageID:" + ratedSeries.getPageID());
+        pageModel.getPageFromWikipedia("" + ratedSeries.getPageID());
+        generateJsonObjectFromLastSearchResponse();
+        presenter.showPageContent();
+        MainWindow.openSearchTab();
     }
 
     protected void updateRatedTVSeriesTable()
@@ -204,4 +225,6 @@ public class RatedDataBasePresenter
 
         return textToDisplay;
     }
+
+    public void setShowSearchedPagePresenter(ShowSearchedPagePresenter pr) { presenter = pr; }
 }

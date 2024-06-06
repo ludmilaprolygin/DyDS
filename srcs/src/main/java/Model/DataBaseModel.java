@@ -63,6 +63,13 @@ public class DataBaseModel extends Model
         return rated;
     }
 
+    public RatedSeries getRatedSeries(String title)
+    {
+        System.out.println("en DBM en getRatedSeries: " + title);
+        RatedSeries ratedSeries = RatedTVSeriesDataBase.getEntry(title);
+        return ratedSeries;
+    }
+
     protected void notifyGetExtractFinishedListener()
     {
         for(ModelListener modelListener : modelListeners)

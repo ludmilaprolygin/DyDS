@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class MainWindow extends JFrame
 {
-    protected JTabbedPane tabbedPane;
+    protected static JTabbedPane tabbedPane;
     protected SearchView searchView;
     protected StorageView storageView;
     protected RatedView ratedView;
@@ -81,4 +81,9 @@ public class MainWindow extends JFrame
     public SearchView getSearchView() { return searchView; }
     public StorageView getStorageView() { return storageView; }
     public RatedView getRatedView() { return ratedView; }
+
+    public static void openSearchTab()
+    {
+        SwingUtilities.invokeLater(() -> tabbedPane.setSelectedIndex(0));
+    }
 }

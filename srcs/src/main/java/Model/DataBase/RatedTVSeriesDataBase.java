@@ -36,14 +36,6 @@ public class RatedTVSeriesDataBase extends AbstractDataBase
         ArrayList<RatedSeries> allEntries = new ArrayList<RatedSeries>();
         while(resultSet.next())
         {
-//            int pageID = resultSet.getInt("pageID");
-//            String title = resultSet.getString("title");
-//            int score = resultSet.getInt("score");
-//            Date date = resultSet.getDate("date");
-//
-//            RatedSeries ratedSeries = new RatedSeries(pageID, title, score, date);
-//            allEntries.add(ratedSeries);
-
             RatedSeries ratedSeries = createRatedSeries(resultSet);
             allEntries.add(ratedSeries);
         }
@@ -74,7 +66,7 @@ public class RatedTVSeriesDataBase extends AbstractDataBase
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
-            ResultSet resultSet = statement.executeQuery("select * from " + tableName);
+            ResultSet resultSet = statement.executeQuery("select * from " + tableName + " WHERE title = '" + title + "'");
             while(resultSet.next())
                 entry = createRatedSeries(resultSet);
         }

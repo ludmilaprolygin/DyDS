@@ -112,7 +112,7 @@ public class ShowSearchedPagePresenter
         jsonObject = JsonParsing.getQueryResultAsJsonObject(callForPageResponse, "pages");
     }
 
-    protected void showPageContent()
+    public void showPageContent()
     {
         String textToDisplay = getExtract();
         JTextPane pageContent = view.getPaneContent();

@@ -103,6 +103,10 @@ public class SearchView extends View
         }
     }
     public SearchResult getSelectedSearchResult() { return selectedSearchResult; }
+    public void updateSearchResult(SearchResult searchResult)
+    {
+        selectedSearchResult = searchResult;
+    }
 
     public WikiSearchesPopupMenu createPopUp()
     {

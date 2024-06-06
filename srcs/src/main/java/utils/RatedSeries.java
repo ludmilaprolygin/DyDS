@@ -21,4 +21,6 @@ public class RatedSeries
     public String getTitle() { return title; }
     public int getScore() { return score; }
     public Date getDate() { return date; }
+
+    public String toString() {return title + " " + pageID; }
 }
