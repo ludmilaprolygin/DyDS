@@ -13,9 +13,16 @@ public class DataBaseModel extends Model
 
     public void saveSeries(String title, String info)
     {
-        SavedTVSeriesDataBase.saveInfo(title, info);
+        saveInfoOnDataBase(title, info);
         notifySaveTVSeriesFinishedListener();
     }
+    public void changeSeries(String title, String info)
+    {
+        saveInfoOnDataBase(title, info);
+        notifyChangeTVSeriesFinishedListener();
+    }
+    protected void saveInfoOnDataBase(String title, String info)
+        { SavedTVSeriesDataBase.saveInfo(title, info); }
 
     public void rateSeries(int pageID, String title, int score)
     {
@@ -33,14 +40,12 @@ public class DataBaseModel extends Model
     public ArrayList<String> getSavedTitles()
     {
         ArrayList<String> titles = SavedTVSeriesDataBase.getTitles();
-        //notifyListeners();
         return titles;
     }
 
     public ArrayList<String> getRatedTitles()
     {
         ArrayList<String> titles = RatedTVSeriesDataBase.getTitles();
-        //notifyListeners();
         return titles;
     }
 
@@ -53,7 +58,6 @@ public class DataBaseModel extends Model
     public void deleteSavedEntry(String title)
     {
         SavedTVSeriesDataBase.deleteEntry(title);
-        //notifyDeleteListener();
         notifyDeletedSavedFinishedListener();
     }
 
@@ -65,7 +69,6 @@ public class DataBaseModel extends Model
 
     public RatedSeries getRatedSeries(String title)
     {
-        System.out.println("en DBM en getRatedSeries: " + title);
         RatedSeries ratedSeries = RatedTVSeriesDataBase.getEntry(title);
         return ratedSeries;
     }
@@ -89,5 +92,10 @@ public class DataBaseModel extends Model
     {
         for(ModelListener modelListener : modelListeners)
             modelListener.didRateTVSeries();
+    }
+    protected void notifyChangeTVSeriesFinishedListener()
+    {
+        for(ModelListener modelListener : modelListeners)
+            modelListener.didChangeTVSeries();
     }
 }

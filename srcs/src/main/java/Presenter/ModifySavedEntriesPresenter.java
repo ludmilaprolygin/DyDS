@@ -7,6 +7,7 @@ import utils.Messages.UnsuccessfulTask;
 import View.StorageView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ModifySavedEntriesPresenter
 {
@@ -27,46 +28,32 @@ public class ModifySavedEntriesPresenter
             @Override
             public void didDeletedSaved() { setDeletedStatus(); }
             @Override
-            public void didSaveTVSeries() { } // En este deberia agregar algo
+            public void didChangeTVSeries() { SuccessfulTask.pageSaved(); }
+            @Override
+            public void didSaveTVSeries() { }
+            @Override
+            public void didRateTVSeries() { }
             @Override
             public void didSearchTermOnWiki() { }
             @Override
             public void didSearchPageOnWiki() { }
             @Override
             public void didGetExtract() { }
-            @Override
-            public void didRateTVSeries() { }
         });
     }
 
     public void deleteSelected()
     {
-        String titleToDelete = storageView.getSelectedTitle();
-
-        if(storageView.selectedEntryExists())
-        {
-            dataBaseModel.deleteSavedEntry(titleToDelete);
-        }
-        else
-        {
-           // Error catching clause
-        }
+        String titleToDelete = getCurrentTitle();
+        dataBaseModel.deleteSavedEntry(titleToDelete);
     }
     public void saveChangesOnSelected()
     {
-        String titleToChange = storageView.getSelectedTitle();
+        String titleToChange = getCurrentTitle();
         String newInfo = storageView.getSelectedContent();
-
-        if(storageView.selectedEntryExists())
-        {
-            dataBaseModel.saveSeries(titleToChange, newInfo);
-            SuccessfulTask.changesMade();
-        }
-        else
-        {
-            UnsuccessfulTask.saveError();
-        }
+        dataBaseModel.changeSeries(titleToChange, newInfo);
     }
+    protected String getCurrentTitle() { return storageView.getSelectedTitle(); }
 
     protected void comboBoxModelSetUp()
     {
@@ -74,7 +61,6 @@ public class ModifySavedEntriesPresenter
         Object[] savedTVSeries = titles.stream().sorted().toArray();
         storageView.setSavedTVSeriesModel(savedTVSeries);
     }
-
     protected void setDeletedStatus()
     {
         SuccessfulTask.pageDeleted();

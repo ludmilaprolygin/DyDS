@@ -80,6 +80,8 @@ public class RatedDataBasePresenter
                 //ratedTVseriesListSetUp();
             }
             @Override
+            public void didChangeTVSeries() { }
+            @Override
             public void didSearchTermOnWiki() { }
             @Override
             public void didSearchPageOnWiki() { }
@@ -107,6 +109,9 @@ public class RatedDataBasePresenter
             public void didSaveTVSeries() { }
             @Override
             public void didRateTVSeries() { }
+
+            @Override
+            public void didChangeTVSeries() { }
         });
     }
 
@@ -136,15 +141,14 @@ public class RatedDataBasePresenter
     {
         RatedView ratedView = (RatedView) view;
         String selectedTitle = ratedView.getSelectedTitle();
-        System.out.println("selectedTitle: " + selectedTitle);
         RatedSeries ratedSeries = dataBaseModel.getRatedSeries(selectedTitle);
-        System.out.println("pageID:" + ratedSeries.getPageID());
         SearchResult sr = new SearchResult(ratedSeries.getTitle(), ""+ratedSeries.getPageID(), "");
         searchView.updateSearchResult(sr);
-        System.out.println("pageID:" + ratedSeries.getPageID());
+        System.out.println(searchView.getSelectedSearchResult().getTitle());
         pageModel.getPageFromWikipedia("" + ratedSeries.getPageID());
         generateJsonObjectFromLastSearchResponse();
         presenter.showPageContent();
+        searchView.updateRateButton(ratedSeries.getScore());
         MainWindow.openSearchTab();
     }
 

@@ -54,6 +54,9 @@ public class SavedDataBasePresenter
             public void didSaveTVSeries() { }
             @Override
             public void didRateTVSeries() { }
+
+            @Override
+            public void didChangeTVSeries() { }
         });
     }
 
@@ -62,7 +65,7 @@ public class SavedDataBasePresenter
         dataBaseModel.addListener(new ModelListener()
         {
             @Override
-            public void didSaveTVSeries() { showSavedTVSeries(); }
+            public void didSaveTVSeries() { showSavedTVSeries(); updateComboBox();}
             @Override
             public void didSearchTermOnWiki() { }
             @Override
@@ -73,6 +76,8 @@ public class SavedDataBasePresenter
             public void didDeletedSaved() { }
             @Override
             public void didRateTVSeries() { }
+            @Override
+            public void didChangeTVSeries() { }
         });
     }
 
@@ -105,6 +110,15 @@ public class SavedDataBasePresenter
         ArrayList<String> titles = dataBaseModel.getSavedTitles();
         Object[] savedTVSeries = titles.stream().sorted().toArray();
         storageView.setSavedTVSeriesModel(savedTVSeries);
+
+    }
+    protected void updateComboBox()
+    {
+        StorageView storageView = (StorageView) view;
+        comboBoxModelSetUp();
+        JComboBox<String> comboBox = storageView.getSavedTVSeries();
+        String title = getTitleFromLastSearchResponse();
+        comboBox.setSelectedItem(title);
     }
 
     protected String getExtract()
@@ -149,9 +163,9 @@ public class SavedDataBasePresenter
 
     protected void showPageContent()
     {
+        StorageView storageView = (StorageView) view;
         String textToDisplay = getExtract();
-        JTextPane pageContent = view.getPaneContent();
-
+        JTextPane pageContent = storageView.getPaneContent();
         pageContent.setText(textToDisplay);
         pageContent.setCaretPosition(0);
     }

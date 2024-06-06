@@ -49,6 +49,8 @@ public class ShowSearchedPagePresenter
             public void didSaveTVSeries() { }
             @Override
             public void didRateTVSeries() { }
+            @Override
+            public void didChangeTVSeries() { }
         });
     }
 
