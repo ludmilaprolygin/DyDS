@@ -22,9 +22,8 @@ public class SearchModel extends APIModel
             response = searchAPI.searchForTerm(term).execute();
         }
         catch (IOException ex)
-        {
-            UnsuccessfulTask.wikipediaError();
-        }
+        { UnsuccessfulTask.wikipediaError(); }
+
         notifyListeners();
     }
 

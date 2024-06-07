@@ -14,13 +14,10 @@ public class PageModel extends APIModel
     public void getPageFromWikipedia(String pageID)
     {
         try
-        {
-            response = pageAPI.getExtractByPageID(pageID).execute();
-        }
+            { response = pageAPI.getExtractByPageID(pageID).execute();  }
         catch (Exception ex)
-        {
-            UnsuccessfulTask.wikipediaError();
-        }
+            { UnsuccessfulTask.wikipediaError(); }
+
         notifyListeners();
     }
 

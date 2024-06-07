@@ -10,10 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RatedView extends View
 {
@@ -30,8 +27,6 @@ public class RatedView extends View
     }
     protected void setUp()
     {
-        //ratedResults = new HashMap<Integer, RatedResult>();
-
         searchPanelSetUp();
         loadRatedTVSeries();
         addRowClickListener();
@@ -115,7 +110,6 @@ public class RatedView extends View
                     if (selectedRow != -1)
                     {
                         int modelRow = ratedTVSeries.convertRowIndexToModel(selectedRow);
-                        // Print the content of the first column
                         selectedTitle = tableModel.getValueAt(modelRow, 0).toString();
                         System.out.println(selectedTitle);
                         presenter.onClickRatedEntry();
