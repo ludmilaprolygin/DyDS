@@ -21,7 +21,7 @@ public class RatedTVSeriesDataBase extends AbstractDataBase
         {
             connection = DriverManager.getConnection(url);
             Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);  // set timeout to 30 sec.
+            statement.setQueryTimeout(30);
 
             ResultSet resultSet = statement.executeQuery("select * from " + tableName + " WHERE title = '" + title + "'");
             while(resultSet.next())
@@ -40,7 +40,7 @@ public class RatedTVSeriesDataBase extends AbstractDataBase
         {
             connection = DriverManager.getConnection(url);
             Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);  // set timeout to 30 sec.
+            statement.setQueryTimeout(30);
 
             ResultSet resultSet = statement.executeQuery("select score from " + tableName + " WHERE title = '" + title + "'");
             while(resultSet.next()) score = resultSet.getInt("score");
@@ -59,7 +59,7 @@ public class RatedTVSeriesDataBase extends AbstractDataBase
         {
             connection = DriverManager.getConnection(url);
             Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);  // set timeout to 30 sec.
+            statement.setQueryTimeout(30);
 
             ResultSet resultSet = statement.executeQuery("select * from " + tableName);
 

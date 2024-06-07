@@ -20,7 +20,7 @@ public class SavedTVSeriesDataBase extends AbstractDataBase
             connection = DriverManager.getConnection(url);
 
             Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);  // set timeout to 30 sec.
+            statement.setQueryTimeout(30);
 
             String sql = "REPLACE INTO " + tableName + " (title, extract, source) VALUES (?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -41,7 +41,7 @@ public class SavedTVSeriesDataBase extends AbstractDataBase
         {
             connection = DriverManager.getConnection(url);
             Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);  // set timeout to 30 sec.
+            statement.setQueryTimeout(30);
 
             ResultSet rs = statement.executeQuery("select * from " + tableName + " WHERE title = '" + title + "'" );
             rs.next();

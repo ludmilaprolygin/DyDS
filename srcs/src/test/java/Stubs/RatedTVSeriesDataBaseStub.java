@@ -9,6 +9,10 @@ import static org.mockito.Mockito.when;
 
 public class RatedTVSeriesDataBaseStub
 {
+    protected String pageID;
+    protected String title;
+    protected int score;
+
     public ArrayList<String> getTitles()
     {
         ArrayList<String> titles = new ArrayList<String>();
@@ -43,5 +47,15 @@ public class RatedTVSeriesDataBaseStub
         return allEntries;
     }
 
-    public void saveInfo(String pageid, String title, int score) { }
+    public void saveInfo(String pageid, String title, int score)
+    {
+        this.pageID = pageid;
+        this.title = title;
+        this.score = score;
+    }
+
+    public String getPageID() { return pageID; }
+    public String getTitle() { return title; }
+    public int getScore() { return score; }
+
 }
