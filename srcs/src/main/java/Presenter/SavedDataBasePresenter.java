@@ -6,7 +6,6 @@ import Model.Listeners.ModelListener;
 import utils.Messages.SuccessfulTask;
 import utils.Messages.UnsuccessfulTask;
 import View.StorageView;
-import View.View;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import retrofit2.Response;
@@ -20,13 +19,13 @@ public class SavedDataBasePresenter
 {
     protected DataBaseModel dataBaseModel;
     protected PageModel pageModel;
-    protected View view;
+    protected StorageView storageView;
     protected JsonObject jsonObject;
 
     public SavedDataBasePresenter(StorageView storageView, PageModel pageModel, DataBaseModel dataBaseModel)
     {
         this.dataBaseModel = dataBaseModel;
-        this.view = storageView;
+        this.storageView = storageView;
         this.pageModel = pageModel;
         jsonObject = null;
 
@@ -65,7 +64,11 @@ public class SavedDataBasePresenter
         dataBaseModel.addListener(new ModelListener()
         {
             @Override
-            public void didSaveTVSeries() { showSavedTVSeries(); updateComboBox();}
+            public void didSaveTVSeries()
+            {
+                showSavedTVSeries();
+                updateComboBox();
+            }
             @Override
             public void didSearchTermOnWiki() { }
             @Override
@@ -92,21 +95,17 @@ public class SavedDataBasePresenter
         String selectedResultTitle = getTitleFromLastSearchResponse();
         selectedResultTitle = StringFormatting.replaceApostrophe(selectedResultTitle);
 
-        System.out.println("Saved title " + selectedResultTitle);
-        System.out.println("Saved info extract " + text);
         dataBaseModel.saveSeries(selectedResultTitle, text);
     }
 
     protected void showSavedTVSeries()
     {
         comboBoxModelSetUp();
-        StorageView storageView = (StorageView) view;
         storageView.getPaneContent().setText(getExtract());
         SuccessfulTask.pageSaved();
     }
     protected void comboBoxModelSetUp()
     {
-        StorageView storageView = (StorageView) view;
         ArrayList<String> titles = dataBaseModel.getSavedTitles();
         Object[] savedTVSeries = titles.stream().sorted().toArray();
         storageView.setSavedTVSeriesModel(savedTVSeries);
@@ -114,7 +113,6 @@ public class SavedDataBasePresenter
     }
     protected void updateComboBox()
     {
-        StorageView storageView = (StorageView) view;
         comboBoxModelSetUp();
         JComboBox<String> comboBox = storageView.getSavedTVSeries();
         String title = getTitleFromLastSearchResponse();
@@ -163,7 +161,6 @@ public class SavedDataBasePresenter
 
     protected void showPageContent()
     {
-        StorageView storageView = (StorageView) view;
         String textToDisplay = getExtract();
         JTextPane pageContent = storageView.getPaneContent();
         pageContent.setText(textToDisplay);

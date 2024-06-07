@@ -15,6 +15,6 @@ public class ImageManager
         else
             return "srcs/src/main/resources/" + ratingValue + ".png";
     }
-    public static ImageIcon getRatedImage() { return new ImageIcon("srcs/src/main/resources/star.png"); }
-    public static String getRatedImageURL() { return "srcs/src/main/resources/star.png"; }
+    public static ImageIcon getRatedImage() { return new ImageIcon(getRatedImageURL()); }
+    protected static String getRatedImageURL() { return "srcs/src/main/resources/star.png"; }
 }

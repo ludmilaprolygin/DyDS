@@ -1,6 +1,9 @@
 package View;
 
+import utils.Messages.UnsuccessfulTask;
+
 import javax.swing.*;
+import java.awt.*;
 
 public class MainWindow extends JFrame
 {
@@ -44,9 +47,7 @@ public class MainWindow extends JFrame
                 }
             }
         }
-        catch (Exception e) {
-            System.out.println("Something went wrong with UI!");
-        }
+        catch (Exception e) { UnsuccessfulTask.lfError(); }
     }
 
     protected void createViews()

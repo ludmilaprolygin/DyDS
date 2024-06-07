@@ -1,9 +1,9 @@
 package Presenter;
 
-import Model.DataBase.RatedTVSeriesDataBase;
 import Model.DataBaseModel;
 import Model.PageModel;
 import Model.Listeners.ModelListener;
+import Model.RatedSeries;
 import utils.*;
 import utils.Messages.UnsuccessfulTask;
 import View.View;
@@ -58,7 +58,7 @@ public class RatedDataBasePresenter
 
             RatedResult ratedResult = new RatedResult(pageID, title, score, date);
 
-            tableModel.addRow(new Object[]{title, score, DateFormatting.dateFormat(date)});
+            tableModel.addRow(new Object[]{title, score, StringFormatting.dateFormat(date)});
         }
     }
 
@@ -168,7 +168,7 @@ public class RatedDataBasePresenter
 
         RatedResult ratedResult = new RatedResult(pageID, title, score, date);
 
-        tableModel.addRow(new Object[]{title, score, DateFormatting.dateFormat(date)});
+        tableModel.addRow(new Object[]{title, score, StringFormatting.dateFormat(date)});
     }
 
     protected int manageInput(String input)

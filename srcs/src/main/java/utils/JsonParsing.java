@@ -20,8 +20,7 @@ public class JsonParsing
     }
     public static JsonObject getQueryResultAsJsonObject(Response<String> response, String identifier)
     {
-        JsonObject jsonObject = gson.fromJson(response.body(), JsonObject.class);
-        JsonObject query = jsonObject.get("query").getAsJsonObject();
+        JsonObject query = getQuery(response);
 
         JsonObject pages = query.get(identifier).getAsJsonObject();
         Set<Map.Entry<String, JsonElement>> pagesSet = pages.entrySet();
@@ -29,7 +28,10 @@ public class JsonParsing
         return first.getValue().getAsJsonObject();
     }
     public static String getAttributeAsString(JsonObject jsonObject, String attribute)
+        { return jsonObject.get(attribute).getAsString(); }
+    protected static JsonObject getQuery(Response<String> response)
     {
-        return jsonObject.get(attribute).getAsString();
+        JsonObject jsonObject = gson.fromJson(response.body(), JsonObject.class);
+        return jsonObject.get("query").getAsJsonObject();
     }
 }

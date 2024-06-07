@@ -3,7 +3,6 @@ package Model;
 import Model.DataBase.RatedTVSeriesDataBase;
 import Model.DataBase.SavedTVSeriesDataBase;
 import Model.Listeners.ModelListener;
-import utils.RatedSeries;
 
 import java.util.ArrayList;
 

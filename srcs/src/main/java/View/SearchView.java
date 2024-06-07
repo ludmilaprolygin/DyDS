@@ -37,10 +37,8 @@ public class SearchView extends View
     {
         searchPanelSetUp();
         searchPageContentSetUp();
-
         disableSaveLocallyButton();
         rateTVShowButtonSetUp();
-
         initializeListeners();
     }
     protected void searchPanelSetUp()
@@ -58,12 +56,8 @@ public class SearchView extends View
         disableRateTVShowButton();
         rateButton.setIcon(new ImageIcon(ImageManager.getUnratedImageURL()));
     }
-    public void updateRateButton(int ratingValue)
-    {
-        rateButton.setIcon(new ImageIcon(ImageManager.getImageURL(ratingValue)));
-    }
-
     protected void disableRateTVShowButton() { rateButton.setEnabled(false); }
+
     protected void initializeListeners()
     {
         super.initializeListeners();
@@ -92,7 +86,6 @@ public class SearchView extends View
         rateButton.addActionListener(e ->
             ratedDataBasePresenter.onClickRateButton());
     }
-
     protected void initializePopupItemListener()
     {
         for(SearchResult searchResult : searchOptionsMenu.getSearchResults())
@@ -101,11 +94,6 @@ public class SearchView extends View
                 selectedSearchResult = searchResult;
                 showSearchedPagePresenter.onSelectedSearchResult();});
         }
-    }
-    public SearchResult getSelectedSearchResult() { return selectedSearchResult; }
-    public void updateSearchResult(SearchResult searchResult)
-    {
-        selectedSearchResult = searchResult;
     }
 
     public WikiSearchesPopupMenu createPopUp()
@@ -120,10 +108,17 @@ public class SearchView extends View
     }
 
     public JPanel getSearchPanel() { return searchPanel; }
-    public JTextField getSearchTextField() { return searchTextField; }
     public JTextPane getPaneContent() { return searchPageContent; }
     public JButton getRateButton() { return rateButton; }
+    public String getSearchedTitle() { return searchTextField.getText();}
+    public SearchResult getSelectedSearchResult() { return selectedSearchResult; }
 
+    public void updateSearchResult(SearchResult searchResult)
+    {
+        selectedSearchResult = searchResult;
+    }
+    public void updateRateButton(int ratingValue)
+    { rateButton.setIcon(new ImageIcon(ImageManager.getImageURL(ratingValue))); }
     public void setSearchPresenter(SearchPresenter searchPresenter) { this.searchPresenter = searchPresenter; }
     public void setShowPagePresenter(ShowSearchedPagePresenter showSearchedPagePresenter) { this.showSearchedPagePresenter = showSearchedPagePresenter; }
     public void setSavePresenter(SavedDataBasePresenter savedDataBasePresenter) { this.savedDataBasePresenter = savedDataBasePresenter; }
@@ -141,6 +136,4 @@ public class SearchView extends View
             c.setEnabled(true);
         searchPageContent.setEnabled(true);
     }
-
-    public String getSearchedTitle() { return searchTextField.getText();}
 }

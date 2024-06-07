@@ -2,6 +2,7 @@ package View;
 
 import Presenter.ModifySavedEntriesPresenter;
 import Presenter.ShowSavedPagePresenter;
+import utils.Messages.UnsuccessfulTask;
 import utils.StringFormatting;
 
 import javax.swing.*;
@@ -29,10 +30,8 @@ public class StorageView extends View
     protected void setUp()
     {
         optionsPopupSetUp();
-
         storedPageContentSetUp();
         storagePanelSetUp();
-
         initializeListeners();
     }
     protected void optionsPopupSetUp()
@@ -81,6 +80,16 @@ public class StorageView extends View
     public void setModifyDataBasePresenter(ModifySavedEntriesPresenter modifySavedEntriesPresenter)
         { this.modifySavedEntriesPresenter = modifySavedEntriesPresenter; }
 
+    public void setSavedTVSeriesModel(Object[] savedTVSeriesTitles)
+    {
+        DefaultComboBoxModel comboBoxModel =
+                new DefaultComboBoxModel(savedTVSeriesTitles);
+        savedTVSeries.setModel(comboBoxModel);
+    }
+
+    public String getSelectedTitle() { return savedTVSeries.getSelectedItem().toString(); }
+    public String getSelectedContent() { return storedPageContent.getText(); }
+
     public void disableAll()
     {
         for(Component c: storagePanel.getComponents())
@@ -94,44 +103,36 @@ public class StorageView extends View
         storedPageContent.setEnabled(true);
     }
 
-    public void setSavedTVSeriesModel(Object[] savedTVSeriesTitles)
-    {
-        DefaultComboBoxModel comboBoxModel =
-                new DefaultComboBoxModel(savedTVSeriesTitles);
-        savedTVSeries.setModel(comboBoxModel);
-    }
-
-    public String getSelectedTitle() { return savedTVSeries.getSelectedItem().toString(); }
-    public String getSelectedContent() { return storedPageContent.getText(); }
-    public boolean selectedEntryExists() { return (savedTVSeries.getSelectedIndex() > -1); }
-
-    //////////////////
-
     protected void initializeURLdeterminationListener()
     {
-        storedPageContent.addMouseListener(new MouseAdapter() {
+        storedPageContent.addMouseListener(new MouseAdapter()
+        {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 1) {
-                    int pos = storedPageContent.viewToModel2D(e.getPoint());
-                    if (pos != -1) {
+            public void mouseClicked(MouseEvent e)
+            {
+                if (oneLeftClick(e))
+                {
+                    int position = storedPageContent.viewToModel2D(e.getPoint());
+                    if (position != -1)
+                    {
                         HTMLDocument doc = (HTMLDocument) storedPageContent.getDocument();
-                        Element elem = doc.getCharacterElement(pos);
-                        int start = elem.getStartOffset();
-                        int end = elem.getEndOffset();
+                        Element element = doc.getCharacterElement(position);
+                        int startOffset = element.getStartOffset();
+                        int endOffset = element.getEndOffset();
+
                         try
                         {
-                            String clickedText = doc.getText(start, end - start);
+                            String clickedText = doc.getText(startOffset, endOffset - startOffset);
                             if(StringFormatting.isURL(clickedText))
                                 Desktop.getDesktop().browse(new URI(clickedText));
-                            System.out.println("Clicked text: " + clickedText);
                         }
-                        catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
+                        catch (Exception ex)
+                            { UnsuccessfulTask.wikipediaError(); }
                     }
                 }
             }
         });
     }
+    protected boolean oneLeftClick(MouseEvent e)
+        { return SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 1; }
 }

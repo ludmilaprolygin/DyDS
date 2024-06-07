@@ -20,7 +20,6 @@ public class RatedView extends View
     protected String selectedTitle;
     protected RatedDataBasePresenter presenter;
 
-
     public RatedView()
     {
         setUp();
@@ -43,20 +42,18 @@ public class RatedView extends View
     protected void loadRatedTVSeries()
     {
         String[] columnNames = {"Series title", "Score", "Last updated"};
-        tableModel = new DefaultTableModel(columnNames, 0) {
+        tableModel = new DefaultTableModel(columnNames, 0)
+        {
             @Override
             public Class<?> getColumnClass(int columnIndex)
             {
-                switch (columnIndex) {
-                    case 0:
-                        return String.class;
-                    case 1:
-                        return Integer.class;
-                    case 2:
-                        return String.class;
-                    default:
-                        return Object.class;
-                }
+                return switch (columnIndex)
+                {
+                    case 0 -> String.class;
+                    case 1 -> Integer.class;
+                    case 2 -> String.class;
+                    default -> Object.class;
+                };
             }
             @Override
             public boolean isCellEditable(int row, int column) { return false; }
@@ -111,7 +108,6 @@ public class RatedView extends View
                     {
                         int modelRow = ratedTVSeries.convertRowIndexToModel(selectedRow);
                         selectedTitle = tableModel.getValueAt(modelRow, 0).toString();
-                        System.out.println(selectedTitle);
                         presenter.onClickRatedEntry();
                     }
                 }

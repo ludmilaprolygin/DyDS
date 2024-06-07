@@ -1,7 +1,6 @@
 package Model.DataBase;
 
 import utils.Messages.UnsuccessfulTask;
-import utils.RatedSeries;
 
 import java.sql.*;
 import java.util.ArrayList;

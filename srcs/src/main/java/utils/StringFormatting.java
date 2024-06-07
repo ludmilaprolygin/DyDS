@@ -22,6 +22,11 @@ public class StringFormatting
                 .replace("</abbr>", "");
     }
 
+    public static String dateFormat(Date date)
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+        return sdf.format(date);
+    }
     public static String HTMLtitle(String title) { return "<h1>" + title + "</h1>"; }
     public static String HTMLurl(String url) { return "<p><a href=" + url + ">" + url + "</a></p>"; }
     public static String replaceApostrophe(String text) { return text.replace("'", "`"); }
