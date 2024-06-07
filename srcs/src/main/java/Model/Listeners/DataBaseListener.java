@@ -1,9 +1,7 @@
-package Presenter.Listeners;
+package Model.Listeners;
 
-public interface ModelListener
+public interface DataBaseListener
 {
-    void didSearchTermOnWiki();
-    void didSearchPageOnWiki();
     void didGetExtract();
     void didDeletedSaved();
     void didSaveTVSeries();

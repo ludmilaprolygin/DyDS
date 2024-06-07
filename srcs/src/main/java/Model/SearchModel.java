@@ -2,7 +2,7 @@ package Model;
 
 import Model.APIs.APIBuilder;
 import Model.APIs.WikipediaSearchAPI;
-import Presenter.Listeners.ModelListener;
+import Model.Listeners.ModelListener;
 import utils.Messages.UnsuccessfulTask;
 import java.io.IOException;
 

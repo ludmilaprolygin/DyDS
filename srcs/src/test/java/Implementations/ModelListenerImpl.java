@@ -1,6 +1,6 @@
 package Implementations;
 
-import Presenter.Listeners.ModelListener;
+import Model.Listeners.ModelListener;
 
 public class ModelListenerImpl implements ModelListener
 {

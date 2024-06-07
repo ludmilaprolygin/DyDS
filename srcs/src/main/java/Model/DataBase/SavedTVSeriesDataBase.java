@@ -7,13 +7,12 @@ import java.util.ArrayList;
 
 public class SavedTVSeriesDataBase extends AbstractDataBase
 {
-    protected static final String tableName = "catalog";
-    public static ArrayList<String> getTitles()
-    {
-        return getTitles(tableName);
-    }
+    public SavedTVSeriesDataBase() { tableName = "catalog"; }
 
-    public static void saveInfo(String title, String extract)
+    public ArrayList<String> getTitles()
+        { return getTitles(tableName); }
+
+    public void saveInfo(String title, String extract)
     {
         Connection connection = null;
         try
@@ -31,13 +30,11 @@ public class SavedTVSeriesDataBase extends AbstractDataBase
             preparedStatement.executeUpdate();
         }
         catch(SQLException e)
-        {
-            UnsuccessfulTask.dataBaseError();
-        }
+            { UnsuccessfulTask.dataBaseError(); }
         finally { closeConnection(connection); }
     }
 
-    public static String getExtract(String title)
+    public String getExtract(String title)
     {
         Connection connection = null;
         try
@@ -51,15 +48,11 @@ public class SavedTVSeriesDataBase extends AbstractDataBase
             return rs.getString("extract");
         }
         catch(SQLException e)
-        {
-            UnsuccessfulTask.dataBaseError();
-        }
+            { UnsuccessfulTask.dataBaseError(); }
         finally { closeConnection(connection); }
         return null;
     }
 
-    public static void deleteEntry(String title)
-    {
-        deleteEntry(title, tableName);
-    }
+    public void deleteEntry(String title)
+        { deleteEntry(title, tableName); }
 }

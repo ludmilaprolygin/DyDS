@@ -1,7 +1,7 @@
 package Presenter;
 
 import Model.*;
-import Presenter.Listeners.ModelListener;
+import Model.Listeners.ModelListener;
 import View.SearchView;
 import View.WikiSearchesPopupMenu;
 import com.google.gson.JsonArray;

@@ -1,13 +1,11 @@
 package Presenter;
 
 import Model.DataBaseModel;
-import Presenter.Listeners.ModelListener;
+import Model.Listeners.ModelListener;
 import utils.Messages.SuccessfulTask;
-import utils.Messages.UnsuccessfulTask;
 import View.StorageView;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class ModifySavedEntriesPresenter
 {

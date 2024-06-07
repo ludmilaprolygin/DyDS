@@ -2,7 +2,7 @@ package Presenter;
 
 import Model.DataBaseModel;
 import Model.PageModel;
-import Presenter.Listeners.ModelListener;
+import Model.Listeners.ModelListener;
 import utils.Messages.SuccessfulTask;
 import utils.Messages.UnsuccessfulTask;
 import View.StorageView;

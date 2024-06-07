@@ -2,14 +2,60 @@ package Model;
 
 import Model.DataBase.RatedTVSeriesDataBase;
 import Model.DataBase.SavedTVSeriesDataBase;
-import Presenter.Listeners.ModelListener;
+import Model.Listeners.ModelListener;
 import utils.RatedSeries;
 
 import java.util.ArrayList;
 
 public class DataBaseModel extends Model
 {
-    public DataBaseModel() { super(); }
+    protected RatedTVSeriesDataBase ratedTVSeriesDataBase;
+    protected SavedTVSeriesDataBase savedTVSeriesDataBase;
+    protected String extract;
+
+    public DataBaseModel()
+    {
+        ratedTVSeriesDataBase = new RatedTVSeriesDataBase();
+        savedTVSeriesDataBase = new SavedTVSeriesDataBase();
+    }
+
+    public void getExtract(String title)
+    {
+        extract = savedTVSeriesDataBase.getExtract(title);
+        notifyGetExtractFinishedListener();
+    }
+    public String getExtract() { return extract; }
+
+    public ArrayList<String> getSavedTitles()
+    {
+        return savedTVSeriesDataBase.getTitles();
+    }
+
+    public ArrayList<String> getRatedTitles()
+    {
+        return ratedTVSeriesDataBase.getTitles();
+    }
+
+    public int getScore(String title)
+    {
+        return ratedTVSeriesDataBase.getScore(title);
+    }
+
+    public void deleteSavedEntry(String title)
+    {
+        savedTVSeriesDataBase.deleteEntry(title);
+        notifyDeletedSavedFinishedListener();
+    }
+
+    public ArrayList<RatedSeries> getAllRated()
+    {
+        return ratedTVSeriesDataBase.getAllEntries();
+    }
+
+    public RatedSeries getRatedSeries(String title)
+    {
+        return ratedTVSeriesDataBase.getEntry(title);
+    }
 
     public void saveSeries(String title, String info)
     {
@@ -22,55 +68,12 @@ public class DataBaseModel extends Model
         notifyChangeTVSeriesFinishedListener();
     }
     protected void saveInfoOnDataBase(String title, String info)
-        { SavedTVSeriesDataBase.saveInfo(title, info); }
+    { savedTVSeriesDataBase.saveInfo(title, info); }
 
     public void rateSeries(int pageID, String title, int score)
     {
-        RatedTVSeriesDataBase.saveInfo(pageID, title, score);
+        ratedTVSeriesDataBase.saveInfo(pageID, title, score);
         notifyRateTVSeriesFinishedListener();
-    }
-
-    public String getExtract(String title)
-    {
-        String extract = SavedTVSeriesDataBase.getExtract(title);
-        notifyGetExtractFinishedListener();
-        return extract;
-    }
-
-    public ArrayList<String> getSavedTitles()
-    {
-        ArrayList<String> titles = SavedTVSeriesDataBase.getTitles();
-        return titles;
-    }
-
-    public ArrayList<String> getRatedTitles()
-    {
-        ArrayList<String> titles = RatedTVSeriesDataBase.getTitles();
-        return titles;
-    }
-
-    public int getScore(String title)
-    {
-        int score = RatedTVSeriesDataBase.getScore(title);
-        return score;
-    }
-
-    public void deleteSavedEntry(String title)
-    {
-        SavedTVSeriesDataBase.deleteEntry(title);
-        notifyDeletedSavedFinishedListener();
-    }
-
-    public ArrayList<RatedSeries> getAllRated()
-    {
-        ArrayList<RatedSeries> rated = RatedTVSeriesDataBase.getAllEntries();
-        return rated;
-    }
-
-    public RatedSeries getRatedSeries(String title)
-    {
-        RatedSeries ratedSeries = RatedTVSeriesDataBase.getEntry(title);
-        return ratedSeries;
     }
 
     protected void notifyGetExtractFinishedListener()

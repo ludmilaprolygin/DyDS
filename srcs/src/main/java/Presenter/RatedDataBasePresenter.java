@@ -3,7 +3,7 @@ package Presenter;
 import Model.DataBase.RatedTVSeriesDataBase;
 import Model.DataBaseModel;
 import Model.PageModel;
-import Presenter.Listeners.ModelListener;
+import Model.Listeners.ModelListener;
 import utils.*;
 import utils.Messages.UnsuccessfulTask;
 import View.View;
@@ -18,7 +18,6 @@ import retrofit2.Response;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -159,8 +158,7 @@ public class RatedDataBasePresenter
         generateJsonObjectFromLastSearchResponse();
         String termToRate = JsonParsing.getAttributeAsString(jsonObject, "title");
 
-        RatedSeries rated = RatedTVSeriesDataBase.getEntry(termToRate);
-        // System.out.println(rs.getTitle());
+        RatedSeries rated = dataBaseModel.getRatedSeries(termToRate);
         DefaultTableModel tableModel = ratedView.getTableModel();
 
         int pageID = rated.getPageID();

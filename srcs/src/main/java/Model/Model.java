@@ -1,6 +1,6 @@
 package Model;
 
-import Presenter.Listeners.ModelListener;
+import Model.Listeners.ModelListener;
 import java.util.ArrayList;
 
 public abstract class Model

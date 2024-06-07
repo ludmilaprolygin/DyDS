@@ -5,7 +5,7 @@ import Model.PageModel;
 import org.junit.*;
 import retrofit2.Call;
 import retrofit2.Response;
-import Presenter.Listeners.ModelListener;
+import Model.Listeners.ModelListener;
 
 import java.io.IOException;
 

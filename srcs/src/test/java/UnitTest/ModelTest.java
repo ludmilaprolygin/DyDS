@@ -3,7 +3,7 @@ package UnitTest;
 import Model.Model;
 import Implementations.ModelImpl;
 import Implementations.ModelListenerImpl;
-import Presenter.Listeners.ModelListener;
+import Model.Listeners.ModelListener;
 import org.junit.*;
 import static org.junit.Assert.*;
 

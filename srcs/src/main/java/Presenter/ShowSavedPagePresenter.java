@@ -1,7 +1,7 @@
 package Presenter;
 
 import Model.DataBaseModel;
-import Presenter.Listeners.ModelListener;
+import Model.Listeners.ModelListener;
 import View.StorageView;
 import Model.DataBase.SavedTVSeriesDataBase;
 import utils.StringFormatting;
@@ -43,13 +43,13 @@ public class ShowSavedPagePresenter
     public void onSelectedSavedResult()
     {
         String title = storageView.getSelectedTitle();
-        String extract = dataBaseModel.getExtract(title);
+        dataBaseModel.getExtract(title);
+
     }
     protected void showSavedTVSeriesPage()
     {
         JTextPane storedPageContent = storageView.getPaneContent();
-        String title = storageView.getSelectedTitle();
-        String extract = SavedTVSeriesDataBase.getExtract(title); //dataBaseExtractModel.getExtract(title);
+        String extract = dataBaseModel.getExtract();
         storedPageContent.setText(
                 StringFormatting.textBodyToHtml(extract));
     }

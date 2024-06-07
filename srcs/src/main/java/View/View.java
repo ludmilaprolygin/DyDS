@@ -1,6 +1,6 @@
 package View;
 
-import Presenter.Listeners.PaneHyperlinkListener;
+import Model.Listeners.PaneHyperlinkListener;
 
 import javax.swing.*;
 
