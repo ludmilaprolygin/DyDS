@@ -1,6 +1,6 @@
 package View;
 
-import Presenter.RatedDataBasePresenter;
+import Presenter.Implemented.RatedDataBasePresenterImpl;
 import utils.ViewFormatting;
 
 import javax.swing.*;
@@ -18,7 +18,7 @@ public class RatedView extends View
     private JTable ratedTVSeries;
     protected DefaultTableModel tableModel;
     protected String selectedTitle;
-    protected RatedDataBasePresenter presenter;
+    protected RatedDataBasePresenterImpl presenter;
 
     public RatedView()
     {
@@ -117,5 +117,5 @@ public class RatedView extends View
 
     public String getSelectedTitle() { return selectedTitle; }
 
-    public void setRatedDataBasePresenter(RatedDataBasePresenter p) { presenter = p; }
+    public void setRatedDataBasePresenter(RatedDataBasePresenterImpl p) { presenter = p; }
 }

@@ -1,7 +1,7 @@
 package Model.DataBase;
 
 import utils.Messages.UnsuccessfulTask;
-import Model.RatedSeries;
+import Presenter.RatedSeries;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -94,7 +94,7 @@ public class RatedTVSeriesDataBase extends AbstractDataBase
         return ratedSeries;
     }
 
-    public void saveInfo(int pageid, String title, int score)
+    public void saveInfo(String pageid, String title, int score)
     {
         Connection connection = null;
         try
@@ -109,7 +109,7 @@ public class RatedTVSeriesDataBase extends AbstractDataBase
 
             String sql = "REPLACE INTO " + tableName + " (pageid, title, score, date) VALUES (?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, pageid);
+            preparedStatement.setString(1, pageid);
             preparedStatement.setString(2, title);
             preparedStatement.setInt(3, score);
             preparedStatement.setDate(4, sqlDate);

@@ -1,7 +1,7 @@
 package View;
 
-import Presenter.ModifySavedEntriesPresenter;
-import Presenter.ShowSavedPagePresenter;
+import Presenter.Implemented.ModifySavedEntriesPresenterImpl;
+import Presenter.Implemented.ShowSavedPagePresenterImpl;
 import utils.Messages.UnsuccessfulTask;
 import utils.StringFormatting;
 
@@ -19,8 +19,8 @@ public class StorageView extends View
     protected JComboBox<String> savedTVSeries;
     protected JTextPane storedPageContent;
     protected JPopupMenu optionsPopup;
-    protected ShowSavedPagePresenter showSavedPagePresenter;
-    protected ModifySavedEntriesPresenter modifySavedEntriesPresenter;
+    protected ShowSavedPagePresenterImpl showSavedPagePresenter;
+    protected ModifySavedEntriesPresenterImpl modifySavedEntriesPresenter;
 
     public StorageView()
     {
@@ -75,9 +75,9 @@ public class StorageView extends View
     public JComboBox<String> getSavedTVSeries() { return savedTVSeries; }
     public JTextPane getPaneContent() { return storedPageContent; }
 
-    public void setShowSavedPagePresenter(ShowSavedPagePresenter showSavedPagePresenter)
+    public void setShowSavedPagePresenter(ShowSavedPagePresenterImpl showSavedPagePresenter)
         { this.showSavedPagePresenter = showSavedPagePresenter; }
-    public void setModifyDataBasePresenter(ModifySavedEntriesPresenter modifySavedEntriesPresenter)
+    public void setModifyDataBasePresenter(ModifySavedEntriesPresenterImpl modifySavedEntriesPresenter)
         { this.modifySavedEntriesPresenter = modifySavedEntriesPresenter; }
 
     public void setSavedTVSeriesModel(Object[] savedTVSeriesTitles)

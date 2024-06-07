@@ -3,6 +3,7 @@ package Model;
 import Model.DataBase.RatedTVSeriesDataBase;
 import Model.DataBase.SavedTVSeriesDataBase;
 import Model.Listeners.ModelListener;
+import Presenter.RatedSeries;
 
 import java.util.ArrayList;
 
@@ -69,7 +70,7 @@ public class DataBaseModel extends Model
     protected void saveInfoOnDataBase(String title, String info)
     { savedTVSeriesDataBase.saveInfo(title, info); }
 
-    public void rateSeries(int pageID, String title, int score)
+    public void rateSeries(String pageID, String title, int score)
     {
         ratedTVSeriesDataBase.saveInfo(pageID, title, score);
         notifyRateTVSeriesFinishedListener();

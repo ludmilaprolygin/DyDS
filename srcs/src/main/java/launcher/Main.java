@@ -1,7 +1,7 @@
 package launcher;
 
 import Model.*;
-import Presenter.*;
+import Presenter.Implemented.*;
 import View.*;
 import Model.DataBase.AbstractDataBase;
 
@@ -22,18 +22,18 @@ public class Main
         PageModel pageModel = new PageModel();
         DataBaseModel dataBaseModel = new DataBaseModel();
 
-        SearchPresenter searchPresenter =
-                new SearchPresenter(searchView, searchModel);
-        ShowSearchedPagePresenter showSearchedPagePresenter =
-                new ShowSearchedPagePresenter(searchView, pageModel);
-        SavedDataBasePresenter savedDataBasePresenter =
-                new SavedDataBasePresenter(storageView, pageModel, dataBaseModel);
-        ShowSavedPagePresenter showSavedPagePresenter =
-                new ShowSavedPagePresenter(storageView, dataBaseModel);
-        ModifySavedEntriesPresenter modifySavedEntriesPresenter =
-                new ModifySavedEntriesPresenter(storageView, dataBaseModel);
-        RatedDataBasePresenter ratedDataBasePresenter =
-                new RatedDataBasePresenter(ratedView, searchView, pageModel, dataBaseModel);
+        SearchPresenterImpl searchPresenter =
+                new SearchPresenterImpl(searchView, searchModel);
+        ShowSearchedPagePresenterImpl showSearchedPagePresenter =
+                new ShowSearchedPagePresenterImpl(searchView, pageModel);
+        SavedDataBasePresenterImpl savedDataBasePresenter =
+                new SavedDataBasePresenterImpl(storageView, pageModel, dataBaseModel);
+        ShowSavedPagePresenterImpl showSavedPagePresenter =
+                new ShowSavedPagePresenterImpl(storageView, dataBaseModel);
+        ModifySavedEntriesPresenterImpl modifySavedEntriesPresenter =
+                new ModifySavedEntriesPresenterImpl(storageView, dataBaseModel);
+        RatedDataBasePresenterImpl ratedDataBasePresenter =
+                new RatedDataBasePresenterImpl(ratedView, searchView, pageModel, dataBaseModel);
 
         searchView.setSearchPresenter(searchPresenter);
         searchView.setShowPagePresenter(showSearchedPagePresenter);

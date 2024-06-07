@@ -1,17 +1,13 @@
 package View;
 
-import Presenter.RatedDataBasePresenter;
-import Presenter.ShowSearchedPagePresenter;
-import Presenter.SavedDataBasePresenter;
-import Presenter.SearchPresenter;
+import Presenter.Implemented.RatedDataBasePresenterImpl;
+import Presenter.Implemented.ShowSearchedPagePresenterImpl;
+import Presenter.Implemented.SavedDataBasePresenterImpl;
+import Presenter.Implemented.SearchPresenterImpl;
 import utils.ImageManager;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class SearchView extends View
 {
@@ -23,10 +19,10 @@ public class SearchView extends View
     protected JButton rateButton;
     protected SearchResult selectedSearchResult;
     protected WikiSearchesPopupMenu searchOptionsMenu;
-    protected SearchPresenter searchPresenter;
-    protected ShowSearchedPagePresenter showSearchedPagePresenter;
-    protected SavedDataBasePresenter savedDataBasePresenter;
-    protected RatedDataBasePresenter ratedDataBasePresenter;
+    protected SearchPresenterImpl searchPresenter;
+    protected ShowSearchedPagePresenterImpl showSearchedPagePresenter;
+    protected SavedDataBasePresenterImpl savedDataBasePresenter;
+    protected RatedDataBasePresenterImpl ratedDataBasePresenter;
 
     public SearchView()
     {
@@ -119,10 +115,10 @@ public class SearchView extends View
     }
     public void updateRateButton(int ratingValue)
     { rateButton.setIcon(new ImageIcon(ImageManager.getImageURL(ratingValue))); }
-    public void setSearchPresenter(SearchPresenter searchPresenter) { this.searchPresenter = searchPresenter; }
-    public void setShowPagePresenter(ShowSearchedPagePresenter showSearchedPagePresenter) { this.showSearchedPagePresenter = showSearchedPagePresenter; }
-    public void setSavePresenter(SavedDataBasePresenter savedDataBasePresenter) { this.savedDataBasePresenter = savedDataBasePresenter; }
-    public void setRatePresenter(RatedDataBasePresenter ratedDataBasePresenter) { this.ratedDataBasePresenter = ratedDataBasePresenter; }
+    public void setSearchPresenter(SearchPresenterImpl searchPresenter) { this.searchPresenter = searchPresenter; }
+    public void setShowPagePresenter(ShowSearchedPagePresenterImpl showSearchedPagePresenter) { this.showSearchedPagePresenter = showSearchedPagePresenter; }
+    public void setSavePresenter(SavedDataBasePresenterImpl savedDataBasePresenter) { this.savedDataBasePresenter = savedDataBasePresenter; }
+    public void setRatePresenter(RatedDataBasePresenterImpl ratedDataBasePresenter) { this.ratedDataBasePresenter = ratedDataBasePresenter; }
 
     public void disableAll()
     {
