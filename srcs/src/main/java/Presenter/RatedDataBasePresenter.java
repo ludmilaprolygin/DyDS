@@ -51,7 +51,7 @@ public class RatedDataBasePresenter
 
         for (RatedSeries rated : allRated)
         {
-            int pageID = rated.getPageID();
+            String pageID = rated.getPageID();
             String title = rated.getTitle();
             int score = rated.getScore();
             Date date = rated.getDate();
@@ -161,7 +161,7 @@ public class RatedDataBasePresenter
         RatedSeries rated = dataBaseModel.getRatedSeries(termToRate);
         DefaultTableModel tableModel = ratedView.getTableModel();
 
-        int pageID = rated.getPageID();
+        String pageID = rated.getPageID();
         String title = rated.getTitle();
         int score = rated.getScore();
         Date date = rated.getDate();

@@ -1,8 +1,8 @@
 package UnitTest;
 
 import Model.Model;
-import Implementations.ModelImpl;
-import Implementations.ModelListenerImpl;
+import Impls.ModelImpl;
+import Impls.ModelListenerImpl;
 import Model.Listeners.ModelListener;
 import org.junit.*;
 import static org.junit.Assert.*;

@@ -32,7 +32,7 @@ public abstract class AbstractDataBase
     protected static void createRatedTable(Statement statement) throws SQLException
     {
         statement.executeUpdate("create table if not exists rated (" +
-                "pageid integer, " +
+                "pageid string, " +
                 "title string primary key, " +
                 "score int unsigned check (score between 1 and 10), " +
                 "date date)");

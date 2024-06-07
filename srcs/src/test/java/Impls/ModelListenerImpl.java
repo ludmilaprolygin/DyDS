@@ -1,4 +1,4 @@
-package Implementations;
+package Impls;
 
 import Model.Listeners.ModelListener;
 

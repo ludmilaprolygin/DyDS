@@ -4,12 +4,12 @@ import java.util.Date;
 
 public class RatedSeries
 {
-    protected int pageID;
+    protected String pageID;
     protected String title;
     protected int score;
     protected Date date;
 
-    public RatedSeries(int pageID, String title, int score, Date date)
+    public RatedSeries(String pageID, String title, int score, Date date)
     {
         this.pageID = pageID;
         this.title = title;
@@ -17,7 +17,7 @@ public class RatedSeries
         this.date = date;
     }
 
-    public int getPageID() { return pageID; }
+    public String getPageID() { return pageID; }
     public String getTitle() { return title; }
     public int getScore() { return score; }
     public Date getDate() { return date; }

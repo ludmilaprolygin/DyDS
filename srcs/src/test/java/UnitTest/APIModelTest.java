@@ -1,6 +1,6 @@
 package UnitTest;
 
-import Implementations.APIModelImpl;
+import Impls.APIModelImpl;
 import Model.APIModel;
 import retrofit2.Response;
 import org.junit.*;
@@ -15,7 +15,7 @@ public class APIModelTest
     {
         APIModelTest = new APIModelImpl();
     }
-    
+
     @Test
     public void getResponseTest()
     {

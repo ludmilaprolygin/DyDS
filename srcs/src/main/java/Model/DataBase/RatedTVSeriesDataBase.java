@@ -84,7 +84,7 @@ public class RatedTVSeriesDataBase extends AbstractDataBase
     {
         RatedSeries ratedSeries;
 
-        int pageID = resultSet.getInt("pageID");
+        String pageID = resultSet.getString("pageID");
         String title = resultSet.getString("title");
         int score = resultSet.getInt("score");
         Date date = resultSet.getDate("date");

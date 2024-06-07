@@ -1,5 +1,7 @@
 package Model.Listeners;
 
+import utils.Messages.UnsuccessfulTask;
+
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import java.awt.*;
@@ -14,13 +16,9 @@ public class PaneHyperlinkListener implements HyperlinkListener
         if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
         {
             try
-            {
-                Desktop.getDesktop().browse(new URI(e.getURL().toString()));
-            }
+                { Desktop.getDesktop().browse(new URI(e.getURL().toString())); }
             catch (IOException | URISyntaxException ex)
-            {
-                ex.printStackTrace();
-            }
+                { UnsuccessfulTask.wikipediaError(); }
         }
     }
 }
